@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES2020",
+        "rootDir": "src",
+        "outDir": "./dist",
+        "strict": true,
+        "noImplicitAny": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true, // 데코레이터 사용 허용
+        "esModuleInterop": true // ES6 모듈 사양을 준수하여 CommonJS 모듈을 가져옴
+    },
+    "include": ["src/**/*", "src/app.ts"],
+    "typeRoots": ["./src/types", "./node_modules/@types", ".env"]
+}
