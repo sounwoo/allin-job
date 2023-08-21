@@ -7,11 +7,14 @@
     "license": "MIT",
     "scripts": {
         "start:dev": "nodemon --exec ts-node src/app.ts",
+        "linkareer": "ts-node src/common/crawiling/linkareer.crawiling.ts",
         "start": "ts-node src/app.ts"
     },
     "dependencies": {
         "@prisma/client": "^5.1.1",
         "@types/node": "^20.5.0",
+        "axios": "^1.4.0",
+        "cheerio": "^1.0.0-rc.12",
         "class-validator": "^0.14.0",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
