@@ -38,10 +38,10 @@ const crawiling = async () => {
     const title = $('h2.title').text();
     const view = $('span.count').html();
     const image = $('img.card-image').attr('src');
-    // const corporateForm = $('h3.jss6').html();
+    const corporateForm = $('h3.jss6').html();
     console.log(Dday, title, view);
     console.log(image);
-    // console.log(corporateForm);
+    console.log(corporateForm);
 };
 
 crawiling();
