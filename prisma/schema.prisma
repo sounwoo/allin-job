@@ -12,7 +12,12 @@ datasource db {
 
 model User {
   id    String  @id @unique @default(uuid())
-  age   Int?
-  price Int?    @default(0)
-  name  String? @db.VarChar(5)
+  email String  @unique
+  name  String @db.VarChar(5)
+  nickname String @db.VarChar(10)
+  phone String @db.VarChar(13)
+  profileImage String 
+  major String
+  interest String
+  keyword String
 }
