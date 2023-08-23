@@ -1,4 +1,4 @@
-import passport, { Profile } from 'passport';
+import passport from 'passport';
 import {
     Strategy as KakaoStrategy,
     StrategyOption,
@@ -16,16 +16,18 @@ const registerKakaoStrategy = () => {
             async (
                 accessToken: string,
                 refreshToken: string,
-                profile: Profile,
+                profile,
                 done,
             ) => {
                 try {
                     const user = {
-                        accessToken,
-                        refreshToken,
-                        profile,
+                        email: profile._json.kakao_account.email,
+                        provider: profile.provider,
                     };
-                    done(null, user);
+                    done(null, {
+                        email: user.email,
+                        provider: user.provider,
+                    });
                 } catch (error) {
                     console.error(error);
                     done(error);

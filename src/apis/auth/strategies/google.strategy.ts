@@ -21,11 +21,13 @@ const registerGoogleStrategy = () => {
             ) => {
                 try {
                     const user = {
-                        accessToken,
-                        refreshToken,
-                        profile,
+                        email: profile.emails![0].value,
+                        provider: profile.provider,
                     };
-                    done(null, user);
+                    done(null, {
+                        email: user.email,
+                        provider: user.provider,
+                    });
                 } catch (error: any) {
                     console.error(error);
                     done(error);
