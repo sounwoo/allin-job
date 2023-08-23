@@ -18,20 +18,16 @@ class UserController {
         this.router.post('/createUser', this.createUser.bind(this));
     }
 
-    // 유저 찾기 API
     async findUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const email: string = req.body.email;
         res.status(200).json(await this.userService.findUser(email));
     }
 
-    // 회원가입 API
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const createDTO = new CreateUserDTO(req.body);
         const errors = await validate(createDTO);
-        // console.log(errors);
-        // 유효성 검사 에러 체크
         if (errors.length > 0) {
             const errorMessage = errors.map((error) => {
                 const temp =

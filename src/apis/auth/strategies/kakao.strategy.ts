@@ -9,7 +9,9 @@ const registerKakaoStrategy = () => {
         new KakaoStrategy(
             {
                 clientID: process.env.KAKAO_CLIENT_ID,
-                callbackURL: 'http://localhost:4000/login/kakao',
+                clientSecret: process.env.KAKAO_CLIENT_SEVRET,
+                callbackURL:
+                    'http://localhost:4000/login/kakao/callback',
             } as StrategyOption,
             async (
                 accessToken: string,
@@ -17,8 +19,17 @@ const registerKakaoStrategy = () => {
                 profile: Profile,
                 done,
             ) => {
-                console.log(accessToken, refreshToken, profile);
-                done(accessToken, refreshToken, profile);
+                try {
+                    const user = {
+                        accessToken,
+                        refreshToken,
+                        profile,
+                    };
+                    done(null, user);
+                } catch (error) {
+                    console.error(error);
+                    done(error);
+                }
             },
         ),
     );
