@@ -10,7 +10,8 @@ const registerGoogleStrategy = () => {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: 'http://localhost:4000/login/google',
+                callbackURL:
+                    'http://localhost:4000/login/google/callback',
             } as _StrategyOptionsBase,
             async (
                 accessToken: string,
@@ -18,8 +19,17 @@ const registerGoogleStrategy = () => {
                 profile: Profile,
                 done,
             ) => {
-                console.log(accessToken, refreshToken, profile);
-                done(accessToken, refreshToken, profile);
+                try {
+                    const user = {
+                        accessToken,
+                        refreshToken,
+                        profile,
+                    };
+                    done(null, user);
+                } catch (error: any) {
+                    console.error(error);
+                    done(error);
+                }
             },
         ),
     );

@@ -13,19 +13,15 @@ app.use(cors({ origin: '*' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// 라우터 연결
+app.use(passport.initialize());
+
 Controllers.map((contoller) => {
     app.use(contoller.path, contoller.router);
 });
 
-// passport 초기화
-app.use(passport.initialize());
-
-// Strategy 모듈 실행하여 passport에 등록
-// 앱에서 소셜 로그인을 사용할 수 있는 상태를 설정하는 것.
-kakao();
 google();
 naver();
+kakao();
 
 app.get('/', (_, res) => {
     res.send('안녕');
