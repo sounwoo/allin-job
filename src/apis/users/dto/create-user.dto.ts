@@ -5,6 +5,9 @@ export class CreateUserDTO {
     email: string;
 
     @IsString()
+    provider: string;
+
+    @IsString()
     name: string;
 
     @IsString()
@@ -27,6 +30,7 @@ export class CreateUserDTO {
 
     constructor(data: CreateUserDTO) {
         this.email = data.email;
+        this.provider = data.provider;
         this.name = data.name;
         this.nickname = data.nickname;
         this.phone = data.phone;
