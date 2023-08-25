@@ -14,9 +14,9 @@ services:
     all-backend:
         build:
             context: .
-            dockerfile: dockerfile
+            dockerfile: dockerfile.prod
         container_name: all-backend
         env_file:
-            - .env.prod
+            - .env
         ports:
             - 4000:4000
