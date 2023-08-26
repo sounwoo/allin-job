@@ -3,6 +3,7 @@ import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './users.service';
 import { Request, Response, Router } from 'express';
 import { AuthService } from '../auth/auth.service';
+import { SmsService } from '../common/util/sms.service';
 
 class UserController {
     router = Router();
@@ -10,10 +11,12 @@ class UserController {
 
     private userService: UserService;
     private authService: AuthService;
+    private smsService: SmsService;
     constructor() {
         this.init();
         this.userService = new UserService();
         this.authService = new AuthService();
+        this.smsService = new SmsService();
     }
 
     init() {
@@ -22,6 +25,16 @@ class UserController {
             this.findOneUserByEmail.bind(this),
         );
         this.router.post('/createUser', this.createUser.bind(this));
+
+        this.router.post(
+            '/sendTokenSMS',
+            this.sendTokenSMS.bind(this),
+        );
+
+        this.router.post(
+            '/validateToken',
+            this.validateToken.bind(this),
+        );
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -57,6 +70,21 @@ class UserController {
         } catch (error) {
             res.status(500).json({ error: '서버문제' });
         }
+    }
+
+    async sendTokenSMS(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const phone = req.body.phone;
+        res.status(200).json(
+            await this.smsService.sendTokenSMS(phone),
+        );
+    }
+
+    async validateToken(req: Request, res: Response) {
+        const { token, phone } = req.body;
+        res.status(200).json(
+            await this.smsService.validateToken(phone, token),
+        );
     }
 }
 
