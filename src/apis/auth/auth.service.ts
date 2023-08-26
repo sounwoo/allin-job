@@ -58,7 +58,7 @@ export class AuthService {
         );
     }
 
-    setRefreshToken({ user, req, res }: IAuthSetRefreshToken) {
+    setRefreshToken({ user, res }: IAuthSetRefreshToken) {
         const refreshToken = jwt.sign(
             {
                 sub: user.id,

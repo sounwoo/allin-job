@@ -11,14 +11,32 @@ datasource db {
 }
 
 model User {
-  id    String  @id @unique @default(uuid())
-  email String  @unique
-  provider String
-  name  String @db.VarChar(5)
-  nickname String @db.VarChar(10)
-  phone String @db.VarChar(13)
-  profileImage String 
-  major String
-  interest String
-  keyword String
+  id           String @id @unique @default(uuid())
+  email        String @unique
+  provider     String
+  name         String @db.VarChar(5)
+  nickname     String @db.VarChar(10)
+  phone        String @db.VarChar(13)
+  profileImage String
+  major        String
+  interest     String
+  keyword      String
+}
+
+model Competition {
+  id                    String @id @unique @default(uuid())
+  Dday                  String
+  title                 String
+  view                  String
+  mainImage             String @db.LongText
+  organization          String
+  enterprise            String
+  target                String
+  applicationPeriod     String
+  participationPeriod   String
+  personnel             String
+  region                String
+  preferentialTreatment String
+  homePage              String @db.LongText
+  detail                String @db.LongText
 }
