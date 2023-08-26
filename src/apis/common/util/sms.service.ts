@@ -57,8 +57,7 @@ export class SmsService {
 
     createToken(): string {
         const randomNumber = Math.floor(Math.random() * 100000);
-        const token = randomNumber.toString().padStart(5, '0');
-        return token;
+        return randomNumber.toString().padStart(5, '0');
     }
 
     async validateToken(

@@ -24,6 +24,12 @@ class UserController {
             '/findOneUserByEmail',
             this.findOneUserByEmail.bind(this),
         );
+
+        this.router.get(
+            '/findOneUserByID',
+            this.findOneUserByID.bind(this),
+        );
+
         this.router.post('/createUser', this.createUser.bind(this));
 
         this.router.post(
@@ -39,10 +45,32 @@ class UserController {
 
     async findOneUserByEmail(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const email: string = req.body.email;
+        const email: string = req.query.email as string;
         res.status(200).json(
             await this.userService.findOneUserByEmail(email),
         );
+    }
+
+    async findOneUserByID(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { name, phone }: { name?: string; phone?: string } =
+            req.query;
+
+        try {
+            if (name && phone) {
+                const user = await this.userService.findOneUserByID({
+                    name,
+                    phone,
+                });
+                res.status(200).json(user);
+            } else {
+                throw new Error(
+                    '이름과 휴대폰번호가 모두 필요합니다',
+                );
+            }
+        } catch (error) {
+            res.status(500).json({ error: '서버문제' });
+        }
     }
 
     async createUser(req: Request, res: Response) {
@@ -74,17 +102,26 @@ class UserController {
 
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const phone = req.body.phone;
-        res.status(200).json(
-            await this.smsService.sendTokenSMS(phone),
-        );
+        const { phone } = req.body;
+        try {
+            res.status(200).json(
+                await this.smsService.sendTokenSMS(phone),
+            );
+        } catch (error) {
+            res.status(500).json({ error: '서버문제' });
+        }
     }
 
     async validateToken(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
         const { token, phone } = req.body;
-        res.status(200).json(
-            await this.smsService.validateToken(phone, token),
-        );
+        try {
+            res.status(200).json(
+                await this.smsService.validateToken(phone, token),
+            );
+        } catch (error) {
+            res.status(500).json({ error: '서버문제' });
+        }
     }
 }
 
