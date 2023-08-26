@@ -24,7 +24,7 @@ export class AuthService {
         // const email = req.user?.email && req.user.email;
 
         // const { email, provider } = req.user!;
-        const { email } = req.user!;
+        const { email } = req!.user!;
 
         const isUser = await this.userService.findOneUserByEmail(
             email!,
