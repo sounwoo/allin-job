@@ -3,7 +3,7 @@ import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './users.service';
 import { Request, Response, Router } from 'express';
 import { AuthService } from '../auth/auth.service';
-import { SmsService } from '../common/util/sms.service';
+import { SmsService } from '../../common/util/sms.service';
 
 class UserController {
     router = Router();

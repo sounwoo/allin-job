@@ -1,6 +1,6 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-import redis from '../../../database/redisConfig';
+import redis from '../../database/redisConfig';
 
 export class SmsService {
     async sendTokenSMS(phone: string): Promise<boolean> {

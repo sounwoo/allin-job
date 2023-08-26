@@ -9,7 +9,8 @@
         "start:dev": "nodemon --exec ts-node src/app.ts",
         "linkareer:com": "ts-node src/common/crawiling/linkareer.competition.ts",
         "linkareer:int": "ts-node src/common/crawiling/linkareer.intern.ts",
-        "start": "tsc -p . && node dist/app.js"
+        "start": "tsc -p . && node dist/app.js",
+        "swagger": "node src/common/swagger/swagger.ts"
     },
     "dependencies": {
         "@prisma/client": "^5.1.1",
@@ -31,6 +32,8 @@
         "passport-naver": "^1.0.6",
         "prisma": "^5.1.1",
         "redis": "^4.6.7",
+        "swagger-autogen": "^2.23.5",
+        "swagger-ui-express": "^5.0.0",
         "ts-node": "^10.9.1",
         "typescript": "^5.1.6"
     },
@@ -44,6 +47,7 @@
         "@types/passport-google-oauth20": "^2.0.11",
         "@types/passport-kakao": "^1.0.0",
         "@types/passport-naver": "^1.0.1",
+        "@types/swagger-ui-express": "^4.1.3",
         "@typescript-eslint/eslint-plugin": "^6.3.0",
         "@typescript-eslint/parser": "^6.3.0",
         "eslint": "^8.47.0",

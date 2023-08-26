@@ -1,0 +1,226 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "allinjob API Docs",
+        "description": "올인잡 api 문서입니다"
+    },
+    "host": "localhost:4000",
+    "servers": [
+        {
+            "url": "http://localhost:4000"
+        }
+    ],
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "User관련 API"
+        },
+        {
+            "name": "Health",
+            "description": "health 체크"
+        }
+    ],
+    "schemes": ["http"],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": ["Health"],
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/findOneUserByEmail": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "회원가입한 유저 이메일 찾아오기",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "abc@abc.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/findOneUserByID": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "아이디 찾기",
+                "description": "name, phone을 통해 아이디찾기",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "홍길동"
+                        },
+                        "description": "이름"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "01012345678"
+                        },
+                        "description": "전화번호"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/createUser": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "회원가입하기",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "CreateUserDTO",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "abc@abc.com"
+                                },
+                                "provider": {
+                                    "type": "string",
+                                    "example": "google"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "홍길동"
+                                },
+                                "nickname": {
+                                    "type": "string",
+                                    "example": "닉네임"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "example": "01012345678"
+                                },
+                                "profileImage": {
+                                    "type": "string",
+                                    "example": "profile url"
+                                },
+                                "major": {
+                                    "type": "string",
+                                    "example": "컴퓨터공학"
+                                },
+                                "interest": {
+                                    "type": "string",
+                                    "example": "IT-프로그래밍"
+                                },
+                                "keyword": {
+                                    "type": "string",
+                                    "example": "웹개발"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/user/sendTokenSMS": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "문자 인증번호 요청하기",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "phone": {
+                                    "type": "string",
+                                    "example": "01012345678"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/user/validateToken": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "문자 인증번호 검증하기",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "token & phone",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "11111"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "example": "01012345678"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    }
+}
