@@ -1,9 +1,6 @@
-import redis from 'redis';
+import Redis from 'ioredis';
 
-const redisClient = redis.createClient({
-    url: process.env.REDIS_URL,
-    legacyMode: true,
-});
+const redisClient = new Redis(process.env.REDIS_URL!);
 
 redisClient.on('connect', () => console.info('Redis 연결성공'));
 redisClient.on('error', (err) =>
