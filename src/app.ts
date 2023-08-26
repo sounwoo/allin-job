@@ -7,12 +7,20 @@ import kakao from './apis/auth/strategies/kakao.strategy';
 import google from './apis/auth/strategies/google.strategy';
 import naver from './apis/auth/strategies/naver.strategy';
 import session from 'express-session';
+import swaggerFile from './common/swagger/swagger-output.json';
+import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 
 app.use(cors({ origin: '*', credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerFile, { explorer: true }),
+);
 
 app.use(passport.initialize());
 
@@ -41,7 +49,7 @@ naver();
 kakao();
 
 app.get('/', (_, res) => {
-    res.send('안녕');
+    res.send('서버 연결 완료');
 });
 
 app.listen(process.env.PORT, () => {
