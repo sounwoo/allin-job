@@ -21,35 +21,26 @@ export const crawilingData = async (path: string) => {
                     `https://linkareer.com/activity/${el}`,
                 );
                 const $ = cheerio.load(result.data);
-                const Dday = $('.recruitText').text();
-                const title = $('h2.title').text();
-                const view = String($('span.count').html()) ?? '0';
-                const mainImage =
-                    $(`img.${mainImageType}`).attr('src') ?? '';
-                const organization = $('h2.organization-name').text();
-                const organizationObj = dataType;
-                const hClass = detailClass;
-                $(`h3.${hClass}`).each((index, el) => {
-                    const key = Object.keys(organizationObj)[index];
+                $(`h3.${detailClass}`).each((index, el) => {
+                    const key = Object.keys(dataType)[index];
                     if (key) {
-                        organizationObj[
-                            key as keyof typeof organizationObj
-                        ] = $(el).text();
+                        dataType[key as keyof typeof dataType] =
+                            $(el).text();
                     }
                 });
-                const detail =
-                    $(
-                        'div.ActivityDetailTabContent__StyledWrapper-sc-5db6cf4b-0.bDYgjm',
-                    ).html() ?? '없음';
 
                 const data = {
-                    Dday,
-                    title,
-                    view,
-                    mainImage,
-                    organization,
-                    ...organizationObj,
-                    detail,
+                    Dday: $('.recruitText').text(),
+                    title: $('h2.title').text(),
+                    view: String($('span.count').html()) ?? '0',
+                    mainImage:
+                        $(`img.${mainImageType}`).attr('src') ?? '',
+                    organization: $('h2.organization-name').text(),
+                    ...dataType,
+                    detail:
+                        $(
+                            'div.ActivityDetailTabContent__StyledWrapper-sc-5db6cf4b-0.bDYgjm',
+                        ).html() ?? '없음',
                 };
                 return createCrawilingData(data, path);
             });
