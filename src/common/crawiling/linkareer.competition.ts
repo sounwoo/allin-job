@@ -29,7 +29,6 @@ export const crawilingData = async (path: string) => {
                 const organization = $('h2.organization-name').text();
                 const organizationObj = dataType;
                 const hClass = detailClass;
-                console.log(`${title} : ${mainImage}`);
                 $(`h3.${hClass}`).each((index, el) => {
                     const key = Object.keys(organizationObj)[index];
                     if (key) {
@@ -43,6 +42,7 @@ export const crawilingData = async (path: string) => {
                         'div.ActivityDetailTabContent__StyledWrapper-sc-5db6cf4b-0.bDYgjm',
                     ).html() ?? '없음';
 
+                console.log(organizationObj);
                 const data = {
                     Dday,
                     title,

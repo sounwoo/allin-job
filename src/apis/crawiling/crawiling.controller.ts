@@ -32,13 +32,15 @@ class CrawilingController {
         const { path } = req.params;
         let result;
         switch (path) {
-            case 'competition':
+            case 'outside':
+                result = await this.crawilingService.findeOutside();
+                break;
+            case 'intern':
+                result = await this.crawilingService.findeIntern();
+                break;
+            default:
                 result =
                     await this.crawilingService.findeCompetition();
-                break;
-
-            default:
-                result = await this.crawilingService.findeIntern();
         }
 
         result.length
