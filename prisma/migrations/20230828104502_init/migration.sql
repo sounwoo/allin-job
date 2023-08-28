@@ -37,3 +37,24 @@ CREATE TABLE `Competition` (
     UNIQUE INDEX `Competition_id_key`(`id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Intern` (
+    `id` VARCHAR(191) NOT NULL,
+    `Dday` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `view` VARCHAR(191) NOT NULL,
+    `mainImage` LONGTEXT NOT NULL,
+    `organization` VARCHAR(191) NOT NULL,
+    `enterprise` VARCHAR(191) NOT NULL,
+    `applicationPeriod` VARCHAR(191) NOT NULL,
+    `preferentialTreatment` VARCHAR(191) NOT NULL,
+    `personnel` VARCHAR(191) NOT NULL,
+    `target` VARCHAR(191) NOT NULL,
+    `region` VARCHAR(191) NOT NULL,
+    `homePage` LONGTEXT NOT NULL,
+    `detail` LONGTEXT NOT NULL,
+
+    UNIQUE INDEX `Intern_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

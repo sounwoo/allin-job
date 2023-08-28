@@ -8,4 +8,4 @@ RUN yarn install
 RUN yarn prisma generate
 
 COPY . /backend/
-CMD yarn start
+CMD yarn start:dev
