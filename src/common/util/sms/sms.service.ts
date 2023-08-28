@@ -1,6 +1,7 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-import redis from '../../database/redisConfig';
+import redis from '../../../database/redisConfig';
+import { ValidateTokenDTO } from './dto/validateToken.dto';
 
 export class SmsService {
     async sendTokenSMS(phone: string): Promise<boolean> {
@@ -55,16 +56,16 @@ export class SmsService {
         }
     }
 
-    createToken(): string {
+    createToken(): number {
         const randomNumber = Math.floor(Math.random() * 100000);
-        return randomNumber.toString().padStart(5, '0');
+        return +randomNumber.toString().padStart(5, '0');
     }
 
     async validateToken(
-        phone: string,
-        token: string,
+        validateToken: ValidateTokenDTO,
     ): Promise<boolean> {
+        const { token, phone } = validateToken;
         const getToken = await redis.get(phone);
-        return getToken === token ? true : false;
+        return +getToken! === token ? true : false;
     }
 }

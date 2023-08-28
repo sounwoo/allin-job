@@ -20,9 +20,6 @@ export class AuthService {
         req: Request & IOAuthUser,
         res: Response,
     ): Promise<boolean> {
-        // 리팩토링 예정
-        // const email = req.user?.email && req.user.email;
-
         // const { email, provider } = req.user!;
         const { email } = req!.user!;
 

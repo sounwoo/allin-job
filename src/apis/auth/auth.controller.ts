@@ -1,19 +1,17 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 import { IOAuthUser } from './interfaces/auth.interface';
-import { UserService } from '../users/users.service';
 import { AuthService } from './auth.service';
+import { User } from '@prisma/client';
 
 class AuthController {
     router = Router();
     path = '/login';
 
     private authService: AuthService;
-    private userService: UserService;
     constructor() {
         this.init();
         this.authService = new AuthService();
-        this.userService = new UserService();
     }
 
     init() {
@@ -63,6 +61,16 @@ class AuthController {
             },
             next,
         );
+    }
+
+    async login(user: User, req: Request, res: Response) {
+        try {
+            res.status(200).json(
+                await this.authService.login({ user, req, res }),
+            );
+        } catch (error) {
+            res.status(500).json({ error: '서버문제' });
+        }
     }
 }
 
