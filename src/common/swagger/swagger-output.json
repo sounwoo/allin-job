@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "version": "1.0.0",
+        "version": "3.0.0",
         "title": "allinjob API Docs",
-        "description": "올인잡 API 문서입니다"
+        "description": "올인잡 api 문서입니다"
     },
     "host": "allinjob.co.kr",
     "servers": [
@@ -19,6 +19,10 @@
         {
             "name": "Users",
             "description": "User관련 API"
+        },
+        {
+            "name": "Crawiling",
+            "description": "크롤링 데이터 조회 API"
         }
     ],
     "schemes": ["http", "https"],
@@ -526,6 +530,262 @@
                                     "error": [
                                         "token : token must be a number",
                                         "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawiling/finde/{name}": {
+            "get": {
+                "tags": ["Crawiling"],
+                "summary": "링커리어 크롤링 데이터 조회하기",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "example": "outside"
+                        },
+                        "description": "크롤링 데이터 ( outside, intern , competition 셋중 하나)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "outsideData": {
+                                        "summary": "대외활동 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "adfhttwerqwrasxczx",
+                                                    "Dday": "D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "awihqwifbjqjfbo",
+                                                    "organization": "LG유플러스",
+                                                    "enterprise": "대기업",
+                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
+                                                    "participationPeriod": "23.9.22 ~ 23.12.22",
+                                                    "preferentialTreatment": "컴퓨터 활용능력, 휴학 중/시간 투자 가능",
+                                                    "personnel": "10명",
+                                                    "target": "대학생",
+                                                    "region": "서울",
+                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "internData": {
+                                        "summary": "인턴 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "adfhttwerqwrasxczx",
+                                                    "Dday": "D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "awihqwifbjqjfbo",
+                                                    "organization": "한국정보인증",
+                                                    "enterprise": "대기업",
+                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
+                                                    "preferentialTreatment": "IT/인터넷",
+                                                    "personnel": "10명",
+                                                    "target": "대학생",
+                                                    "region": "서울",
+                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "competitionData": {
+                                        "summary": "공모전 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "adfhttwerqwrasxczx",
+                                                    "Dday": "D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "awihqwifbjqjfbo",
+                                                    "organization": "한국교육개발원",
+                                                    "enterprise": "공공기관/공기업",
+                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
+                                                    "preferentialTreatment": "디자인/순수미술/공예",
+                                                    "Scale": "100 만원",
+                                                    "benefits": "상장 수여",
+                                                    "target": "청소년, 대학생",
+                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "participationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "personnel": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "region": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "personnel": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "region": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "Scale": {
+                                                    "type": "string"
+                                                },
+                                                "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
                                     ]
                                 }
                             }

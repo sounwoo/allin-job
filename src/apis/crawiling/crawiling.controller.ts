@@ -29,6 +29,7 @@ class CrawilingController {
     }
 
     async findeCrawiling(req: Request, res: Response) {
+        // #swagger.tags = ['Crawiling']
         const { path } = req.params;
         let result;
         switch (path) {
