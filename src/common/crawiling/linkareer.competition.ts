@@ -14,11 +14,10 @@ export const crawilingData = async (path: string) => {
 
         const dataList = await axios.get(url);
 
-        return dataList.data.data.activities.nodes
-            .map((el: any) => el.id)
-            .forEach(async (el: string) => {
+        return dataList.data.data.activities.nodes.map(
+            async (el: any) => {
                 const result = await axios.get(
-                    `https://linkareer.com/activity/${el}`,
+                    `https://linkareer.com/activity/${el.id}`,
                 );
                 const $ = cheerio.load(result.data);
                 $(`h3.${detailClass}`).each((index, el) => {
@@ -43,6 +42,7 @@ export const crawilingData = async (path: string) => {
                         ).html() ?? '없음',
                 };
                 return createCrawilingData(data, path);
-            });
+            },
+        );
     });
 };
