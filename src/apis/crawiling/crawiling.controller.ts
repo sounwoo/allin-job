@@ -13,7 +13,10 @@ class CrawilingController {
 
     init() {
         this.router.get('/data/:path', this.crawiling.bind(this));
-        this.router.get('/data', this.findeCrawiling.bind(this));
+        this.router.get(
+            '/finde/:path',
+            this.findeCrawiling.bind(this),
+        );
     }
 
     async crawiling(req: Request, res: Response) {
@@ -26,7 +29,17 @@ class CrawilingController {
     }
 
     async findeCrawiling(req: Request, res: Response) {
-        const result = await this.crawilingService.findeCrawiling();
+        const { path } = req.params;
+        let result;
+        switch (path) {
+            case 'competition':
+                result =
+                    await this.crawilingService.findeCompetition();
+                break;
+
+            default:
+                result = await this.crawilingService.findeIntern();
+        }
 
         result.length
             ? res.status(200).json({ data: result })

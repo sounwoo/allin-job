@@ -40,3 +40,20 @@ model Competition {
   homePage              String @db.LongText
   detail                String @db.LongText
 }
+
+model Intern {
+  id                    String @id @unique @default(uuid())
+  Dday                  String
+  title                 String
+  view                  String
+  mainImage             String @db.LongText
+  organization          String
+  enterprise            String
+  applicationPeriod     String
+  preferentialTreatment String
+  personnel             String
+  target                String
+  region                String
+  homePage              String @db.LongText
+  detail                String @db.LongText
+}
