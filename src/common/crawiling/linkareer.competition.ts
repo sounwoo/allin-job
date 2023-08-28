@@ -42,7 +42,6 @@ export const crawilingData = async (path: string) => {
                         'div.ActivityDetailTabContent__StyledWrapper-sc-5db6cf4b-0.bDYgjm',
                     ).html() ?? '없음';
 
-                console.log(organizationObj);
                 const data = {
                     Dday,
                     title,
