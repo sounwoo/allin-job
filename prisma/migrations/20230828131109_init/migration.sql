@@ -17,7 +17,7 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Competition` (
+CREATE TABLE `Outside` (
     `id` VARCHAR(191) NOT NULL,
     `Dday` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `Competition` (
     `homePage` LONGTEXT NOT NULL,
     `detail` LONGTEXT NOT NULL,
 
-    UNIQUE INDEX `Competition_id_key`(`id`),
+    UNIQUE INDEX `Outside_id_key`(`id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -56,5 +56,26 @@ CREATE TABLE `Intern` (
     `detail` LONGTEXT NOT NULL,
 
     UNIQUE INDEX `Intern_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Competition` (
+    `id` VARCHAR(191) NOT NULL,
+    `Dday` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `view` VARCHAR(191) NOT NULL,
+    `mainImage` LONGTEXT NOT NULL,
+    `organization` VARCHAR(191) NOT NULL,
+    `enterprise` VARCHAR(191) NOT NULL,
+    `target` VARCHAR(191) NOT NULL,
+    `Scale` VARCHAR(191) NOT NULL,
+    `applicationPeriod` VARCHAR(191) NOT NULL,
+    `benefits` VARCHAR(191) NOT NULL,
+    `preferentialTreatment` VARCHAR(191) NOT NULL,
+    `homePage` LONGTEXT NOT NULL,
+    `detail` LONGTEXT NOT NULL,
+
+    UNIQUE INDEX `Competition_id_key`(`id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

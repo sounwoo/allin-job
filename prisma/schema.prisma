@@ -23,7 +23,7 @@ model User {
   keyword      String
 }
 
-model Competition {
+model Outside {
   id                    String @id @unique @default(uuid())
   Dday                  String
   title                 String
@@ -54,6 +54,23 @@ model Intern {
   personnel             String
   target                String
   region                String
+  homePage              String @db.LongText
+  detail                String @db.LongText
+}
+
+model Competition {
+  id                    String @id @unique @default(uuid())
+  Dday                  String
+  title                 String
+  view                  String
+  mainImage             String @db.LongText
+  organization          String
+  enterprise            String
+  target                String
+  Scale                 String
+  applicationPeriod     String
+  benefits              String
+  preferentialTreatment String
   homePage              String @db.LongText
   detail                String @db.LongText
 }
