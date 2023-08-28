@@ -13,16 +13,8 @@ const options = {
     schemes: ['http', 'https'],
     tags: [
         {
-            name: 'Health',
-            description: 'health 체크',
-        },
-        {
             name: 'Users',
             description: 'User관련 API',
-        },
-        {
-            name: 'SMS',
-            description: 'SMS관련 API',
         },
     ],
 };

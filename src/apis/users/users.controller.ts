@@ -1,24 +1,24 @@
-import { validate } from 'class-validator';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './users.service';
 import { Request, Response, Router } from 'express';
-import { AuthService } from '../auth/auth.service';
-import { SmsService } from '../../common/util/sms.service';
+import { SmsService } from '../../common/util/sms/sms.service';
+import { SendTokenSmsDTO } from '../../common/util/sms/dto/sendTokenSMS.dto';
+import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
+import { FindOneUserByEmailDTO } from './dto/findOneUserByEmail.dto';
+import { validateDTO } from '../../common/validator/validateDTO';
+import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
 
 class UserController {
     router = Router();
     path = '/user';
 
     private userService: UserService;
-    private authService: AuthService;
     private smsService: SmsService;
     constructor() {
         this.init();
         this.userService = new UserService();
-        this.authService = new AuthService();
         this.smsService = new SmsService();
     }
-
     init() {
         this.router.get(
             '/findOneUserByEmail',
@@ -45,29 +45,49 @@ class UserController {
 
     async findOneUserByEmail(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const email: string = req.query.email as string;
-        res.status(200).json(
-            await this.userService.findOneUserByEmail(email),
+        const email = req.query.email as string;
+
+        const findOneUserByEmailDTO = new FindOneUserByEmailDTO(
+            email,
         );
+
+        const validateResult = await validateDTO(
+            findOneUserByEmailDTO,
+        );
+        if (validateResult)
+            return res.status(400).json({ error: validateResult });
+
+        try {
+            res.status(200).json(
+                await this.userService.findOneUserByEmail(email),
+            );
+        } catch (error) {
+            res.status(500).json({ error: '서버문제' });
+        }
     }
 
     async findOneUserByID(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const { name, phone }: { name?: string; phone?: string } =
-            req.query;
+        const name: string = req.query.name as string;
+        const phone: string = req.query.phone as string;
+
+        const findOneUserByIdDTO = new FindOneUserByIdDTO({
+            name,
+            phone,
+        });
+        const validateResult = await validateDTO(findOneUserByIdDTO);
+
+        if (validateResult)
+            return res
+                .status(400)
+                .json({ error: findOneUserByIdDTO });
 
         try {
-            if (name && phone) {
-                const user = await this.userService.findOneUserByID({
-                    name,
-                    phone,
-                });
-                res.status(200).json(user);
-            } else {
-                throw new Error(
-                    '이름과 휴대폰번호가 모두 필요합니다',
-                );
-            }
+            const user = await this.userService.findOneUserByID({
+                name,
+                phone,
+            });
+            res.status(200).json(user);
         } catch (error) {
             res.status(500).json({ error: '서버문제' });
         }
@@ -76,26 +96,27 @@ class UserController {
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const createDTO = new CreateUserDTO(req.body);
-        const errors = await validate(createDTO);
 
-        if (errors.length > 0) {
-            const errorMessage = errors.map((error) => {
-                const temp =
-                    error.constraints &&
-                    Object.values(error.constraints);
-                return `${error.property} : ${temp}`;
-            });
-            return res.status(400).json({ error: errorMessage });
-        }
+        const validateResult = await validateDTO(createDTO);
+        if (validateResult)
+            return res.status(400).json({ error: validateResult });
 
         try {
+            const isEmail = await this.userService.findOneUserByEmail(
+                createDTO.email,
+            );
+
+            if (isEmail) {
+                return res
+                    .status(200)
+                    .json('이미 존재하는 이메일이 있습니다.');
+            }
             const user = await this.userService.createUser({
                 createDTO,
             });
-            res.status(200).json(
-                await this.authService.login({ user, req, res }),
-            );
+            res.status(200).json(user);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ error: '서버문제' });
         }
     }
@@ -103,6 +124,12 @@ class UserController {
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { phone } = req.body;
+
+        const sendTokenSmsDTO = new SendTokenSmsDTO(req.body);
+        const validateResult = await validateDTO(sendTokenSmsDTO);
+        if (validateResult)
+            return res.status(400).json({ error: validateResult });
+
         try {
             res.status(200).json(
                 await this.smsService.sendTokenSMS(phone),
@@ -114,10 +141,14 @@ class UserController {
 
     async validateToken(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const { token, phone } = req.body;
+        const validateTokenDTO = new ValidateTokenDTO(req.body);
+        const validateResult = await validateDTO(validateTokenDTO);
+        if (validateResult)
+            return res.status(400).json({ error: validateResult });
+
         try {
             res.status(200).json(
-                await this.smsService.validateToken(phone, token),
+                await this.smsService.validateToken(validateTokenDTO),
             );
         } catch (error) {
             res.status(500).json({ error: '서버문제' });

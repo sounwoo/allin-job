@@ -1,9 +1,9 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
         "title": "allinjob API Docs",
-        "description": "올인잡 api 문서입니다"
+        "description": "올인잡 API 문서입니다"
     },
     "host": "allinjob.co.kr",
     "servers": [
@@ -19,25 +19,10 @@
         {
             "name": "Users",
             "description": "User관련 API"
-        },
-        {
-            "name": "Health",
-            "description": "health 체크"
         }
     ],
     "schemes": ["http", "https"],
     "paths": {
-        "/": {
-            "get": {
-                "tags": ["Health"],
-                "description": "",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/user/findOneUserByEmail": {
             "get": {
                 "tags": ["Users"],
@@ -47,19 +32,103 @@
                         "name": "email",
                         "in": "query",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "email": {
-                                    "type": "string",
-                                    "example": "abc@abc.com"
-                                }
-                            }
-                        }
+                            "type": "string",
+                            "format": "email",
+                            "example": "abc@abc.com"
+                        },
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "회원가입이 되어 있을 때",
+                                        "value": {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao",
+                                            "name": "홍길동",
+                                            "nickname": "닉네임",
+                                            "phone": "01012345678",
+                                            "profileImage": "awihqwifbjqjfbo",
+                                            "major": "컴퓨터공학",
+                                            "interest": "IT-프로그래밍",
+                                            "keyword": "웹개발"
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "회원가입이 되어 있지 않을 때",
+                                        "value": null
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "major": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
+                                                    "type": "string"
+                                                },
+                                                "keyword": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "email must be an email"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -68,7 +137,6 @@
             "get": {
                 "tags": ["Users"],
                 "summary": "아이디 찾기",
-                "description": "name, phone을 통해 아이디찾기",
                 "parameters": [
                     {
                         "name": "name",
@@ -91,7 +159,65 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "아이디가 있는 경우",
+                                        "value": {
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao"
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "아이디가 없는 경우",
+                                        "value": []
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "[]"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "name : name must be a string",
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -101,62 +227,154 @@
                 "tags": ["Users"],
                 "summary": "회원가입하기",
                 "description": "",
-                "parameters": [
-                    {
-                        "name": "CreateUserDTO",
-                        "in": "body",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "email": {
-                                    "type": "string",
-                                    "example": "abc@abc.com"
-                                },
-                                "provider": {
-                                    "type": "string",
-                                    "example": "google"
-                                },
-                                "name": {
-                                    "type": "string",
-                                    "example": "홍길동"
-                                },
-                                "nickname": {
-                                    "type": "string",
-                                    "example": "닉네임"
-                                },
-                                "phone": {
-                                    "type": "string",
-                                    "example": "01012345678"
-                                },
-                                "profileImage": {
-                                    "type": "string",
-                                    "example": "profile url"
-                                },
-                                "major": {
-                                    "type": "string",
-                                    "example": "컴퓨터공학"
-                                },
-                                "interest": {
-                                    "type": "string",
-                                    "example": "IT-프로그래밍"
-                                },
-                                "keyword": {
-                                    "type": "string",
-                                    "example": "웹개발"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "abc@abc.com"
+                                    },
+                                    "provider": {
+                                        "type": "string",
+                                        "example": "google"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "홍길동"
+                                    },
+                                    "nickname": {
+                                        "type": "string",
+                                        "example": "닉네임"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    },
+                                    "profileImage": {
+                                        "type": "string",
+                                        "example": "profile url"
+                                    },
+                                    "major": {
+                                        "type": "string",
+                                        "example": "컴퓨터공학"
+                                    },
+                                    "interest": {
+                                        "type": "string",
+                                        "example": "IT-프로그래밍"
+                                    },
+                                    "keyword": {
+                                        "type": "string",
+                                        "example": "웹개발"
+                                    }
                                 }
                             }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "일치하는 이메일이 없는 경우",
+                                        "value": {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao",
+                                            "name": "홍길동",
+                                            "nickname": "닉네임",
+                                            "phone": "01012345678",
+                                            "profileImage": "awihqwifbjqjfbo",
+                                            "major": "컴퓨터공학",
+                                            "interest": "IT-프로그래밍",
+                                            "keyword": "웹개발"
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "일치하는 이메일이 있는 경우",
+                                        "value": "이미 존재하는 이메일이 있습니다."
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "major": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
+                                                    "type": "string"
+                                                },
+                                                "keyword": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "email : email must be an email",
+                                        "provider : provider must be a string",
+                                        "name : name must be a string",
+                                        "nickname : nickname must be a string",
+                                        "phone : phone must be a string",
+                                        "profileImage : profileImage must be a string",
+                                        "major : major must be a string",
+                                        "interest : interest must be a string",
+                                        "keyword : keyword must be a string"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -183,10 +401,60 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "SMS 토큰 전송",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "SMS 토큰 전송 성공": {
+                                        "value": true
+                                    },
+                                    "SMS 토큰 전송 실패": {
+                                        "value": false
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -204,8 +472,8 @@
                             "type": "object",
                             "properties": {
                                 "token": {
-                                    "type": "string",
-                                    "example": "11111"
+                                    "type": "number",
+                                    "example": 11111
                                 },
                                 "phone": {
                                     "type": "string",
@@ -217,10 +485,61 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "SMS 토큰 검증",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "SMS 토큰 검증 성공": {
+                                        "value": true
+                                    },
+                                    "SMS 토큰 검증 실패": {
+                                        "value": false
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "token : token must be a number",
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
                     }
                 }
             }
