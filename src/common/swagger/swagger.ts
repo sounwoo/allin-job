@@ -16,9 +16,16 @@ const options = {
             name: 'Users',
             description: 'User관련 API',
         },
+        {
+            name: 'Crawiling',
+            description: '크롤링 데이터 조회 API',
+        },
     ],
 };
 
 const outputFile = './swagger-output.json';
-const endpointsFiles = ['./src/apis/users/users.controller.ts'];
+const endpointsFiles = [
+    './src/apis/users/users.controller.ts',
+    './src/apis/crawiling/crawiling.controller.ts',
+];
 swaggerAutogen(outputFile, endpointsFiles, options);

@@ -1,17 +1,23 @@
-import { Competition } from '@prisma/client';
-import { competition } from '../../common/crawiling/linkareer.competition';
+import { Competition, Intern, Outside } from '@prisma/client';
+import { crawilingData } from '../../common/crawiling/linkareer.competition';
 import prisma from '../../database/prismaConfig';
+import { paths } from '../../common/types';
 
 export class CrawilingService {
-    async findeCrawiling(): Promise<Competition[]> {
-        return prisma.competition.findMany();
+    async findeCrailing({
+        path,
+    }: paths): Promise<Competition[] | Outside[] | Intern[]> {
+        const obj = {
+            outside: async () => await prisma.outside.findMany(),
+            intern: async () => await prisma.intern.findMany(),
+            competition: async () => await prisma.competition.findMany(),
+        };
+
+        return obj[path]();
     }
 
     async crawiling(path: string): Promise<boolean> {
-        let data: any;
-
-        if (path === 'competition') data = await competition();
-
-        return data?.length ? true : false;
+        const data = await crawilingData(path);
+        return !!data.length;
     }
 }
