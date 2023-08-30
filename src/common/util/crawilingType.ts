@@ -72,9 +72,7 @@ export const createCrawilingData = async <T extends object>(
     switch (path) {
         case 'outside':
             result = await prisma.outside.create({
-                data: {
-                    ...(data as OutsideType),
-                },
+                data: data as OutsideType,
             });
             break;
 
