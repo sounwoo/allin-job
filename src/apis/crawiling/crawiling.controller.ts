@@ -1,5 +1,6 @@
 import { Request, Router, Response } from 'express';
 import { CrawilingService } from './crawiling.service';
+import { paths } from '../../common/types';
 
 class CrawilingController {
     router = Router();
@@ -13,10 +14,7 @@ class CrawilingController {
 
     init() {
         this.router.get('/data/:path', this.crawiling.bind(this));
-        this.router.get(
-            '/finde/:path',
-            this.findeCrawiling.bind(this),
-        );
+        this.router.get('/finde/:path', this.findeCrawiling.bind(this));
     }
 
     async crawiling(req: Request, res: Response) {
@@ -29,19 +27,9 @@ class CrawilingController {
     }
 
     async findeCrawiling(req: Request, res: Response) {
-        const { path } = req.params;
-        let result;
-        switch (path) {
-            case 'outside':
-                result = await this.crawilingService.findeOutside();
-                break;
-            case 'intern':
-                result = await this.crawilingService.findeIntern();
-                break;
-            default:
-                result =
-                    await this.crawilingService.findeCompetition();
-        }
+        const { path } = req.params as paths;
+
+        const result = await this.crawilingService.findeCrailing({ path });
 
         result.length
             ? res.status(200).json({ data: result })
