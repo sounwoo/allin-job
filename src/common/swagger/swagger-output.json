@@ -176,7 +176,7 @@
                                     },
                                     "noData": {
                                         "summary": "아이디가 없는 경우",
-                                        "value": []
+                                        "value": null
                                     }
                                 },
                                 "schema": {
@@ -193,7 +193,7 @@
                                             }
                                         },
                                         {
-                                            "type": "[]"
+                                            "type": "null"
                                         }
                                     ]
                                 }
@@ -230,7 +230,7 @@
             "post": {
                 "tags": ["Users"],
                 "summary": "회원가입하기",
-                "description": "",
+                "description": "provider: naver, google, kakao 중 선택 <br> interest: literature, design, IT, financial, entertainment, language, entrepreneurship, employment 중 선택",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -268,11 +268,17 @@
                                     },
                                     "interest": {
                                         "type": "string",
-                                        "example": "IT-프로그래밍"
+                                        "example": "IT"
                                     },
-                                    "keyword": {
-                                        "type": "string",
-                                        "example": "웹개발"
+                                    "keywords": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "웹개발",
+                                            "응용 프로그램 개발"
+                                        ]
                                     }
                                 }
                             }
@@ -296,8 +302,17 @@
                                             "phone": "01012345678",
                                             "profileImage": "awihqwifbjqjfbo",
                                             "major": "컴퓨터공학",
-                                            "interest": "IT-프로그래밍",
-                                            "keyword": "웹개발"
+                                            "interest": "IT",
+                                            "keywords": [
+                                                {
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "keywordId": "asdsadasdwdwfdv"
+                                                },
+                                                {
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "keywordId": "eigeriigoerngkr"
+                                                }
+                                            ]
                                         }
                                     },
                                     "noData": {
@@ -338,7 +353,18 @@
                                                     "type": "string"
                                                 },
                                                 "keyword": {
-                                                    "type": "string"
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "keywordId": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         },
