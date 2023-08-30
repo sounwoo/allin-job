@@ -1,8 +1,8 @@
-import swaggerAutogen from 'swagger-autogen';
+const swaggerAutogen = require('swagger-autogen')();
 
 const options = {
     info: {
-        version: '1.0.0',
+        version: '3.0.0',
         title: 'allinjob API Docs',
         description: '올인잡 api 문서입니다',
     },
@@ -16,9 +16,16 @@ const options = {
             name: 'Users',
             description: 'User관련 API',
         },
+        {
+            name: 'Crawiling',
+            description: '크롤링 데이터 조회 API',
+        },
     ],
 };
 
-const outputFile = '../common/swagger-output.json';
-const endpointsFiles = ['./src/apis/users/users.controller.ts'];
+const outputFile = './swagger-output.json';
+const endpointsFiles = [
+    './src/apis/users/users.controller.ts',
+    './src/apis/crawiling/crawiling.controller.ts',
+];
 swaggerAutogen(outputFile, endpointsFiles, options);

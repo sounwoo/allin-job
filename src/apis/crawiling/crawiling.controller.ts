@@ -27,8 +27,8 @@ class CrawilingController {
     }
 
     async findeCrawiling(req: Request, res: Response) {
+        // #swagger.tags = ['Crawiling']
         const { path } = req.params as paths;
-
         const result = await this.crawilingService.findeCrailing({ path });
 
         result.length
