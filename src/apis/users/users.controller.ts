@@ -47,9 +47,9 @@ class UserController {
         // #swagger.tags = ['Users']
         const email = req.query.email as string;
 
-        const findOneUserByEmailDTO = new FindOneUserByEmailDTO(
+        const findOneUserByEmailDTO = new FindOneUserByEmailDTO({
             email,
-        );
+        });
 
         const validateResult = await validateDTO(
             findOneUserByEmailDTO,

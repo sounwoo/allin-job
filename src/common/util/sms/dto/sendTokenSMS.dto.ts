@@ -1,10 +1,9 @@
-import { IsString } from 'class-validator';
+import { CreateUserDTO } from '../../../../apis/users/dto/create-user.dto';
 
 export class SendTokenSmsDTO {
-    @IsString()
-    phone: string;
+    phone: CreateUserDTO['phone'];
 
-    constructor(data: SendTokenSmsDTO) {
+    constructor(data: Pick<CreateUserDTO, 'phone'>) {
         this.phone = data.phone;
     }
 }

@@ -32,10 +32,25 @@ export class UserService {
         });
     }
 
-    createUser({ createDTO }: IUserCreateDTO): Promise<User> {
-        return prisma.user.create({
+    async createUser({ createDTO }: IUserCreateDTO): Promise<User> {
+        const { keywords, ...userData } = createDTO;
+
+        return await prisma.user.create({
             data: {
-                ...createDTO,
+                ...userData,
+                keyword: {
+                    create: keywords.map((keyword) => ({
+                        keyword: {
+                            connectOrCreate: {
+                                where: { keyword },
+                                create: { keyword },
+                            },
+                        },
+                    })),
+                },
+            },
+            include: {
+                keyword: true,
             },
         });
     }
