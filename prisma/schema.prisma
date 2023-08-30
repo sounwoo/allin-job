@@ -10,17 +10,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Interest{
+  literature
+  design
+  IT
+  financial
+  entertainment
+  language
+  entrepreneurship
+  employment
+}
+
+enum Provider{
+  kakao
+  naver
+  google
+}
+
 model User {
-  id           String @id @unique @default(uuid())
-  email        String @unique
-  provider     String
-  name         String @db.VarChar(5)
-  nickname     String @db.VarChar(10)
-  phone        String @db.VarChar(13)
-  profileImage String
-  major        String
-  interest     String
-  keyword      String
+  id            String    @id @unique @default(uuid())
+  email         String    @unique
+  provider      Provider  
+  name          String    @db.VarChar(5)
+  nickname      String    @db.VarChar(10) @unique
+  phone         String    @db.VarChar(13) 
+  profileImage  String 
+  major         String
+  interest      Interest 
+  keyword      UserKeyword[]
+}
+
+model Keyword {
+  id        String @id @unique @default(uuid())
+  keyword   String @unique
+  users     UserKeyword[]
+}
+
+model UserKeyword {
+  userId    String
+  keywordId String
+  user      User   @relation(fields: [userId], references: [id])
+  keyword   Keyword @relation(fields: [keywordId], references: [id])
+  @@id([userId, keywordId])
 }
 
 model Competition {

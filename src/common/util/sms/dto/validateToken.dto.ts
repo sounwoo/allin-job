@@ -1,13 +1,16 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsInt } from 'class-validator';
+import { CreateUserDTO } from '../../../../apis/users/dto/create-user.dto';
 
 export class ValidateTokenDTO {
     @IsInt()
     token: number;
 
-    @IsString()
-    phone: string;
+    phone: CreateUserDTO['phone'];
 
-    constructor(data: ValidateTokenDTO) {
+    constructor(data: {
+        token: number;
+        phone: CreateUserDTO['phone'];
+    }) {
         this.token = data.token;
         this.phone = data.phone;
     }

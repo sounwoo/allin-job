@@ -1,10 +1,9 @@
-import { IsEmail } from 'class-validator';
+import { CreateUserDTO } from './create-user.dto';
 
 export class FindOneUserByEmailDTO {
-    @IsEmail()
-    email: string;
+    email: CreateUserDTO['email'];
 
-    constructor(email: string) {
-        this.email = email;
+    constructor(data: Pick<CreateUserDTO, 'email'>) {
+        this.email = data.email;
     }
 }

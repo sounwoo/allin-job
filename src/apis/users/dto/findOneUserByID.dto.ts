@@ -1,13 +1,10 @@
-import { IsString } from 'class-validator';
+import { CreateUserDTO } from './create-user.dto';
 
 export class FindOneUserByIdDTO {
-    @IsString()
-    name: string;
+    name: CreateUserDTO['name'];
+    phone: CreateUserDTO['phone'];
 
-    @IsString()
-    phone: string;
-
-    constructor(data: FindOneUserByIdDTO) {
+    constructor(data: Pick<CreateUserDTO, 'name' | 'phone'>) {
         this.name = data.name;
         this.phone = data.phone;
     }
