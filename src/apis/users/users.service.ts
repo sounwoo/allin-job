@@ -1,9 +1,6 @@
 import { User } from '@prisma/client';
 import prisma from '../../database/prismaConfig';
-import {
-    IUserCreateDTO,
-    IUserFindUserID,
-} from './interfaces/user.interface';
+import { IUserCreateDTO, IUserFindUserID } from './interfaces/user.interface';
 
 export class UserService {
     findOneUserByEmail(email: string): Promise<User | null> {
@@ -17,9 +14,7 @@ export class UserService {
     async findOneUserByID({
         name,
         phone,
-    }: IUserFindUserID): Promise<
-        { email: string; provider: string }[]
-    > {
+    }: IUserFindUserID): Promise<{ email: string; provider: string }[]> {
         return await prisma.user.findMany({
             where: {
                 name,
@@ -32,8 +27,12 @@ export class UserService {
         });
     }
 
-    async createUser({ createDTO }: IUserCreateDTO): Promise<User> {
+    async createUser({ createDTO }: IUserCreateDTO): Promise<User | string> {
         const { keywords, ...userData } = createDTO;
+
+        const isEmail = await this.findOneUserByEmail(userData.email);
+
+        if (isEmail) return '이미 존재하는 이메일이 있습니다.';
 
         return await prisma.user.create({
             data: {

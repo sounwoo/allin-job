@@ -7,6 +7,7 @@ import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
 import { FindOneUserByEmailDTO } from './dto/findOneUserByEmail.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
+import { email, findOneUserByIDType } from '../../common/types';
 
 class UserController {
     router = Router();
@@ -25,35 +26,24 @@ class UserController {
             this.findOneUserByEmail.bind(this),
         );
 
-        this.router.get(
-            '/findOneUserByID',
-            this.findOneUserByID.bind(this),
-        );
+        this.router.get('/findOneUserByID', this.findOneUserByID.bind(this));
 
         this.router.post('/createUser', this.createUser.bind(this));
 
-        this.router.post(
-            '/sendTokenSMS',
-            this.sendTokenSMS.bind(this),
-        );
+        this.router.post('/sendTokenSMS', this.sendTokenSMS.bind(this));
 
-        this.router.post(
-            '/validateToken',
-            this.validateToken.bind(this),
-        );
+        this.router.post('/validateToken', this.validateToken.bind(this));
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const email = req.query.email as string;
+        const { email } = req.query as email;
 
         const findOneUserByEmailDTO = new FindOneUserByEmailDTO({
             email,
         });
 
-        const validateResult = await validateDTO(
-            findOneUserByEmailDTO,
-        );
+        const validateResult = await validateDTO(findOneUserByEmailDTO);
         if (validateResult)
             return res.status(400).json({ error: validateResult });
 
@@ -68,8 +58,7 @@ class UserController {
 
     async findOneUserByID(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const name: string = req.query.name as string;
-        const phone: string = req.query.phone as string;
+        const { name, phone } = req.query as findOneUserByIDType;
 
         const findOneUserByIdDTO = new FindOneUserByIdDTO({
             name,
@@ -78,9 +67,7 @@ class UserController {
         const validateResult = await validateDTO(findOneUserByIdDTO);
 
         if (validateResult)
-            return res
-                .status(400)
-                .json({ error: findOneUserByIdDTO });
+            return res.status(400).json({ error: findOneUserByIdDTO });
 
         try {
             const user = await this.userService.findOneUserByID({
@@ -102,21 +89,11 @@ class UserController {
             return res.status(400).json({ error: validateResult });
 
         try {
-            const isEmail = await this.userService.findOneUserByEmail(
-                createDTO.email,
-            );
-
-            if (isEmail) {
-                return res
-                    .status(200)
-                    .json('이미 존재하는 이메일이 있습니다.');
-            }
             const user = await this.userService.createUser({
                 createDTO,
             });
             res.status(200).json(user);
         } catch (error) {
-            console.log(error);
             res.status(500).json({ error: '서버문제' });
         }
     }
@@ -131,9 +108,7 @@ class UserController {
             return res.status(400).json({ error: validateResult });
 
         try {
-            res.status(200).json(
-                await this.smsService.sendTokenSMS(phone),
-            );
+            res.status(200).json(await this.smsService.sendTokenSMS(phone));
         } catch (error) {
             res.status(500).json({ error: '서버문제' });
         }
