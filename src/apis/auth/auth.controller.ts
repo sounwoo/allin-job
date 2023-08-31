@@ -21,7 +21,6 @@ class AuthController {
     }
 
     async social(req: Request, res: Response, next: NextFunction) {
-        // const socialName = req.params.social;
         const { social } = req.params;
         await passport.authenticate(social, {
             scope:
