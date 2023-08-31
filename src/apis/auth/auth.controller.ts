@@ -17,24 +17,18 @@ class AuthController {
     init() {
         this.router.get('/:social', this.social.bind(this));
 
-        this.router.get(
-            '/:social/callback',
-            this.socialCallback.bind(this),
-        );
+        this.router.get('/:social/callback', this.socialCallback.bind(this));
     }
 
     async social(req: Request, res: Response, next: NextFunction) {
-        const socialName = req.params.social;
-        if (socialName === 'kakao') {
-            await passport.authenticate('kakao', {
-                scope: ['account_email'],
-            })(req, res, next);
-        } else {
-            console.log(socialName);
-            await passport.authenticate(socialName, {
-                scope: ['profile', 'email'],
-            })(req, res, next);
-        }
+        // const socialName = req.params.social;
+        const { social } = req.params;
+        await passport.authenticate(social, {
+            scope:
+                social === 'kakao'
+                    ? ['account_email'] //
+                    : ['profile', 'email'],
+        })(req, res, next);
     }
 
     async socialCallback(
@@ -42,16 +36,18 @@ class AuthController {
         res: Response,
         next: NextFunction,
     ) {
-        const socialName = req.params.social;
+        const { social } = req.params;
 
-        passport.authenticate(socialName, {
+        passport.authenticate(social, {
             failureRedirect: '/',
         })(
             req,
             res,
             async () => {
-                const validateUser =
-                    await this.authService.validateUser(req, res);
+                const validateUser = await this.authService.validateUser(
+                    req,
+                    res,
+                );
 
                 const redirectPath = validateUser
                     ? '/' // 회원가입 되어 있을때 리다이렉트 주소

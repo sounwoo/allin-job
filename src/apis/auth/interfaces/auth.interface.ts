@@ -19,7 +19,6 @@ export interface IAuthGetAccessToken {
 
 export interface IAuthSetRefreshToken {
     user: User;
-    req: IContext['req'];
     res: IContext['res'];
 }
 
