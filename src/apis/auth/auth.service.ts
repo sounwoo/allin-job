@@ -23,24 +23,21 @@ export class AuthService {
         // const { email, provider } = req.user!;
         const { email } = req!.user!;
 
-        const isUser = await this.userService.findOneUserByEmail(
-            email!,
-        );
+        const isUser = await this.userService.findOneUserByEmail(email!);
 
         if (!isUser) {
             // res.status(200).json({ email, provider });
             return false;
         } else {
-            this.setRefreshToken({ user: isUser, req, res });
+            this.setRefreshToken({ user: isUser, res });
             return true;
         }
     }
 
-    async login({ user, req, res }: IAuthLogin): Promise<string> {
-        this.setRefreshToken({ user, req, res });
+    async login({ user, res }: IAuthLogin): Promise<string> {
+        this.setRefreshToken({ user, res });
 
-        const accessToken = this.getAccessToken({ user });
-        return accessToken;
+        return this.getAccessToken({ user });
     }
 
     getAccessToken({ user }: IAuthGetAccessToken): string {
@@ -66,10 +63,7 @@ export class AuthService {
             },
         );
 
-        res.setHeader(
-            'Set-Cookie',
-            `refreshToken=${refreshToken}; path=/;`,
-        );
+        res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
     }
 
     restoreAccessToken({ user }: IAuthRestoreAccessToken): string {
