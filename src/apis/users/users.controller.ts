@@ -87,7 +87,7 @@ class UserController {
                 name,
                 phone,
             });
-            res.status(200).json(user);
+            res.status(200).json(user.length === 0 ? null : user);
         } catch (error) {
             res.status(500).json({ error: '서버문제' });
         }
