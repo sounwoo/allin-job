@@ -67,7 +67,7 @@ class UserController {
         const validateResult = await validateDTO(findOneUserByIdDTO);
 
         if (validateResult)
-            return res.status(400).json({ error: findOneUserByIdDTO });
+            return res.status(400).json({ error: validateResult });
 
         try {
             const user = await this.userService.findOneUserByID({

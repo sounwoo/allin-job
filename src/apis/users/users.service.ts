@@ -38,13 +38,9 @@ export class UserService {
             data: {
                 ...userData,
                 keyword: {
-                    create: keywords.map((keyword) => ({
-                        keyword: {
-                            connectOrCreate: {
-                                where: { keyword },
-                                create: { keyword },
-                            },
-                        },
+                    connectOrCreate: keywords.map((keyword) => ({
+                        where: { keyword },
+                        create: { keyword },
                     })),
                 },
             },
