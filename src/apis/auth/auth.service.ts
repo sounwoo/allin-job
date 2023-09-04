@@ -29,21 +29,21 @@ export class AuthService {
             // res.status(200).json({ email, provider });
             return false;
         } else {
-            this.setRefreshToken({ user: isUser, res });
+            this.setRefreshToken({ id: isUser.id, res });
             return true;
         }
     }
 
-    async login({ user, res }: IAuthLogin): Promise<string> {
-        this.setRefreshToken({ user, res });
+    async login({ id, res }: IAuthLogin): Promise<string> {
+        this.setRefreshToken({ id, res });
 
-        return this.getAccessToken({ user });
+        return this.getAccessToken({ id });
     }
 
-    getAccessToken({ user }: IAuthGetAccessToken): string {
+    getAccessToken({ id }: IAuthGetAccessToken): string {
         return jwt.sign(
             {
-                sub: user.id,
+                sub: id,
             },
             process.env.JWT_ACCESS_KEY!,
             {
@@ -52,21 +52,20 @@ export class AuthService {
         );
     }
 
-    setRefreshToken({ user, res }: IAuthSetRefreshToken) {
+    setRefreshToken({ id, res }: IAuthSetRefreshToken) {
         const refreshToken = jwt.sign(
             {
-                sub: user.id,
+                sub: id,
             },
             process.env.JWT_REFRESH_KEY!,
             {
                 expiresIn: '2w',
             },
         );
-
         res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
     }
 
-    restoreAccessToken({ user }: IAuthRestoreAccessToken): string {
-        return this.getAccessToken({ user });
+    restoreAccessToken({ id }: IAuthRestoreAccessToken): string {
+        return this.getAccessToken({ id });
     }
 }

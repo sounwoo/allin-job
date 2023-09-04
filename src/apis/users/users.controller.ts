@@ -39,11 +39,11 @@ class UserController {
         // #swagger.tags = ['Users']
         const { email } = req.query as email;
 
-        const findOneUserByEmailDTO = new FindOneUserByEmailDTO({
-            email,
-        });
-
-        const validateResult = await validateDTO(findOneUserByEmailDTO);
+        const validateResult = await validateDTO(
+            new FindOneUserByEmailDTO({
+                email,
+            }),
+        );
         if (validateResult)
             return res.status(400).json({ error: validateResult });
 
@@ -60,11 +60,12 @@ class UserController {
         // #swagger.tags = ['Users']
         const { name, phone } = req.query as findOneUserByIDType;
 
-        const findOneUserByIdDTO = new FindOneUserByIdDTO({
-            name,
-            phone,
-        });
-        const validateResult = await validateDTO(findOneUserByIdDTO);
+        const validateResult = await validateDTO(
+            new FindOneUserByIdDTO({
+                name,
+                phone,
+            }),
+        );
 
         if (validateResult)
             return res.status(400).json({ error: validateResult });
@@ -101,9 +102,7 @@ class UserController {
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { phone } = req.body;
-
-        const sendTokenSmsDTO = new SendTokenSmsDTO(req.body);
-        const validateResult = await validateDTO(sendTokenSmsDTO);
+        const validateResult = await validateDTO(new SendTokenSmsDTO(req.body));
         if (validateResult)
             return res.status(400).json({ error: validateResult });
 
