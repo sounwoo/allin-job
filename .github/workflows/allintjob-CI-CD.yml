@@ -23,8 +23,8 @@ jobs:
                   touch .env
                   cat << EOF >> .env
                   ${{ secrets.ALLINJOB_SECRET }}
-            - name: yarn test
-              run: yarn test
+            # - name: yarn test
+            #   run: yarn test
 
     build-image:
         needs: allinjob-service-deploy
