@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Interest{
+enum Interest {
   literature
   design
   IT
@@ -21,31 +21,41 @@ enum Interest{
   employment
 }
 
-enum Provider{
+enum Provider {
   kakao
   naver
   google
 }
 
 model User {
-  id            String    @id @unique @default(uuid())
-  email         String    @unique
-  provider      Provider  
-  name          String    @db.VarChar(5)
-  nickname      String    @db.VarChar(10) @unique
-  phone         String    @db.VarChar(13) 
-  profileImage  String 
-  major         String
-  interest      Interest 
-  keyword       Keyword[] @relation("UserKeyword")
+  id           String        @id @unique @default(uuid())
+  email        String        @unique
+  provider     Provider
+  name         String        @db.VarChar(5)
+  nickname     String        @unique @db.VarChar(10)
+  phone        String        @db.VarChar(13)
+  profileImage String
+  major        String
+  interest     Interest
+  keyword      UserKeyword[]
 }
 
 model Keyword {
-  id        String @id @unique @default(uuid())
-  keyword   String @unique
-  users     User[] @relation("UserKeyword")
+  id      String        @id @unique @default(uuid())
+  keyword String        @unique
+  users   UserKeyword[]
 }
 
+model UserKeyword {
+  userId    String
+  keywordId String
+  user      User    @relation(fields: [userId], references: [id])
+  keyword   Keyword @relation(fields: [keywordId], references: [id])
+
+  @@id([userId, keywordId])
+}
+
+// 대용량 데이터를 생각해서 -> 엘라스틱 서치
 model Outside {
   id                    String @id @unique @default(uuid())
   Dday                  String
@@ -96,4 +106,14 @@ model Competition {
   preferentialTreatment String
   homePage              String @db.LongText
   detail                String @db.LongText
+}
+
+model Language {
+  id                String  @id @unique @default(uuid())
+  path              String
+  homePage          String
+  turn              String?
+  Dday              String
+  resultDay         String
+  applicationPeriod String
 }

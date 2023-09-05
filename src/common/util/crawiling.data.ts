@@ -3,10 +3,16 @@ import {
     OutsideType,
     InternType,
     CompetitionType,
+    createCrawiling,
+    languagePath,
+    languageDetail,
+    createLinkareerPaths,
 } from '../crawiling/interface';
 
-export const crawilingType = (path: string, i: number) => {
-    let url, dataType, detailClass, mainImageType;
+export const linkareerType = (path: string, i: number) => {
+    let url, dataType;
+    let detailClass = 'jss6';
+    let mainImageType = 'card-image';
 
     switch (path) {
         case 'outside':
@@ -23,8 +29,7 @@ export const crawilingType = (path: string, i: number) => {
                 preferentialTreatment: '',
                 homePage: '',
             };
-            detailClass = 'jss6';
-            mainImageType = 'card-image';
+
             break;
 
         case 'intern':
@@ -56,40 +61,84 @@ export const crawilingType = (path: string, i: number) => {
                 benefits: '',
                 preferentialTreatment: '',
             };
-            detailClass = 'jss6';
-            mainImageType = 'card-image';
             break;
     }
 
     return { url, dataType, detailClass, mainImageType };
 };
 
-export const createCrawilingData = async <T extends object>(
-    data: T,
-    path: string,
-) => {
-    let result;
+export const createLinkareerData = async <T extends object>({
+    data,
+    path,
+}: {
+    data: T;
+    path: createLinkareerPaths;
+}): Promise<createCrawiling> => {
+    const result = {
+        outside: async () =>
+            await prisma.outside.create({ data: data as OutsideType }),
+        intern: async () =>
+            await prisma.intern.create({ data: data as InternType }),
+        competition: async () =>
+            await prisma.competition.create({
+                data: data as CompetitionType,
+            }),
+    };
+
+    return result[path]();
+};
+
+export const languageType = (path: string) => {
+    let url = 'https://www.toeicswt.co.kr/receipt/examSchList.php';
+    let pathType = 'tbody > tr';
+    let dataObj: languageDetail = {
+        turn: '',
+        Dday: '',
+        resultDay: '',
+        applicationPeriod: '',
+    };
+
     switch (path) {
-        case 'outside':
-            result = await prisma.outside.create({
-                data: data as OutsideType,
-            });
+        case 'toeic':
+            url = 'https://exam.toeic.co.kr/receipt/examSchList.php';
             break;
-
-        case 'intern':
-            result = await prisma.intern.create({
-                data: {
-                    ...(data as InternType),
-                },
-            });
+        case 'toeicBR':
+            url = 'https://www.toeicbridge.co.kr/receipt/examSchList.php';
+            dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
             break;
-
+        case 'toeicSW':
+            pathType = 'tr.speakingwriting';
+            dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
+            break;
+        case 'toeicWT':
+            pathType = 'tr.writing';
+            dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
+            break;
+        case 'toeicST':
+            dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
+            break;
+        case 'ch':
+            url = 'https://www.ybmtsc.co.kr/receipt/examSchList.php';
+            break;
+        case 'jp':
+            url = 'https://www.jpt.co.kr/receipt/examSchList.php';
+            break;
+        case 'jpSP':
+            url = 'https://www.ybmsjpt.co.kr/receipt/examSchList.php';
+            break;
         default:
-            result = await prisma.competition.create({
-                data: {
-                    ...(data as CompetitionType),
-                },
-            });
+            break;
     }
-    return result;
+
+    return { url, pathType, dataObj };
+};
+
+export const createLanguageData = async ({
+    path,
+    homePage,
+    dataObj,
+}: languagePath) => {
+    return await prisma.language.create({
+        data: { path, homePage, ...dataObj },
+    });
 };

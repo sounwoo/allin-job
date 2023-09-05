@@ -1,48 +1,62 @@
-export interface OutsideType {
+import { Competition, Intern, Language, Outside } from '@prisma/client';
+
+interface CommonType {
     Dday: string;
     title: string;
     view: string;
     mainImage: string;
     organization: string;
     enterprise: string;
+    homePage: string;
+    detail: string;
     target: string;
     applicationPeriod: string;
+    preferentialTreatment: string;
+}
+
+export interface InternType extends CommonType {
+    personnel: string;
+    region: string;
+}
+
+export interface OutsideType extends InternType {
     participationPeriod: string;
-    personnel: string;
-    region: string;
-    preferentialTreatment: string;
-    homePage: string;
-    detail: string;
 }
 
-export interface InternType {
-    Dday: string;
-    title: string;
-    view: string;
-    mainImage: string;
-    organization: string;
-    enterprise: string;
-    applicationPeriod: string;
-    preferentialTreatment: string;
-    personnel: string;
-    target: string;
-    homePage: string;
-    region: string;
-    detail: string;
-}
-
-export interface CompetitionType {
-    Dday: string;
-    title: string;
-    view: string;
-    mainImage: string;
-    organization: string;
-    enterprise: string;
-    target: string;
+export interface CompetitionType extends CommonType {
     Scale: string;
-    applicationPeriod: string;
-    homePage: string;
     benefits: string;
-    preferentialTreatment: string;
-    detail: string;
 }
+
+export type paths = {
+    path: 'outside' | 'intern' | 'competition';
+};
+
+export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
+export type createLanguagePaths =
+    | 'toeic'
+    | 'toeicBR'
+    | 'toeicSW'
+    | 'toeicWT'
+    | 'ch'
+    | 'jp'
+    | 'jpSP';
+
+export type createPaths = createLinkareerPaths & createLanguagePaths;
+
+export interface languageDetail {
+    turn?: string;
+    Dday: string;
+    resultDay: string;
+    applicationPeriod: string;
+}
+
+export interface languagePath {
+    path: createLanguagePaths;
+    homePage: string;
+    dataObj: languageDetail;
+}
+
+export type findCrawiling = Competition[] | Outside[] | Intern[] | Language[];
+
+export type createCrawiling = Competition | Outside | Intern;
