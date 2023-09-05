@@ -13,17 +13,8 @@ class CrawilingController {
     }
 
     init() {
-        this.router.get('/data/:path', this.crawiling.bind(this));
         this.router.get('/finde/:path', this.findeCrawiling.bind(this));
-    }
-
-    async crawiling(req: Request, res: Response) {
-        const path = req.params.path as createPaths;
-        const result = await this.crawilingService.crawiling(path);
-
-        result
-            ? res.status(200).json({ result: '성공' })
-            : res.status(400).json({ result: '실패' });
+        this.router.get('/data/:path', this.crawiling.bind(this));
     }
 
     async findeCrawiling(req: Request, res: Response) {
@@ -33,7 +24,17 @@ class CrawilingController {
 
         result.length
             ? res.status(200).json({ data: result })
-            : res.status(400).json({ data: '없음' });
+            : res.status(400).json({ data: null });
+    }
+
+    async crawiling(req: Request, res: Response) {
+        const path = req.params.path as createPaths;
+
+        const result = await this.crawilingService.crawiling(path);
+
+        result
+            ? res.status(200).json({ result: '성공' })
+            : res.status(400).json({ result: '실패' });
     }
 }
 export default new CrawilingController();

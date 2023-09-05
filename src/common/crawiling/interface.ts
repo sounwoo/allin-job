@@ -1,4 +1,4 @@
-import { Competition, Intern, Outside } from '@prisma/client';
+import { Competition, Intern, Language, Outside } from '@prisma/client';
 
 interface CommonType {
     Dday: string;
@@ -32,8 +32,31 @@ export type paths = {
     path: 'outside' | 'intern' | 'competition';
 };
 
-export type createPaths = 'outside' | 'intern' | 'competition';
+export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
+export type createLanguagePaths =
+    | 'toeic'
+    | 'toeicBR'
+    | 'toeicSW'
+    | 'toeicWT'
+    | 'ch'
+    | 'jp'
+    | 'jpSP';
 
-export type findCrawiling = Competition[] | Outside[] | Intern[];
+export type createPaths = createLinkareerPaths & createLanguagePaths;
+
+export interface languageDetail {
+    turn?: string;
+    Dday: string;
+    resultDay: string;
+    applicationPeriod: string;
+}
+
+export interface languagePath {
+    path: createLanguagePaths;
+    homePage: string;
+    dataObj: languageDetail;
+}
+
+export type findCrawiling = Competition[] | Outside[] | Intern[] | Language[];
 
 export type createCrawiling = Competition | Outside | Intern;

@@ -55,6 +55,7 @@ model UserKeyword {
   @@id([userId, keywordId])
 }
 
+// 대용량 데이터를 생각해서 -> 엘라스틱 서치
 model Outside {
   id                    String @id @unique @default(uuid())
   Dday                  String
@@ -108,5 +109,11 @@ model Competition {
 }
 
 model Language {
-  id String @id @unique @default(uuid())
+  id                String  @id @unique @default(uuid())
+  path              String
+  homePage          String
+  turn              String?
+  Dday              String
+  resultDay         String
+  applicationPeriod String
 }

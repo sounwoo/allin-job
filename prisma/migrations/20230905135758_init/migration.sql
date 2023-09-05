@@ -101,6 +101,12 @@ CREATE TABLE `Competition` (
 -- CreateTable
 CREATE TABLE `Language` (
     `id` VARCHAR(191) NOT NULL,
+    `path` VARCHAR(191) NOT NULL,
+    `homePage` VARCHAR(191) NOT NULL,
+    `turn` VARCHAR(191) NULL,
+    `Dday` VARCHAR(191) NOT NULL,
+    `resultDay` VARCHAR(191) NOT NULL,
+    `applicationPeriod` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Language_id_key`(`id`),
     PRIMARY KEY (`id`)
