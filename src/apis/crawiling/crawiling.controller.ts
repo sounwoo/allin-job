@@ -1,6 +1,6 @@
 import { Request, Router, Response } from 'express';
 import { CrawilingService } from './crawiling.service';
-import { paths } from '../../common/types';
+import { createPaths, paths } from '../../common/crawiling/interface';
 
 class CrawilingController {
     router = Router();
@@ -18,7 +18,7 @@ class CrawilingController {
     }
 
     async crawiling(req: Request, res: Response) {
-        const { path } = req.params;
+        const path = req.params.path as createPaths;
         const result = await this.crawilingService.crawiling(path);
 
         result
