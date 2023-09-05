@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { Request, Response } from 'express';
 
 export interface IOAuthUser {
@@ -14,20 +13,19 @@ export interface IContext {
 }
 
 export interface IAuthGetAccessToken {
-    user: User;
+    id: string;
 }
 
 export interface IAuthSetRefreshToken {
-    user: User;
+    id: string;
     res: IContext['res'];
 }
 
 export interface IAuthLogin {
-    user: User;
-    req: IContext['req'];
+    id: string;
     res: IContext['res'];
 }
 
 export interface IAuthRestoreAccessToken {
-    user: User;
+    id: string;
 }
