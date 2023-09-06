@@ -4,7 +4,7 @@ export interface IUserCreateDTO {
     createDTO: CreateUserDTO;
 }
 
-export interface IUserFindUserID {
+export interface IUserFindOneUserByID {
     name: string;
     phone: string;
 }

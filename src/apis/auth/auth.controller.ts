@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
-import { IOAuthUser } from './interfaces/auth.interface';
+import { IOAuthSocialUser } from './interfaces/auth.interface';
 import { AuthService } from './auth.service';
 import refreshGuard from '../../middleware/auth.guard/refresh.guard';
 import { LoginDTO } from './dto/login.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
+import { idType } from '../../common/types';
 
 class AuthController {
     router = Router();
@@ -41,32 +42,20 @@ class AuthController {
         })(req, res, next);
     }
 
-    async socialCallback(
-        req: IOAuthUser & Request,
-        res: Response,
-        next: NextFunction,
-    ) {
+    async socialCallback(req: IOAuthSocialUser & Request, res: Response) {
         const { social } = req.params;
 
         passport.authenticate(social, {
             failureRedirect: '/',
-        })(
-            req,
-            res,
-            async () => {
-                const validateUser = await this.authService.validateUser(
-                    req,
-                    res,
-                );
+        })(req, res, async () => {
+            const validateUser = await this.authService.validateUser(req, res);
 
-                const redirectPath = validateUser
-                    ? '/' // 회원가입 되어 있을때 리다이렉트 주소
-                    : '/'; // 회원가입 안되어 있을때 리다이렉트 주소
+            const redirectPath = validateUser
+                ? '/' // 회원가입 되어 있을때 리다이렉트 주소
+                : '/'; // 회원가입 안되어 있을때 리다이렉트 주소
 
-                res.redirect(redirectPath);
-            },
-            next,
-        );
+            res.redirect(redirectPath);
+        });
     }
 
     async login(req: Request, res: Response) {
@@ -86,7 +75,7 @@ class AuthController {
 
     async restoreAccessToken(req: Request, res: Response) {
         // #swagger.tags = ['Auth']
-        const { id } = req.body.id;
+        const { id } = req.user as idType;
         const validateResult = await validateDTO(
             new restoreAccessTokenDTO({ id }),
         );

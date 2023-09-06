@@ -21,6 +21,10 @@
             "description": "User관련 API"
         },
         {
+            "name": "Auth",
+            "description": "로그인 관련 API"
+        },
+        {
             "name": "Crawiling",
             "description": "크롤링 데이터 조회 API"
         }
@@ -32,6 +36,11 @@
                 "type": "http",
                 "scheme": "bearer",
                 "bearerFormat": "JWT"
+            },
+            "CookieAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "refreshToken"
             }
         }
     },
@@ -820,6 +829,153 @@
                                             }
                                         }
                                     ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "로그인하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "일치하는 id가 있는 경우",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                    },
+                                    "noData": {
+                                        "summary": "일치하는 id가 없는 경우",
+                                        "value": "id가 일치하는 유저가 없습니다"
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": ["id : id must be an string"]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/restoreAccessToken": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "refreshToken으로 accessToken 재발급하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "일치하는 id가 있는 경우",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                    },
+                                    "noData": {
+                                        "summary": "일치하는 id가 없는 경우",
+                                        "value": "id가 일치하는 유저가 없습니다"
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": ["id : id must be an string"]
                                 }
                             }
                         }

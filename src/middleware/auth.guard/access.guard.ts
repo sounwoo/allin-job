@@ -15,7 +15,9 @@ const AccessGuard = (req: Request, res: Response, next: NextFunction) => {
         return;
     }
     try {
-        jwt.verify(accessToken, process.env.JWT_ACCESS_KEY!);
+        const validate = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY!);
+
+        req.user = { id: validate.sub as string };
         next();
     } catch (err) {
         console.log(err);

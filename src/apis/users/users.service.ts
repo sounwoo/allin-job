@@ -1,6 +1,9 @@
 import { User } from '@prisma/client';
 import prisma from '../../database/prismaConfig';
-import { IUserCreateDTO, IUserFindUserID } from './interfaces/user.interface';
+import {
+    IUserCreateDTO,
+    IUserFindOneUserByID,
+} from './interfaces/user.interface';
 
 export class UserService {
     findOneUserByEmail(email: string): Promise<User | null> {
@@ -11,10 +14,20 @@ export class UserService {
         });
     }
 
+    async isUserByID(id: string): Promise<boolean> {
+        return (await prisma.user.findUnique({
+            where: {
+                id,
+            },
+        }))
+            ? true
+            : false;
+    }
+
     async findOneUserByID({
         name,
         phone,
-    }: IUserFindUserID): Promise<{ email: string; provider: string }[]> {
+    }: IUserFindOneUserByID): Promise<{ email: string; provider: string }[]> {
         return await prisma.user.findMany({
             where: {
                 name,
