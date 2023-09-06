@@ -27,5 +27,6 @@ const outputFile = './swagger-output.json';
 const endpointsFiles = [
     './src/apis/users/users.controller.ts',
     './src/apis/crawiling/crawiling.controller.ts',
+    './src/apis/auth/auth.controller.ts',
 ];
 swaggerAutogen(outputFile, endpointsFiles, options);

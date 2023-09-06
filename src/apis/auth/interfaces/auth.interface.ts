@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-export interface IOAuthUser {
+export interface IOAuthSocialUser {
     user?: {
         email?: string;
         provider?: string;
@@ -8,8 +8,9 @@ export interface IOAuthUser {
 }
 
 export interface IContext {
-    req: Request & IOAuthUser;
+    req: Request;
     res: Response;
+    next: NextFunction;
 }
 
 export interface IAuthGetAccessToken {

@@ -5,7 +5,7 @@ import {
     IAuthLogin,
     IAuthRestoreAccessToken,
     IAuthSetRefreshToken,
-    IOAuthUser,
+    IOAuthSocialUser,
 } from './interfaces/auth.interface';
 import jwt from 'jsonwebtoken';
 
@@ -17,7 +17,7 @@ export class AuthService {
     }
 
     async validateUser(
-        req: Request & IOAuthUser,
+        req: Request & IOAuthSocialUser,
         res: Response,
     ): Promise<boolean> {
         // const { email, provider } = req.user!;
@@ -35,6 +35,9 @@ export class AuthService {
     }
 
     async login({ id, res }: IAuthLogin): Promise<string> {
+        const isUser = await this.userService.isUserByID(id);
+        if (!isUser) return 'id가 일치하는 유저가 없습니다';
+
         this.setRefreshToken({ id, res });
 
         return this.getAccessToken({ id });
