@@ -91,6 +91,20 @@ CREATE TABLE `Competition` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Language` (
+    `id` VARCHAR(191) NOT NULL,
+    `path` VARCHAR(191) NOT NULL,
+    `homePage` VARCHAR(191) NOT NULL,
+    `turn` VARCHAR(191) NULL,
+    `Dday` VARCHAR(191) NOT NULL,
+    `resultDay` VARCHAR(191) NOT NULL,
+    `applicationPeriod` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `Language_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_UserKeyword` (
     `A` VARCHAR(191) NOT NULL,
     `B` VARCHAR(191) NOT NULL,
