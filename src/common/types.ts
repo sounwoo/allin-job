@@ -1,5 +1,7 @@
+import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
+
 export type email = {
-    email: string;
+    email: CreateUserDTO['email'];
 };
 
 export type idType = {
@@ -7,8 +9,8 @@ export type idType = {
 };
 
 export type findOneUserByIDType = {
-    name: string;
-    phone: string;
+    name: CreateUserDTO['name'];
+    phone: CreateUserDTO['phone'];
 };
 
 export type authorization = {
