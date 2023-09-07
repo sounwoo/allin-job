@@ -963,6 +963,85 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "errorMessage": "이미 로그아웃한 refreshToken입니다."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/logout": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "로그아웃하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "로그아웃 성공": {
+                                        "value": true
+                                    },
+                                    "로그아웃 실패": {
+                                        "value": false
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "errorMessage": "이미 로그아웃한 accessToken입니다."
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "서버 에러",
                         "content": {
