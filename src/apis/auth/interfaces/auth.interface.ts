@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { CreateUserDTO } from '../../users/dto/create-user.dto';
 
 export interface IOAuthSocialUser {
     user?: {
-        email?: string;
-        provider?: string;
+        email?: CreateUserDTO['email'];
+        provider?: CreateUserDTO['provider'];
     };
 }
 

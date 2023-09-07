@@ -5,6 +5,6 @@ export interface IUserCreateDTO {
 }
 
 export interface IUserFindOneUserByID {
-    name: string;
-    phone: string;
+    name: CreateUserDTO['name'];
+    phone: CreateUserDTO['phone'];
 }
