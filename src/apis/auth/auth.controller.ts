@@ -2,11 +2,12 @@ import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 import { IOAuthSocialUser } from './interfaces/auth.interface';
 import { AuthService } from './auth.service';
-import refreshGuard from '../../middleware/auth.guard/refresh.guard';
 import { LoginDTO } from './dto/login.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
 import { idType } from '../../common/types';
+import AccessGuard from '../../middleware/auth.guard/access.guard';
+import refreshGuard from '../../middleware/auth.guard/refresh.guard';
 
 class AuthController {
     router = Router();
@@ -24,6 +25,8 @@ class AuthController {
         this.router.get('/:social/callback', this.socialCallback.bind(this));
 
         this.router.post('/', this.login.bind(this));
+
+        this.router.post('/logout', AccessGuard, this.logout.bind(this));
 
         this.router.post(
             '/restoreAccessToken',
@@ -73,6 +76,15 @@ class AuthController {
         }
     }
 
+    async logout(req: Request, res: Response) {
+        // const { id } = req.user;
+        try {
+            res.status(200).json(await this.authService.logout(req));
+        } catch (error) {
+            res.status(500).json({ error: '서버문제' });
+        }
+    }
+
     async restoreAccessToken(req: Request, res: Response) {
         // #swagger.tags = ['Auth']
         const { id } = req.user as idType;
@@ -90,5 +102,5 @@ class AuthController {
         }
     }
 }
-
+//
 export default new AuthController();
