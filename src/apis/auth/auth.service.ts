@@ -7,7 +7,8 @@ import {
     IAuthSetRefreshToken,
     IOAuthSocialUser,
 } from './interfaces/auth.interface';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import redis from '../../database/redisConfig';
 
 export class AuthService {
     private userService: UserService;
@@ -41,6 +42,44 @@ export class AuthService {
         this.setRefreshToken({ id, res });
 
         return this.getAccessToken({ id });
+    }
+
+    async logout(req: any): Promise<boolean> {
+        const accessToken = req.headers.authorization.replace('Bearer ', '');
+        const refreshToken = req.headers.cookie.replace('refreshToken=', '');
+
+        try {
+            const accessTokenVerify = jwt.verify(
+                accessToken,
+                process.env.JWT_ACCESS_KEY!,
+            ) as JwtPayload;
+            const refreshTokenVerify = jwt.verify(
+                refreshToken,
+                process.env.JWT_REFRESH_KEY!,
+            ) as JwtPayload;
+
+            const accessTTL =
+                accessTokenVerify.exp! - Math.floor(Date.now() / 1000);
+            const refreshTTL =
+                refreshTokenVerify.exp! - Math.floor(Date.now() / 1000);
+
+            await redis.set(
+                `accessToken:${accessToken}`,
+                accessToken,
+                'EX',
+                accessTTL,
+            );
+            await redis.set(
+                `refreshToken:${refreshToken}`,
+                refreshToken,
+                'EX',
+                refreshTTL,
+            );
+
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
     getAccessToken({ id }: IAuthGetAccessToken): string {
