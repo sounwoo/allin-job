@@ -5,6 +5,7 @@ import {
     IAuthLogin,
     IAuthRestoreAccessToken,
     IAuthSetRefreshToken,
+    IAuthValidateUser,
 } from './interfaces/auth.interface';
 import jwt from 'jsonwebtoken';
 import redis from '../../database/redisConfig';
@@ -17,14 +18,15 @@ export class AuthService {
         this.userService = new UserService();
     }
 
-    async validateUser(email: string, res: Response): Promise<boolean> {
-        // const { email, provider } = req.user!;
-
+    async validateUser({
+        email,
+        provider,
+        res,
+    }: IAuthValidateUser): Promise<boolean | object> {
         const isUser = await this.userService.findOneUserByEmail(email!);
 
         if (!isUser) {
-            // res.status(200).json({ email, provider });
-            return false;
+            return { email, provider };
         } else {
             this.setRefreshToken({ id: isUser.id, res });
             return true;
@@ -74,7 +76,15 @@ export class AuthService {
             { expiresIn: '2w' },
         );
 
-        res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+        // 로컬 환경
+        // res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+
+        // 배포 환경
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader(
+            'Set-Cookie',
+            `refreshToken=${refreshToken};path=/; domain=.allinjob.co.kr; SameSite=None; Secure; httpOnly`,
+        );
     }
 
     restoreAccessToken({ id }: IAuthRestoreAccessToken): string {
