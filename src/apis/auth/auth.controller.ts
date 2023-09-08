@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
-import { IOAuthSocialUser } from './interfaces/auth.interface';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
-import { idType } from '../../common/types';
+import { email, idType } from '../../common/types';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import refreshGuard from '../../middleware/auth.guard/refresh.guard';
 
@@ -20,8 +19,6 @@ class AuthController {
     }
 
     init() {
-        this.router.get('/:social', this.social.bind(this));
-
         this.router.get('/:social/callback', this.socialCallback.bind(this));
 
         this.router.post('/', this.login.bind(this));
@@ -35,35 +32,37 @@ class AuthController {
         );
     }
 
-    async social(req: Request, res: Response, next: NextFunction) {
+    async socialCallback(req: Request, res: Response, next: NextFunction) {
         const { social } = req.params;
+
         await passport.authenticate(social, {
             scope:
                 social === 'kakao'
                     ? ['account_email'] //
                     : ['profile', 'email'],
-        })(req, res, next);
-    }
+        })(req, res, async (_: any) => {
+            try {
+                const { email } = req.user as email;
+                const validateUser = await this.authService.validateUser(
+                    email,
+                    res,
+                );
 
-    async socialCallback(req: IOAuthSocialUser & Request, res: Response) {
-        const { social } = req.params;
+                const redirectPath = validateUser
+                    ? '/' // 회원가입 되어 있을때 리다이렉트 주소
+                    : '/'; // 회원가입 안되어 있을때 리다이렉트 주소
 
-        passport.authenticate(social, {
-            failureRedirect: '/',
-        })(req, res, async () => {
-            const validateUser = await this.authService.validateUser(req, res);
-
-            const redirectPath = validateUser
-                ? '/' // 회원가입 되어 있을때 리다이렉트 주소
-                : '/'; // 회원가입 안되어 있을때 리다이렉트 주소
-
-            res.redirect(redirectPath);
+                res.redirect(redirectPath);
+            } catch (err) {
+                console.log(err);
+                // next(err);
+            }
         });
     }
 
     async login(req: Request, res: Response) {
         // #swagger.tags = ['Auth']
-        const { id } = req.body;
+        const { id } = req.body as idType;
         const validateResult = await validateDTO(new LoginDTO({ id }));
 
         if (validateResult)
@@ -77,7 +76,6 @@ class AuthController {
     }
 
     async logout(req: Request, res: Response) {
-        // const { id } = req.user;
         try {
             res.status(200).json(await this.authService.logout(req));
         } catch (error) {

@@ -1,10 +1,4 @@
-import {
-    IsEmail,
-    IsEnum,
-    IsString,
-    Length,
-    Matches,
-} from 'class-validator';
+import { IsEmail, IsEnum, IsString, Length, Matches } from 'class-validator';
 import { Provider, Interest } from '@prisma/client';
 
 export class CreateUserDTO {

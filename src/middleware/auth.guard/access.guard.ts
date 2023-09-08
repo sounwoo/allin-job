@@ -16,13 +16,11 @@ const AccessGuard = async (req: Request, res: Response, next: NextFunction) => {
         return;
     }
     try {
-        const validate = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY!);
-
         const blacklist = await redis.get(`accessToken:${accessToken}`);
-        if (blacklist === accessToken) {
+        if (blacklist)
             return res.status(400).send('이미 로그아웃한 accessToken입니다.');
-        }
 
+        const validate = jwt.verify(accessToken, process.env.JWT_ACCESS_KEY!);
         req.user = { id: validate.sub as string };
 
         next();

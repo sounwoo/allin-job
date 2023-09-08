@@ -22,14 +22,13 @@ const refreshGuard = async (
         });
     }
     try {
-        const validate = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY!);
-
         const blacklist = await redis.get(`refreshToken:${refreshToken}`);
-        if (blacklist === refreshToken) {
+        if (blacklist)
             return res.status(400).send('이미 로그아웃한 refreshToken입니다.');
-        }
 
+        const validate = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY!);
         req.user = { id: validate.sub as string };
+
         next();
     } catch (err) {
         console.log(err);
