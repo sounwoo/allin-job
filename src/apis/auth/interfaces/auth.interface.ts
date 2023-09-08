@@ -22,3 +22,9 @@ export interface IAuthRestoreAccessToken extends UserID {}
 export interface IAuthSetRefreshToken extends UserIdAndContext {}
 
 export interface IAuthLogin extends UserIdAndContext {}
+
+export interface IAuthValidateUser {
+    email: CreateUserDTO['email'];
+    provider: CreateUserDTO['provider'];
+    res: Response;
+}

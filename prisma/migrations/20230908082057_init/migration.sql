@@ -105,6 +105,36 @@ CREATE TABLE `Language` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `QNet` (
+    `id` VARCHAR(191) NOT NULL,
+    `detail` LONGTEXT NOT NULL,
+    `scheduleInfo` LONGTEXT NOT NULL,
+    `jmNm` VARCHAR(191) NOT NULL,
+    `engJmNm` VARCHAR(191) NOT NULL,
+    `instiNm` VARCHAR(191) NOT NULL,
+    `implNm` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `QNet_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ExamSchedule` (
+    `id` VARCHAR(191) NOT NULL,
+    `turn` VARCHAR(191) NOT NULL,
+    `wtReceipt` VARCHAR(191) NOT NULL,
+    `wtDday` VARCHAR(191) NOT NULL,
+    `wtResultDay` VARCHAR(191) NOT NULL,
+    `ptReceipt` VARCHAR(191) NOT NULL,
+    `ptDday` VARCHAR(191) NOT NULL,
+    `resultDay` VARCHAR(191) NOT NULL,
+    `qNetId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `ExamSchedule_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_UserKeyword` (
     `A` VARCHAR(191) NOT NULL,
     `B` VARCHAR(191) NOT NULL,
@@ -112,6 +142,9 @@ CREATE TABLE `_UserKeyword` (
     UNIQUE INDEX `_UserKeyword_AB_unique`(`A`, `B`),
     INDEX `_UserKeyword_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `ExamSchedule` ADD CONSTRAINT `ExamSchedule_qNetId_fkey` FOREIGN KEY (`qNetId`) REFERENCES `QNet`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_UserKeyword` ADD CONSTRAINT `_UserKeyword_A_fkey` FOREIGN KEY (`A`) REFERENCES `Keyword`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

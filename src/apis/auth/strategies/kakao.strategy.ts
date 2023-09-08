@@ -8,7 +8,7 @@ const registerKakaoStrategy = () => {
             {
                 clientID: process.env.KAKAO_CLIENT_ID,
                 clientSecret: process.env.KAKAO_CLIENT_SEVRET,
-                callbackURL: `${url.local}login/kakao/callback`,
+                callbackURL: `${url.origin}login/kakao/callback`,
             } as StrategyOption,
             (_: string, __: string, profile, done) => {
                 try {

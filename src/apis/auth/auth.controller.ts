@@ -4,9 +4,10 @@ import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
-import { email, idType } from '../../common/types';
+import { email, emailProviderType, idType } from '../../common/types';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import refreshGuard from '../../middleware/auth.guard/refresh.guard';
+import { Provider } from '@prisma/client';
 
 class AuthController {
     router = Router();
@@ -42,11 +43,14 @@ class AuthController {
                     : ['profile', 'email'],
         })(req, res, async (_: any) => {
             try {
-                const { email } = req.user as email;
-                const validateUser = await this.authService.validateUser(
+                const { email, provider } = req.user as emailProviderType;
+                const validateUser = await this.authService.validateUser({
                     email,
+                    provider,
                     res,
-                );
+                });
+
+                if (!validateUser) res.status(200).json(validateUser);
 
                 const redirectPath = validateUser
                     ? '/' // 회원가입 되어 있을때 리다이렉트 주소

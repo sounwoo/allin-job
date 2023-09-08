@@ -20,3 +20,8 @@ export type authorization = {
 export type cookie = {
     cookie: string;
 };
+
+export type emailProviderType = {
+    email: CreateUserDTO['email'];
+    provider: CreateUserDTO['provider'];
+};
