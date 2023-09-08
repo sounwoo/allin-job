@@ -846,6 +846,23 @@
                 }
             }
         },
+        "/login/{social}/callback": {
+            "get": {
+                "tags": ["Auth"],
+                "summary": "소셜로그인하기",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "example": "google"
+                        },
+                        "description": "소셜 로그인 ( google, kakao , naver 셋 중 하나)"
+                    }
+                ]
+            }
+        },
         "/login": {
             "post": {
                 "tags": ["Auth"],
