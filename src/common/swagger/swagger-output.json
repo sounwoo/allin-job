@@ -432,21 +432,22 @@
                 "tags": ["Users"],
                 "summary": "문자 인증번호 요청하기",
                 "description": "",
-                "parameters": [
-                    {
-                        "name": "phone",
-                        "in": "body",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "phone": {
-                                    "type": "string",
-                                    "example": "01012345678"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    }
                                 }
                             }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "SMS 토큰 전송",
@@ -510,25 +511,26 @@
                 "tags": ["Users"],
                 "summary": "문자 인증번호 검증하기",
                 "description": "",
-                "parameters": [
-                    {
-                        "name": "token & phone",
-                        "in": "body",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "token": {
-                                    "type": "number",
-                                    "example": 11111
-                                },
-                                "phone": {
-                                    "type": "string",
-                                    "example": "01012345678"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "number",
+                                        "example": 11111
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    }
                                 }
                             }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "SMS 토큰 검증",
