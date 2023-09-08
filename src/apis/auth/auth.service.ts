@@ -20,13 +20,12 @@ export class AuthService {
 
     async validateUser({
         email,
-        provider,
         res,
     }: IAuthValidateUser): Promise<boolean | object> {
         const isUser = await this.userService.findOneUserByEmail(email!);
 
         if (!isUser) {
-            return { email, provider };
+            return false;
         } else {
             this.setRefreshToken({ id: isUser.id, res });
             return true;

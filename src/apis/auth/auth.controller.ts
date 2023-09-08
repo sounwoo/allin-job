@@ -46,11 +46,10 @@ class AuthController {
                 const { email, provider } = req.user as emailProviderType;
                 const validateUser = await this.authService.validateUser({
                     email,
-                    provider,
                     res,
                 });
 
-                if (!validateUser) res.status(200).json(validateUser);
+                if (!validateUser) res.status(200).json({ email, provider });
 
                 const redirectPath = validateUser
                     ? '/' // 회원가입 되어 있을때 리다이렉트 주소

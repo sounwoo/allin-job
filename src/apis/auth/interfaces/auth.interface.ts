@@ -25,6 +25,5 @@ export interface IAuthLogin extends UserIdAndContext {}
 
 export interface IAuthValidateUser {
     email: CreateUserDTO['email'];
-    provider: CreateUserDTO['provider'];
     res: Response;
 }
