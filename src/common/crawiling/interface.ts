@@ -1,4 +1,4 @@
-import { Competition, Intern, Language, Outside } from '@prisma/client';
+import { Competition, Intern, Language, Outside, QNet } from '@prisma/client';
 
 interface CommonType {
     Dday: string;
@@ -28,8 +28,20 @@ export interface CompetitionType extends CommonType {
     benefits: string;
 }
 
+export interface createQNet {
+    data: {
+        detail: string;
+        scheduleInfo: string;
+        jmNm: string;
+        engJmNm: string;
+        instiNm: string;
+        implNm: string;
+        examSchedules: examSchedule[];
+    };
+}
+
 export type paths = {
-    path: 'outside' | 'intern' | 'competition';
+    path: 'outside' | 'intern' | 'competition' | 'qnet';
 };
 
 export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
@@ -57,6 +69,29 @@ export interface languagePath {
     dataObj: languageDetail;
 }
 
-export type findCrawiling = Competition[] | Outside[] | Intern[] | Language[];
+export type findCrawiling =
+    | Competition[]
+    | Outside[]
+    | Intern[]
+    | Language[]
+    | QNet[];
 
 export type createCrawiling = Competition | Outside | Intern;
+
+export type itmeType = {
+    jmCd: string;
+    jmNm: string;
+    engJmNm: string;
+    instiNm: string;
+    implNm: string;
+};
+
+export type examSchedule = {
+    turn: string;
+    wtReceipt: string;
+    wtDday: string;
+    wtResultDay: string;
+    ptReceipt: string;
+    ptDday: string;
+    resultDay: string;
+};

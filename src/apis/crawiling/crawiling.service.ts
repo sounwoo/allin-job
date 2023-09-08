@@ -7,26 +7,41 @@ import {
 } from '../../common/crawiling/interface';
 import { languageData } from '../../common/crawiling/language';
 import { linkareerData } from '../../common/crawiling/linkareer';
+import { QNetData } from '../../common/crawiling/q-net';
 import prisma from '../../database/prismaConfig';
 
 export class CrawilingService {
     async findeCrailing({ path }: paths): Promise<findCrawiling> {
         const obj = {
-            outside: async () => await prisma.outside.findMany(),
-            intern: async () => await prisma.intern.findMany(),
-            competition: async () => await prisma.competition.findMany(),
-            language: async () =>
-                await prisma.language.findMany({ where: { path } }),
+            outside: () => prisma.outside.findMany(),
+            intern: () => prisma.intern.findMany(),
+            competition: () => prisma.competition.findMany(),
+            language: () => prisma.language.findMany({ where: { path } }),
+            qnet: () =>
+                prisma.qNet.findMany({ include: { examSchedules: true } }),
         };
 
-        return obj[path] ? obj[path]() : obj['language']();
+        return (obj[path] || obj['language'])();
     }
 
     async crawiling(path: createPaths): Promise<boolean> {
-        let data;
-        if (path === 'outside' || path === 'intern' || path === 'competition')
-            data = await linkareerData(path as createLinkareerPaths);
-        else data = await languageData(path as createLanguagePaths);
+        const linkareer = ['outside', 'intern', 'competition'];
+        const language = [
+            'toeic',
+            'toeicBR',
+            'toeicSW',
+            'toeicWT',
+            'toeicST',
+            'ch',
+            'jp',
+            'jpSP',
+        ];
+        const data = linkareer.includes(path)
+            ? await linkareerData(path as createLinkareerPaths)
+            : language.includes(path)
+            ? await languageData(path as createLanguagePaths)
+            : await QNetData();
+
         return !!data.length;
     }
 }

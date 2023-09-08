@@ -117,3 +117,27 @@ model Language {
   resultDay         String
   applicationPeriod String
 }
+
+model QNet {
+  id            String         @id @unique @default(uuid())
+  detail        String         @db.LongText
+  scheduleInfo  String         @db.LongText
+  jmNm          String
+  engJmNm       String
+  instiNm       String
+  implNm        String
+  examSchedules ExamSchedule[]
+}
+
+model ExamSchedule {
+  id          String @id @unique @default(uuid())
+  turn        String
+  wtReceipt   String
+  wtDday      String
+  wtResultDay String
+  ptReceipt   String
+  ptDday      String
+  resultDay   String
+  qNetId      String
+  qNet        QNet   @relation(fields: [qNetId], references: [id])
+}

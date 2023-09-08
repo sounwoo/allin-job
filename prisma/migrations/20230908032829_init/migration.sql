@@ -112,8 +112,41 @@ CREATE TABLE `Language` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `QNet` (
+    `id` VARCHAR(191) NOT NULL,
+    `detail` LONGTEXT NOT NULL,
+    `scheduleInfo` LONGTEXT NOT NULL,
+    `jmNm` VARCHAR(191) NOT NULL,
+    `engJmNm` VARCHAR(191) NOT NULL,
+    `instiNm` VARCHAR(191) NOT NULL,
+    `implNm` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `QNet_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ExamSchedule` (
+    `id` VARCHAR(191) NOT NULL,
+    `turn` VARCHAR(191) NOT NULL,
+    `wtReceipt` VARCHAR(191) NOT NULL,
+    `wtDday` VARCHAR(191) NOT NULL,
+    `wtResultDay` VARCHAR(191) NOT NULL,
+    `ptReceipt` VARCHAR(191) NOT NULL,
+    `ptDday` VARCHAR(191) NOT NULL,
+    `resultDay` VARCHAR(191) NOT NULL,
+    `qNetId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `ExamSchedule_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `UserKeyword` ADD CONSTRAINT `UserKeyword_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `UserKeyword` ADD CONSTRAINT `UserKeyword_keywordId_fkey` FOREIGN KEY (`keywordId`) REFERENCES `Keyword`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ExamSchedule` ADD CONSTRAINT `ExamSchedule_qNetId_fkey` FOREIGN KEY (`qNetId`) REFERENCES `QNet`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

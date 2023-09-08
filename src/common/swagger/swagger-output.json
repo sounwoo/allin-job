@@ -469,9 +469,7 @@
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "error": [
-                                        "phone : phone must be a string"
-                                    ]
+                                    "error": ["phone : phone must be a string"]
                                 }
                             }
                         }
