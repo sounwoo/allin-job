@@ -1,10 +1,3 @@
-import { IsString } from 'class-validator';
+import { LoginDTO } from './login.dto';
 
-export class restoreAccessTokenDTO {
-    @IsString()
-    id: string;
-
-    constructor(data: restoreAccessTokenDTO) {
-        this.id = data.id;
-    }
-}
+export class restoreAccessTokenDTO extends LoginDTO {}

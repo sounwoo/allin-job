@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateUserDTO } from '../../users/dto/create-user.dto';
+import { UserID, UserIdAndContext } from '../../../common/interface';
 
 export interface IOAuthSocialUser {
     user?: {
@@ -14,20 +15,10 @@ export interface IContext {
     next: NextFunction;
 }
 
-export interface IAuthGetAccessToken {
-    id: string;
-}
+export interface IAuthGetAccessToken extends UserID {}
 
-export interface IAuthSetRefreshToken {
-    id: string;
-    res: IContext['res'];
-}
+export interface IAuthRestoreAccessToken extends UserID {}
 
-export interface IAuthLogin {
-    id: string;
-    res: IContext['res'];
-}
+export interface IAuthSetRefreshToken extends UserIdAndContext {}
 
-export interface IAuthRestoreAccessToken {
-    id: string;
-}
+export interface IAuthLogin extends UserIdAndContext {}
