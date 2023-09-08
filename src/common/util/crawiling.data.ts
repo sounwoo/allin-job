@@ -1,3 +1,4 @@
+import { Language, QNet } from '@prisma/client';
 import prisma from '../../database/prismaConfig';
 import {
     OutsideType,
@@ -7,6 +8,7 @@ import {
     languagePath,
     languageDetail,
     createLinkareerPaths,
+    createQNet,
 } from '../crawiling/interface';
 
 export const linkareerType = (path: string, i: number) => {
@@ -137,8 +139,31 @@ export const createLanguageData = async ({
     path,
     homePage,
     dataObj,
-}: languagePath) => {
+}: languagePath): Promise<Language> => {
     return await prisma.language.create({
         data: { path, homePage, ...dataObj },
+    });
+};
+
+export const examScheduleObj = {
+    turn: '',
+    wtReceipt: '',
+    wtDday: '',
+    wtResultDay: '',
+    ptReceipt: '',
+    ptDday: '',
+    resultDay: '',
+};
+
+export const createQNetData = async ({ data }: createQNet): Promise<QNet> => {
+    return await prisma.qNet.create({
+        data: {
+            ...data,
+            examSchedules: {
+                createMany: {
+                    data: data.examSchedules,
+                },
+            },
+        },
     });
 };
