@@ -49,4 +49,4 @@ jobs:
                   context: .
                   file: ./dockerfile
                   push: true
-                  tags: ${{ secrets.DOCKER_USERNAME }}/allinjob:1.0
+                  tags: ${{ secrets.DOCKER_USERNAME }}/allinjob:2.0
