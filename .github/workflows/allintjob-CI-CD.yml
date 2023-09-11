@@ -65,10 +65,10 @@ jobs:
               with:
                   credentials_json: ${{ secrets.GCP_CREDENTIALS}}
 
-              - name: Scale up Docker service
-                run: |
-                    gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
-                    --command "sudo docker service scale allinjob_all-backend=3"
+            - name: Scale up Docker service
+              run: |
+                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
+                  --command "sudo docker service scale allinjob_all-backend=3"
 
             - name: SSH into GCP VM && new image Update
               run: |-
@@ -81,4 +81,3 @@ jobs:
               run: |
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo docker service scale allinjob_all-backend=1"
-
