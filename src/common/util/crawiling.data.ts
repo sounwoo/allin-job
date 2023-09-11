@@ -12,7 +12,7 @@ import {
 } from '../crawiling/interface';
 
 export const linkareerType = (path: string, i: number) => {
-    let url, dataType, keyword;
+    let url, dataType;
     let detailClass = 'jss6';
     let mainImageType = 'card-image';
 
@@ -34,7 +34,7 @@ export const linkareerType = (path: string, i: number) => {
                 interests: '',
                 field: '',
             };
-            keyword = 'jss17';
+
             break;
 
         case 'intern':
@@ -67,11 +67,11 @@ export const linkareerType = (path: string, i: number) => {
                 benefits: '',
                 interests: '',
             };
-            keyword = 'jss13';
+
             break;
     }
 
-    return { url, dataType, detailClass, mainImageType, keyword };
+    return { url, dataType, detailClass, mainImageType };
 };
 
 export const createLinkareerData = async <T extends object>({
