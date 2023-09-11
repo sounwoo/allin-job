@@ -73,13 +73,16 @@ jobs:
 
             - name: Docker service scaleUp && new image Update
               run: |-
+                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo docker service scale allinjob_all-backend=3" \
                   --command "sudo docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend" \
 
             - name: Scale down Docker service
               run: |
+                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo docker service scale allinjob_all-backend=1"
 
             - name: Docker Image prune
               run: |
+                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo docker image prune -a"
