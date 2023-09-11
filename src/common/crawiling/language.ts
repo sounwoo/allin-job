@@ -5,7 +5,6 @@ import { createLanguagePaths } from './interface';
 
 export const languageData = async (path: createLanguagePaths) => {
     const { pathType, dataObj, url } = languageType(path);
-    console.log(pathType, dataObj, url);
     const result = await axios.get(url);
     const $ = cheerio.load(result.data);
     $(pathType).each((_, el) => {

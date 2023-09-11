@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { linkareerType, createLinkareerData } from '../util/crawiling.data';
+import { createLinkareerData, linkareerType } from '../util/crawiling.data';
 import { createLinkareerPaths } from './interface';
 
 export const linkareerData = async (path: createLinkareerPaths) => {
@@ -12,11 +12,11 @@ export const linkareerData = async (path: createLinkareerPaths) => {
     return Array(3)
         .fill(0)
         .map(async (_, i) => {
+            let month: number;
             const { url, dataType, detailClass, mainImageType } = linkareerType(
                 path,
                 i,
             );
-
             const dataList = await axios.get(url);
 
             return dataList.data.data.activities.nodes.map(async (el: any) => {
@@ -31,10 +31,27 @@ export const linkareerData = async (path: createLinkareerPaths) => {
                     }
                 });
 
+                if (path === 'outside') {
+                    // 개월수 계산
+                    const participationPeriod: any[] =
+                        dataType.participationPeriod!.split(' ~ ');
+                    if (participationPeriod.length > 1) {
+                        const [start, end] = participationPeriod.map((el) => {
+                            const [year, month, day] = el.split('.');
+                            return new Date(
+                                `20${year}-${month}-${day}`,
+                            ).getTime();
+                        });
+                        month = Math.ceil(
+                            (end - start) / (1000 * 60 * 60 * 24) / 30,
+                        );
+                    }
+                }
+
                 const data = {
                     Dday: $('.recruitText').text(),
                     title: $('h2.title').text(),
-                    view: String($('span.count').html()),
+                    view: +String($('span.count').html()),
                     mainImage: $(`img.${mainImageType}`).attr('src'),
                     organization: $('h2.organization-name').text(),
                     ...dataType,
@@ -42,7 +59,8 @@ export const linkareerData = async (path: createLinkareerPaths) => {
                         'div.ActivityDetailTabContent__StyledWrapper-sc-5db6cf4b-0.bDYgjm',
                     ).html(),
                 };
-                return createLinkareerData({ data, path });
+
+                return createLinkareerData({ data, path, month });
             });
         });
 };

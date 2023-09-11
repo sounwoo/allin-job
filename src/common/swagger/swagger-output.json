@@ -674,7 +674,7 @@
                                                     "enterprise": "공공기관/공기업",
                                                     "applicationPeriod": "23.8.28 ~ 23.9.11",
                                                     "preferentialTreatment": "디자인/순수미술/공예",
-                                                    "Scale": "100 만원",
+                                                    "scale": "100 만원",
                                                     "benefits": "상장 수여",
                                                     "target": "청소년, 대학생",
                                                     "hompage": "awihqwifbjqjfbo",
@@ -813,7 +813,7 @@
                                                 "preferentialTreatment": {
                                                     "type": "string"
                                                 },
-                                                "Scale": {
+                                                "scale": {
                                                     "type": "string"
                                                 },
                                                 "benefits": {

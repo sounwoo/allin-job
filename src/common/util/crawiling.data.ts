@@ -30,6 +30,9 @@ export const linkareerType = (path: string, i: number) => {
                 region: '',
                 preferentialTreatment: '',
                 homePage: '',
+                benefits: '',
+                interests: '',
+                field: '',
             };
 
             break;
@@ -49,6 +52,7 @@ export const linkareerType = (path: string, i: number) => {
             };
             detailClass = 'jss5';
             mainImageType = 'recruit-image';
+
             break;
         default:
             url = `https://api.linkareer.com/graphql?operationName=ActivityList_Activities&variables=%7B%22filterBy%22%3A%7B%22status%22%3A%22OPEN%22%2C%22activityTypeID%22%3A%223%22%7D%2C%22pageSize%22%3A20%2C%22page%22%3A${
@@ -57,12 +61,13 @@ export const linkareerType = (path: string, i: number) => {
             dataType = {
                 enterprise: '',
                 target: '',
-                Scale: '',
+                scale: '',
                 applicationPeriod: '',
                 homePage: '',
                 benefits: '',
-                preferentialTreatment: '',
+                interests: '',
             };
+
             break;
     }
 
@@ -72,13 +77,17 @@ export const linkareerType = (path: string, i: number) => {
 export const createLinkareerData = async <T extends object>({
     data,
     path,
+    month,
 }: {
     data: T;
     path: createLinkareerPaths;
+    month: number;
 }): Promise<createCrawiling> => {
     const result = {
         outside: async () =>
-            await prisma.outside.create({ data: data as OutsideType }),
+            await prisma.outside.create({
+                data: { ...(data as OutsideType), month },
+            }),
         intern: async () =>
             await prisma.intern.create({ data: data as InternType }),
         competition: async () =>
@@ -155,13 +164,22 @@ export const examScheduleObj = {
     resultDay: '',
 };
 
-export const createQNetData = async ({ data }: createQNet): Promise<QNet> => {
+export const createQNetData = async ({
+    data,
+    mdobligFldNm: keyword,
+}: createQNet): Promise<QNet> => {
     return await prisma.qNet.create({
         data: {
             ...data,
             examSchedules: {
                 createMany: {
                     data: data.examSchedules,
+                },
+            },
+            category: {
+                connectOrCreate: {
+                    where: { keyword },
+                    create: { keyword: keyword },
                 },
             },
         },
