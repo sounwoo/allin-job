@@ -67,8 +67,4 @@ jobs:
 
             - name: SSH into GCP VM
               run: |
-                  gcloud compute ssh \
-                    --project=${{ secrets.GCP_PROJECT_ID }} \
-                    --zone=${{ secrets.GCP_ZONE }} \
-                    ${{ secrets.GCP_VM_NAME }}@${{ secrets.GCP_VM_NAME }} \
-                    --command "your-ssh-command-here"
+                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }}
