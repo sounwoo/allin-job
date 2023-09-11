@@ -41,7 +41,7 @@ naver();
 kakao();
 
 app.get('/', (_, res) => {
-    res.send('안녕!!!');
+    res.send('안녕');
 });
 
 app.listen(process.env.PORT, () => {
