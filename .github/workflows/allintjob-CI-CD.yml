@@ -85,4 +85,4 @@ jobs:
             - name: Docker Image prune
               run: |
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
-                  --command ""echo "y" | sudo docker image prune -a"
+                  --command "echo "y" | sudo docker image prune -a"
