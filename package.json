@@ -8,9 +8,7 @@
     "scripts": {
         "start:dev": "nodemon --exec ts-node src/app.ts",
         "start": "tsc -p . && node dist/app.js",
-        "swagger": "node src/common/swagger/swagger.ts",
-        "docker:main": "docker push onionsss11/allinjob:1.0",
-        "docker:sub": "docker push onionsss11/allinjob:2.0"
+        "swagger": "node src/common/swagger/swagger.ts"
     },
     "dependencies": {
         "@prisma/client": "^5.1.1",
