@@ -49,4 +49,18 @@ jobs:
                   context: .
                   file: ./dockerfile
                   push: true
-                  tags: ${{ secrets.DOCKER_USERNAME }}/allinjob:2.0
+                  tags: ${{ secrets.DOCKER_USERNAME }}/allinjob:1.0
+
+    allinjob-cd:
+        needs: build-image
+        name: allinjob-cd
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - id: 'auth'
+              name: 'GCP Authenticate'
+              uses: 'google-github-actions/auth@v0'
+              with:
+                  credentials_json: ${{ secrets.GCP_CREDENTIALS}}
