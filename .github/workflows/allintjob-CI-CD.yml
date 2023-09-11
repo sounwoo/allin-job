@@ -66,8 +66,8 @@ jobs:
                   credentials_json: ${{ secrets.GCP_CREDENTIALS}}
 
             - name: SSH into GCP VM && new image Update
-              run: |
+              run: |-
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
-                  --command cd allinjob \
+                  --command "cd allinjob" \
                   --command "docker image prune -a" \
-                  --command "docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend
+                  --command "docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend"
