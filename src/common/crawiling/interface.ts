@@ -3,7 +3,7 @@ import { Competition, Intern, Language, Outside, QNet } from '@prisma/client';
 interface CommonType {
     Dday: string;
     title: string;
-    view: string;
+    view: number;
     mainImage: string;
     organization: string;
     enterprise: string;
@@ -20,12 +20,19 @@ export interface InternType extends CommonType {
 }
 
 export interface OutsideType extends InternType {
+    month: number;
+    interests: string;
+    field: string;
+    region: string;
+    benefits: string;
     participationPeriod: string;
 }
 
 export interface CompetitionType extends CommonType {
-    Scale: string;
+    region: string;
+    scale: string;
     benefits: string;
+    interests: string;
 }
 
 export interface createQNet {
@@ -38,10 +45,20 @@ export interface createQNet {
         implNm: string;
         examSchedules: examSchedule[];
     };
+    mdobligFldNm: string;
 }
 
 export type paths = {
     path: 'outside' | 'intern' | 'competition' | 'qnet';
+    enterprise: string;
+    preferentialTreatment: string;
+    region: string;
+    field: string;
+    interests: string;
+    benefits: string;
+    month: string;
+    target: string;
+    category: string;
 };
 
 export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
@@ -84,6 +101,7 @@ export type itmeType = {
     engJmNm: string;
     instiNm: string;
     implNm: string;
+    mdobligFldNm: string;
 };
 
 export type examSchedule = {

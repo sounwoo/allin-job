@@ -39,7 +39,7 @@ CREATE TABLE `Outside` (
     `id` VARCHAR(191) NOT NULL,
     `Dday` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `view` VARCHAR(191) NOT NULL,
+    `view` INTEGER NOT NULL,
     `mainImage` LONGTEXT NOT NULL,
     `organization` VARCHAR(191) NOT NULL,
     `enterprise` VARCHAR(191) NOT NULL,
@@ -51,6 +51,10 @@ CREATE TABLE `Outside` (
     `preferentialTreatment` VARCHAR(191) NOT NULL,
     `homePage` LONGTEXT NOT NULL,
     `detail` LONGTEXT NOT NULL,
+    `benefits` VARCHAR(191) NOT NULL,
+    `interests` VARCHAR(191) NOT NULL,
+    `field` VARCHAR(191) NOT NULL,
+    `month` INTEGER NOT NULL,
 
     UNIQUE INDEX `Outside_id_key`(`id`),
     PRIMARY KEY (`id`)
@@ -61,7 +65,7 @@ CREATE TABLE `Intern` (
     `id` VARCHAR(191) NOT NULL,
     `Dday` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `view` VARCHAR(191) NOT NULL,
+    `view` INTEGER NOT NULL,
     `mainImage` LONGTEXT NOT NULL,
     `organization` VARCHAR(191) NOT NULL,
     `enterprise` VARCHAR(191) NOT NULL,
@@ -82,16 +86,16 @@ CREATE TABLE `Competition` (
     `id` VARCHAR(191) NOT NULL,
     `Dday` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `view` VARCHAR(191) NOT NULL,
+    `view` INTEGER NOT NULL,
     `mainImage` LONGTEXT NOT NULL,
     `organization` VARCHAR(191) NOT NULL,
     `enterprise` VARCHAR(191) NOT NULL,
     `target` VARCHAR(191) NOT NULL,
-    `Scale` VARCHAR(191) NOT NULL,
+    `scale` VARCHAR(191) NOT NULL,
     `applicationPeriod` VARCHAR(191) NOT NULL,
     `benefits` VARCHAR(191) NOT NULL,
-    `preferentialTreatment` VARCHAR(191) NOT NULL,
     `homePage` LONGTEXT NOT NULL,
+    `interests` VARCHAR(191) NOT NULL,
     `detail` LONGTEXT NOT NULL,
 
     UNIQUE INDEX `Competition_id_key`(`id`),
@@ -118,11 +122,22 @@ CREATE TABLE `QNet` (
     `detail` LONGTEXT NOT NULL,
     `scheduleInfo` LONGTEXT NOT NULL,
     `jmNm` VARCHAR(191) NOT NULL,
-    `engJmNm` VARCHAR(191) NOT NULL,
+    `engJmNm` VARCHAR(191) NULL,
     `instiNm` VARCHAR(191) NOT NULL,
     `implNm` VARCHAR(191) NOT NULL,
+    `categoryId` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `QNet_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Category` (
+    `id` VARCHAR(191) NOT NULL,
+    `keyword` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `Category_id_key`(`id`),
+    UNIQUE INDEX `Category_keyword_key`(`keyword`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -147,6 +162,9 @@ ALTER TABLE `UserKeyword` ADD CONSTRAINT `UserKeyword_userId_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `UserKeyword` ADD CONSTRAINT `UserKeyword_keywordId_fkey` FOREIGN KEY (`keywordId`) REFERENCES `Keyword`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `QNet` ADD CONSTRAINT `QNet_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ExamSchedule` ADD CONSTRAINT `ExamSchedule_qNetId_fkey` FOREIGN KEY (`qNetId`) REFERENCES `QNet`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

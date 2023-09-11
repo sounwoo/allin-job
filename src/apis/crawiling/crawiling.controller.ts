@@ -13,14 +13,17 @@ class CrawilingController {
     }
 
     init() {
-        this.router.get('/finde/:path', this.findeCrawiling.bind(this));
+        this.router.get('/finde', this.findeCrawiling.bind(this));
         this.router.get('/data/:path', this.crawiling.bind(this));
     }
 
     async findeCrawiling(req: Request, res: Response) {
         // #swagger.tags = ['Crawiling']
-        const { path } = req.params as paths;
-        const result = await this.crawilingService.findeCrailing({ path });
+        const { ...data } = req.query as paths;
+
+        const result = await this.crawilingService.findeCrailing({
+            ...data,
+        });
 
         result.length
             ? res.status(200).json({ data: result })

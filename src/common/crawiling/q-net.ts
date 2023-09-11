@@ -24,7 +24,7 @@ export const QNetData = async () => {
 
     dataList.forEach((arr) => {
         arr.forEach(async (el: itmeType) => {
-            const { jmCd, implNm, engJmNm, instiNm, jmNm } = el;
+            const { jmCd, implNm, engJmNm, instiNm, jmNm, mdobligFldNm } = el;
             if (QNetObj[jmCd]) {
                 const dataList = await axios.get(
                     `https://www.q-net.or.kr/crf005.do?id=crf00503s02&gSite=Q&gId=&jmCd=${jmCd}&jmInfoDivCcd=B0&jmNm=${implNm}`,
@@ -71,7 +71,7 @@ export const QNetData = async () => {
                     implNm,
                 };
 
-                createQNetData({ data });
+                createQNetData({ data, mdobligFldNm });
             }
         });
     });
