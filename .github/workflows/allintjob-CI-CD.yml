@@ -65,7 +65,7 @@ jobs:
               with:
                   credentials_json: ${{ secrets.GCP_CREDENTIALS}}
 
-            - name: SSH into GCP VM && Docker Login in SSH && Docker Service Scale up
+            - name: SSH into GCP VM && Docker Login && Docker Service Scale up
               run: |-
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo cd allinjob" \
@@ -85,4 +85,4 @@ jobs:
             - name: Docker Image prune
               run: |
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
-                  --command "echo "y" | sudo docker image prune -a"
+                  --command "echo "y" | sudo docker system prune -a"
