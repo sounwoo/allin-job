@@ -68,9 +68,4 @@ jobs:
             - name: SSH in && Scale up && New image Update && Scale down
               run: |-
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
-                  --command "echo 'y' | sudo docker system prune -a && \
-                                        cd allinjob && \
-                                        sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && \
-                                        sudo docker service scale allinjob_all-backend=3 && \
-                                        sudo docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend && \
-                                        sudo docker service scale allinjob_all-backend=1"
+                  --command "echo 'y' | sudo docker system prune -a && cd allinjob && sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && sudo docker service scale allinjob_all-backend=3 && sudo docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend && sudo docker service scale allinjob_all-backend=1"
