@@ -65,20 +65,21 @@ jobs:
               with:
                   credentials_json: ${{ secrets.GCP_CREDENTIALS}}
 
-            - name: SSH into GCP VM && ScaleUp && new image Update
-              run: |-
+            - name: SSH into GCP VM && Docker Login in SSH
                   gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo cd allinjob" \
                   --command "sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}" \
+              run: |-
+
+            - name: Docker service scaleUp && new image Update
+              run: |-
                   --command "sudo docker service scale allinjob_all-backend=3" \
                   --command "sudo docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend" \
 
             - name: Scale down Docker service
               run: |
-                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo docker service scale allinjob_all-backend=1"
 
             - name: Docker Image prune
               run: |
-                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
                   --command "sudo docker image prune -a"
