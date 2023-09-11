@@ -73,4 +73,4 @@ jobs:
                   --command "sudo docker service scale allinjob_all-backend=2" \
                   --command "sudo docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend" \
                   --command "sudo docker service scale allinjob_all-backend=1" \
-                  --command "sudo docker image prune -a"
+                  --command "echo "y" | sudo docker image prune -a"
