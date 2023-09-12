@@ -625,7 +625,7 @@
                             "format": "interests",
                             "example": "교육,기타"
                         },
-                        "description": "대외활동 (관심분야 검색) 복수형태는 , 로 구분"
+                        "description": "대외활동 (관심분야 검색), 공모전(공모분야) 복수형태는 , 로 구분"
                     },
                     {
                         "name": "benefits",
@@ -635,7 +635,7 @@
                             "format": "benefits",
                             "example": "활동비,사은품 지급"
                         },
-                        "description": "대외활동 (활동혜택 검색) 복수형태는 , 로 구분"
+                        "description": "대외활동 (활동혜택 검색), 공모전(수상혜택) 복수형태는 , 로 구분"
                     },
                     {
                         "name": "region",
@@ -645,7 +645,7 @@
                             "format": "region",
                             "example": "서울,대전"
                         },
-                        "description": "대외활동 (지역 검색) 복수형태는 , 로 구분"
+                        "description": "대외활동,인턴 (지역 검색) 복수형태는 , 로 구분"
                     },
                     {
                         "name": "enterprise",
@@ -668,14 +668,24 @@
                         "description": "인턴 (모집직무로 검색) 복수형태는 , 로 구분"
                     },
                     {
-                        "name": "region",
+                        "name": "scale",
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "format": "region",
-                            "example": "서울,세종"
+                            "format": "scale",
+                            "example": "100"
                         },
-                        "description": "인턴 (지역 검색) 복수형태는 , 로 구분"
+                        "description": "공모전 (시상 규모) / 1억은 1 / 2010만원이면 2010"
+                    },
+                    {
+                        "name": "target",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "target",
+                            "example": "대학생,청소년"
+                        },
+                        "description": "공모전 (지원대상)"
                     }
                 ],
                 "responses": {
@@ -689,20 +699,23 @@
                                         "value": {
                                             "data": [
                                                 {
-                                                    "id": "adfhttwerqwrasxczx",
-                                                    "Dday": "D-10",
-                                                    "title": "제목",
+                                                    "id": "대외활동 id : asdasda",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집",
                                                     "view": 100,
-                                                    "mainImage": "awihqwifbjqjfbo",
-                                                    "organization": "LG유플러스",
-                                                    "enterprise": "대기업",
-                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
-                                                    "participationPeriod": "23.9.22 ~ 23.12.22",
-                                                    "preferentialTreatment": "컴퓨터 활용능력, 휴학 중/시간 투자 가능",
-                                                    "personnel": "10명",
-                                                    "target": "대학생",
-                                                    "region": "서울",
-                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "mainImage": "이미지 url",
+                                                    "organization": "조직 : (주)~~",
+                                                    "enterprise": "주최기관 : 대기업",
+                                                    "applicationPeriod": "접수기간 : 23.9.12 ~ 23.9.18",
+                                                    "participationPeriod": "활동기간 : 23.10.4 ~ 23.12.31",
+                                                    "preferentialTreatment": "우대상항 : 컴퓨터 활용능력, 휴학 중/시간 투자 가능",
+                                                    "personnel": "모집 인원 : 10명",
+                                                    "target": "참여 대상 : 대학생",
+                                                    "region": "지역 : 서울",
+                                                    "hompage": "주체 홈페이지 :awihqwifbjqjfbo",
+                                                    "benefits": "활동 혜택 : 활동비,입사시 혜택",
+                                                    "interests": "관심 분야 : 콘텐츠, 디자인/사진/영상",
+                                                    "field": "활동 분야 : 서포터즈 마케터",
                                                     "detail": "html 코드"
                                                 }
                                             ]
@@ -713,19 +726,19 @@
                                         "value": {
                                             "data": [
                                                 {
-                                                    "id": "adfhttwerqwrasxczx",
-                                                    "Dday": "D-10",
+                                                    "id": "인턴 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
                                                     "title": "제목",
                                                     "view": 100,
-                                                    "mainImage": "awihqwifbjqjfbo",
-                                                    "organization": "한국정보인증",
-                                                    "enterprise": "대기업",
-                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
-                                                    "preferentialTreatment": "IT/인터넷",
-                                                    "personnel": "10명",
-                                                    "target": "대학생",
-                                                    "region": "서울",
-                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "organization": "조직 : 한국정보인증",
+                                                    "enterprise": "주체 기관 : 대기업",
+                                                    "applicationPeriod": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                    "preferentialTreatment": "모집 직무 : IT/인터넷",
+                                                    "personnel": "채용인원 : 10명",
+                                                    "target": "채용형태 : 인턴",
+                                                    "region": "지역 : 서울",
+                                                    "hompage": "채용 홈페이지 : http://~~",
                                                     "detail": "html 코드"
                                                 }
                                             ]
@@ -736,20 +749,68 @@
                                         "value": {
                                             "data": [
                                                 {
-                                                    "id": "adfhttwerqwrasxczx",
-                                                    "Dday": "D-10",
+                                                    "id": "공모전 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
                                                     "title": "제목",
                                                     "view": 100,
-                                                    "mainImage": "awihqwifbjqjfbo",
-                                                    "organization": "한국교육개발원",
-                                                    "enterprise": "공공기관/공기업",
-                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
-                                                    "preferentialTreatment": "디자인/순수미술/공예",
-                                                    "scale": "100 만원",
-                                                    "benefits": "상장 수여",
-                                                    "target": "청소년, 대학생",
-                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "organization": "조직 : 한국교육개발원",
+                                                    "enterprise": "주체 기관 : 공공기관/공기업",
+                                                    "applicationPeriod": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                    "scale": "시상 규모 : 100 만원",
+                                                    "benefits": "활동 혜택 : 상장 수여",
+                                                    "target": "참여대상 : 청소년, 대학생",
+                                                    "interest": "공모분야 : 디자인/순수미술/공예",
+                                                    "hompage": "주체 홈페이지 : http://~~",
                                                     "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "languageData": {
+                                        "summary": "언어별 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "언어별 id : adfhttwerqwrasxczx",
+                                                    "path": "조회 목록 : toeic,toeicBR",
+                                                    "homePage": "접수 홈페이지 : http://~~",
+                                                    "turn": "회차 : 1회차 or null",
+                                                    "Dday": "시험날짜 : 2023.11.26(일)오전9시20분",
+                                                    "resultDay": "결과 발표 날짜 : 2023.12.06(수)낮12시",
+                                                    "applicationPeriod": "접수 기간 : 정기접수:2023.10.09(월)오전10시~2023.11.13(월)오전10시특별추가:2023.11.15(수)오전10시~2023.11.23(목)낮12시"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "qnetData": {
+                                        "summary": "자격증 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "자격증 id : adfhttwerqwrasxczx",
+                                                    "detail": "html 코드",
+                                                    "scheduleInfo": "시험 일정 설명 : html 코드",
+                                                    "jmNm": "자격증명 : 에너지산업기사",
+                                                    "engJmNm": "자격증 영어명 : Engineer Energy Management or null",
+                                                    "instiNm": "과련부처 : 통겨청",
+                                                    "implNm": "시행기관 : 한국산업인력공단",
+                                                    "examSchedules": [
+                                                        {
+                                                            "id": "회차 id : adfhttwerqwrasxczx",
+                                                            "turn": "회차 : 2023년정기기사4회",
+                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                        }
+                                                    ],
+                                                    "categoryId": "카테고리 id : adfhttwerqwrasxczx",
+                                                    "category": {
+                                                        "keyword": "분류 카테고리 : 에너지.기상"
+                                                    }
                                                 }
                                             ]
                                         }
@@ -802,6 +863,15 @@
                                                 "hompage": {
                                                     "type": "string"
                                                 },
+                                                "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
+                                                    "type": "string"
+                                                },
+                                                "field": {
+                                                    "type": "string"
+                                                },
                                                 "detail": {
                                                     "type": "string"
                                                 }
@@ -881,13 +951,13 @@
                                                 "applicationPeriod": {
                                                     "type": "string"
                                                 },
-                                                "preferentialTreatment": {
-                                                    "type": "string"
-                                                },
                                                 "scale": {
                                                     "type": "string"
                                                 },
                                                 "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
                                                     "type": "string"
                                                 },
                                                 "target": {
@@ -898,6 +968,101 @@
                                                 },
                                                 "detail": {
                                                     "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "turn": {
+                                                    "type": "string | null"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "resultDay": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                },
+                                                "scheduleInfo": {
+                                                    "type": "string"
+                                                },
+                                                "jmNm": {
+                                                    "type": "string"
+                                                },
+                                                "engJmNm": {
+                                                    "type": "string | null"
+                                                },
+                                                "instiNm": {
+                                                    "type": "string"
+                                                },
+                                                "implNm": {
+                                                    "type": "string"
+                                                },
+                                                "examSchedules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "turn": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtResultDay": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "resultDay": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "categoryId": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "keyword": {
+                                                            "type": "string"
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }

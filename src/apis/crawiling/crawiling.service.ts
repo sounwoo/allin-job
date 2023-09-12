@@ -63,7 +63,12 @@ export class CrawilingService {
                             keyword: data.category && data.category,
                         },
                     },
-                    include: { examSchedules: true, category: true },
+                    include: {
+                        examSchedules: true,
+                        category: {
+                            select: { keyword: true },
+                        },
+                    },
                 }),
         };
         return (obj[path] || obj['language'])();
