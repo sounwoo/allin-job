@@ -4,7 +4,7 @@ import { createPaths, paths } from '../../common/crawiling/interface';
 
 class CrawilingController {
     router = Router();
-    path = '/crawiling';
+    path = '/crawling';
 
     private crawilingService: CrawilingService;
     constructor() {
@@ -18,7 +18,7 @@ class CrawilingController {
     }
 
     async findeCrawiling(req: Request, res: Response) {
-        // #swagger.tags = ['Crawiling']
+        // #swagger.tags = ['Crawling']
         const { ...data } = req.query as paths;
 
         const result = await this.crawilingService.findeCrailing({

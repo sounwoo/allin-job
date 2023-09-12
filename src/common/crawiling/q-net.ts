@@ -71,7 +71,7 @@ export const QNetData = async () => {
                     implNm,
                 };
 
-                createQNetData({ data, mdobligFldNm });
+                await createQNetData({ data, mdobligFldNm });
             }
         });
     });

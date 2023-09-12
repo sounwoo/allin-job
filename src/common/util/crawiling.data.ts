@@ -1,4 +1,4 @@
-import { Language, QNet } from '@prisma/client';
+import { Category, Language, QNet } from '@prisma/client';
 import prisma from '../../database/prismaConfig';
 import {
     OutsideType,
@@ -13,6 +13,7 @@ import {
 
 export const linkareerType = (path: string, i: number) => {
     let url, dataType;
+    let interestsType = 'jss14';
     let detailClass = 'jss6';
     let mainImageType = 'card-image';
 
@@ -67,11 +68,12 @@ export const linkareerType = (path: string, i: number) => {
                 benefits: '',
                 interests: '',
             };
+            interestsType = 'jss13';
 
             break;
     }
 
-    return { url, dataType, detailClass, mainImageType };
+    return { url, dataType, detailClass, mainImageType, interestsType };
 };
 
 export const createLinkareerData = async <T extends object>({
@@ -164,10 +166,20 @@ export const examScheduleObj = {
     resultDay: '',
 };
 
+const findOrCreateCategory = async (keyword: string): Promise<Category> => {
+    return await prisma.category.upsert({
+        where: { keyword },
+        update: {},
+        create: { keyword },
+    });
+};
+
 export const createQNetData = async ({
     data,
     mdobligFldNm: keyword,
 }: createQNet): Promise<QNet> => {
+    const category = await findOrCreateCategory(keyword);
+
     return await prisma.qNet.create({
         data: {
             ...data,
@@ -176,12 +188,7 @@ export const createQNetData = async ({
                     data: data.examSchedules,
                 },
             },
-            category: {
-                connectOrCreate: {
-                    where: { keyword },
-                    create: { keyword: keyword },
-                },
-            },
+            categoryId: category.id,
         },
     });
 };
