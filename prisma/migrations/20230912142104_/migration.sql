@@ -27,14 +27,6 @@ CREATE TABLE `Keyword` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `UserKeyword` (
-    `userId` VARCHAR(191) NOT NULL,
-    `keywordId` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`userId`, `keywordId`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Outside` (
     `id` VARCHAR(191) NOT NULL,
     `Dday` VARCHAR(191) NOT NULL,
@@ -157,14 +149,23 @@ CREATE TABLE `ExamSchedule` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `UserKeyword` ADD CONSTRAINT `UserKeyword_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateTable
+CREATE TABLE `_UserKeyword` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
 
--- AddForeignKey
-ALTER TABLE `UserKeyword` ADD CONSTRAINT `UserKeyword_keywordId_fkey` FOREIGN KEY (`keywordId`) REFERENCES `Keyword`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+    UNIQUE INDEX `_UserKeyword_AB_unique`(`A`, `B`),
+    INDEX `_UserKeyword_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `QNet` ADD CONSTRAINT `QNet_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ExamSchedule` ADD CONSTRAINT `ExamSchedule_qNetId_fkey` FOREIGN KEY (`qNetId`) REFERENCES `QNet`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_UserKeyword` ADD CONSTRAINT `_UserKeyword_A_fkey` FOREIGN KEY (`A`) REFERENCES `Keyword`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_UserKeyword` ADD CONSTRAINT `_UserKeyword_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

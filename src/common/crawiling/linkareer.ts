@@ -13,10 +13,8 @@ export const linkareerData = async (path: createLinkareerPaths) => {
         .fill(0)
         .map(async (_, i) => {
             let month: number;
-            const { url, dataType, detailClass, mainImageType } = linkareerType(
-                path,
-                i,
-            );
+            const { url, dataType, detailClass, mainImageType, interestsType } =
+                linkareerType(path, i);
             const dataList = await axios.get(url);
 
             return dataList.data.data.activities.nodes.map(async (el: any) => {
@@ -31,20 +29,35 @@ export const linkareerData = async (path: createLinkareerPaths) => {
                     }
                 });
 
-                if (path === 'outside') {
-                    // 개월수 계산
-                    const participationPeriod: any[] =
-                        dataType.participationPeriod!.split(' ~ ');
-                    if (participationPeriod.length > 1) {
-                        const [start, end] = participationPeriod.map((el) => {
-                            const [year, month, day] = el.split('.');
-                            return new Date(
-                                `20${year}-${month}-${day}`,
-                            ).getTime();
-                        });
-                        month = Math.ceil(
-                            (end - start) / (1000 * 60 * 60 * 24) / 30,
-                        );
+                if (path === 'outside' || path === 'competition') {
+                    const interests = $(`span.${interestsType}`)
+                        .map((_, el) => $(el).html())
+                        .get()
+                        .join(', ');
+
+                    dataType.interests = interests;
+                    if (path === 'outside') {
+                        // 개월수 계산
+                        const participationPeriod: any[] =
+                            dataType.participationPeriod!.split(' ~ ');
+                        if (participationPeriod.length > 1) {
+                            const [start, end] = participationPeriod.map(
+                                (el) => {
+                                    const [year, month, day] = el.split('.');
+                                    return new Date(
+                                        `20${year}-${month}-${day}`,
+                                    ).getTime();
+                                },
+                            );
+                            month = Math.ceil(
+                                (end - start) / (1000 * 60 * 60 * 24) / 30,
+                            );
+                        } else month = 0;
+                        const field = $('span.jss17')
+                            .map((_, el) => $(el).html())
+                            .get()
+                            .join(', ');
+                        dataType.field = field;
                     }
                 }
 
