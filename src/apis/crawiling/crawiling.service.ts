@@ -12,10 +12,11 @@ import prisma from '../../database/prismaConfig';
 
 export class CrawilingService {
     async findeCrailing({ ...data }: paths): Promise<findCrawiling> {
-        const datas: { [key: string]: string } = { ...data };
+        const { path, ..._data } = data;
+        const datas: { [key: string]: string } = { ..._data };
 
         const keywords: object[] = [];
-        for (const key in data) {
+        for (const key in _data) {
             const temp = [
                 ...datas[key]
                     .split(',')
@@ -28,7 +29,7 @@ export class CrawilingService {
             outside: () =>
                 prisma.outside.findMany({
                     where: {
-                        AND: keywords.length
+                        OR: keywords.length
                             ? keywords.map((el: object) => el)
                             : [],
                     },
@@ -36,7 +37,7 @@ export class CrawilingService {
             intern: () =>
                 prisma.intern.findMany({
                     where: {
-                        AND: keywords.length
+                        OR: keywords.length
                             ? keywords.map((el: object) => el)
                             : [],
                     },
@@ -44,7 +45,7 @@ export class CrawilingService {
             competition: () =>
                 prisma.competition.findMany({
                     where: {
-                        AND: keywords.length
+                        OR: keywords.length
                             ? keywords.map((el: object) => el)
                             : [],
                     },
@@ -52,7 +53,7 @@ export class CrawilingService {
             language: () =>
                 prisma.language.findMany({
                     where: {
-                        OR: data.path.split(',').map((el) => ({ path: el })),
+                        OR: path.split(',').map((el) => ({ path: el })),
                     },
                 }),
             qnet: () =>
@@ -65,7 +66,7 @@ export class CrawilingService {
                     include: { examSchedules: true, category: true },
                 }),
         };
-        return (obj[data.path] || obj['language'])();
+        return (obj[path] || obj['language'])();
     }
 
     async crawiling(path: createPaths): Promise<boolean> {
