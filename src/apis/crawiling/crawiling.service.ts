@@ -1,3 +1,4 @@
+import { stat } from 'fs';
 import {
     createLanguagePaths,
     createLinkareerPaths,
@@ -17,14 +18,25 @@ export class CrawilingService {
 
         const keywords: object[] = [];
         for (const key in _data) {
-            const temp = [
-                ...datas[key]
-                    .split(',')
-                    .map((el: string) => ({ [key]: { contains: el } })),
-            ];
+            let temp: any = [];
+            if (key !== 'scale') {
+                temp = [
+                    ...datas[key]
+                        .split(',')
+                        .map((el: string) => ({ [key]: { contains: el } })),
+                ];
+            } else {
+                const [start, end] = datas[key].split(',');
+                temp.push({
+                    [key]: !end
+                        ? { gte: +start }
+                        : { gte: start ? +start : 0, lte: end ? +end : 0 },
+                });
+            }
+
             keywords.push(...temp);
         }
-
+        console.log(keywords);
         const obj = {
             outside: () =>
                 prisma.outside.findMany({

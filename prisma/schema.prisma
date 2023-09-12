@@ -28,12 +28,12 @@ enum Provider {
 }
 
 model User {
-  id           String        @id @unique @default(uuid())
-  email        String        @unique
+  id           String    @id @unique @default(uuid())
+  email        String    @unique
   provider     Provider
-  name         String        @db.VarChar(5)
-  nickname     String        @unique @db.VarChar(10)
-  phone        String        @db.VarChar(13)
+  name         String    @db.VarChar(5)
+  nickname     String    @unique @db.VarChar(10)
+  phone        String    @db.VarChar(13)
   profileImage String
   major        String
   interest     Interest
@@ -41,8 +41,8 @@ model User {
 }
 
 model Keyword {
-  id      String        @id @unique @default(uuid())
-  keyword String        @unique
+  id      String @id @unique @default(uuid())
+  keyword String @unique
   users   User[] @relation("UserKeyword")
 }
 
@@ -95,7 +95,7 @@ model Competition {
   organization      String
   enterprise        String
   target            String
-  scale             String
+  scale             Int?
   applicationPeriod String
   benefits          String
   homePage          String @db.LongText

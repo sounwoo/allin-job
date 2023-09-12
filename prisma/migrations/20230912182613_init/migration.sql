@@ -83,7 +83,7 @@ CREATE TABLE `Competition` (
     `organization` VARCHAR(191) NOT NULL,
     `enterprise` VARCHAR(191) NOT NULL,
     `target` VARCHAR(191) NOT NULL,
-    `scale` VARCHAR(191) NOT NULL,
+    `scale` INTEGER NULL,
     `applicationPeriod` VARCHAR(191) NOT NULL,
     `benefits` VARCHAR(191) NOT NULL,
     `homePage` LONGTEXT NOT NULL,

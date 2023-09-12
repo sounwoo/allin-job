@@ -94,7 +94,10 @@ export const createLinkareerData = async <T extends object>({
             await prisma.intern.create({ data: data as InternType }),
         competition: async () =>
             await prisma.competition.create({
-                data: data as CompetitionType,
+                data: {
+                    ...(data as CompetitionType),
+                    scale: +(data as CompetitionType).scale,
+                },
             }),
     };
 
