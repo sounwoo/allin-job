@@ -25,7 +25,7 @@
             "description": "로그인 관련 API"
         },
         {
-            "name": "Crawiling",
+            "name": "Crawling",
             "description": "크롤링 데이터 조회 API"
         }
     ],
@@ -592,19 +592,90 @@
                 }
             }
         },
-        "/crawiling/finde/{name}": {
+        "/crawling/finde": {
             "get": {
-                "tags": ["Crawiling"],
+                "tags": ["Crawling"],
                 "summary": "링커리어 크롤링 데이터 조회하기",
                 "parameters": [
                     {
-                        "name": "name",
-                        "in": "path",
+                        "name": "path",
+                        "in": "query",
                         "schema": {
                             "type": "string",
+                            "format": "path",
                             "example": "outside"
                         },
-                        "description": "크롤링 데이터 ( outside, intern , competition 셋중 하나)"
+                        "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, (언어는 여러개 조회 가능 toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
+                    },
+                    {
+                        "name": "field",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "filed",
+                            "example": "서포터즈,기타"
+                        },
+                        "description": "대외활동 (활동분야 검색) 복수형태는 , 로 구분"
+                    },
+                    {
+                        "name": "interests",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "interests",
+                            "example": "교육,기타"
+                        },
+                        "description": "대외활동 (관심분야 검색) 복수형태는 , 로 구분"
+                    },
+                    {
+                        "name": "benefits",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "benefits",
+                            "example": "활동비,사은품 지급"
+                        },
+                        "description": "대외활동 (활동혜택 검색) 복수형태는 , 로 구분"
+                    },
+                    {
+                        "name": "region",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "region",
+                            "example": "서울,대전"
+                        },
+                        "description": "대외활동 (지역 검색) 복수형태는 , 로 구분"
+                    },
+                    {
+                        "name": "enterprise",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "enterprise",
+                            "example": "중소기업"
+                        },
+                        "description": "인턴 (규모로 검색)"
+                    },
+                    {
+                        "name": "preferentialTreatment",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "preferentialTreatment",
+                            "example": "서비스,생산/제조"
+                        },
+                        "description": "인턴 (모집직무로 검색) 복수형태는 , 로 구분"
+                    },
+                    {
+                        "name": "region",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "region",
+                            "example": "서울,세종"
+                        },
+                        "description": "인턴 (지역 검색) 복수형태는 , 로 구분"
                     }
                 ],
                 "responses": {
