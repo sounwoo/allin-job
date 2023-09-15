@@ -1,0 +1,1068 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "3.0.0",
+        "title": "allinjob API Docs",
+        "description": "올인잡 api 문서입니다"
+    },
+    "host": "allinjob.co.kr",
+    "servers": [
+        {
+            "url": "http://localhost:4000"
+        },
+        {
+            "url": "https://allinjob.co.kr"
+        }
+    ],
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "User관련 API"
+        },
+        {
+            "name": "Auth",
+            "description": "로그인 관련 API"
+        },
+        {
+            "name": "Crawiling",
+            "description": "크롤링 데이터 조회 API"
+        }
+    ],
+    "schemes": ["http", "https"],
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "CookieAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "refreshToken"
+            }
+        }
+    },
+    "paths": {
+        "/user/findOneUserByEmail": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "회원가입한 유저 이메일 찾아오기",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "abc@abc.com"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "회원가입이 되어 있을 때",
+                                        "value": {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao",
+                                            "name": "홍길동",
+                                            "nickname": "닉네임",
+                                            "phone": "01012345678",
+                                            "profileImage": "awihqwifbjqjfbo",
+                                            "major": "컴퓨터공학",
+                                            "interest": "IT-프로그래밍",
+                                            "keyword": "웹개발"
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "회원가입이 되어 있지 않을 때",
+                                        "value": null
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "major": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
+                                                    "type": "string"
+                                                },
+                                                "keyword": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "email must be an email"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/findOneUserByID": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "아이디 찾기",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "홍길동"
+                        },
+                        "description": "이름"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "01012345678"
+                        },
+                        "description": "전화번호"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "아이디가 있는 경우",
+                                        "value": {
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao"
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "아이디가 없는 경우",
+                                        "value": null
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "name : name must be a string",
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/createUser": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "회원가입하기",
+                "description": "provider: naver, google, kakao 중 선택 <br> interest: literature, design, IT, financial, entertainment, language, entrepreneurship, employment 중 선택",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "abc@abc.com"
+                                    },
+                                    "provider": {
+                                        "type": "string",
+                                        "example": "google"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "홍길동"
+                                    },
+                                    "nickname": {
+                                        "type": "string",
+                                        "example": "닉네임"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    },
+                                    "profileImage": {
+                                        "type": "string",
+                                        "example": "profile url"
+                                    },
+                                    "major": {
+                                        "type": "string",
+                                        "example": "컴퓨터공학"
+                                    },
+                                    "interest": {
+                                        "type": "string",
+                                        "example": "IT"
+                                    },
+                                    "keywords": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "웹개발",
+                                            "응용 프로그램 개발"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "일치하는 이메일이 없는 경우",
+                                        "value": {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao",
+                                            "name": "홍길동",
+                                            "nickname": "닉네임",
+                                            "phone": "01012345678",
+                                            "profileImage": "awihqwifbjqjfbo",
+                                            "major": "컴퓨터공학",
+                                            "interest": "IT",
+                                            "keywords": [
+                                                {
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "keywordId": "asdsadasdwdwfdv"
+                                                },
+                                                {
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "keywordId": "eigeriigoerngkr"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "일치하는 이메일이 있는 경우",
+                                        "value": "이미 존재하는 이메일이 있습니다."
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "major": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
+                                                    "type": "string"
+                                                },
+                                                "keyword": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "keywordId": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "email : email must be an email",
+                                        "provider : provider must be a string",
+                                        "name : name must be a string",
+                                        "nickname : nickname must be a string",
+                                        "phone : phone must be a string",
+                                        "profileImage : profileImage must be a string",
+                                        "major : major must be a string",
+                                        "interest : interest must be a string",
+                                        "keyword : keyword must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/sendTokenSMS": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "문자 인증번호 요청하기",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SMS 토큰 전송",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "SMS 토큰 전송 성공": {
+                                        "value": true
+                                    },
+                                    "SMS 토큰 전송 실패": {
+                                        "value": false
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": ["phone : phone must be a string"]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/validateToken": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "문자 인증번호 검증하기",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "number",
+                                        "example": 11111
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SMS 토큰 검증",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "SMS 토큰 검증 성공": {
+                                        "value": true
+                                    },
+                                    "SMS 토큰 검증 실패": {
+                                        "value": false
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "token : token must be a number",
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawiling/finde/{name}": {
+            "get": {
+                "tags": ["Crawiling"],
+                "summary": "링커리어 크롤링 데이터 조회하기",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "example": "outside"
+                        },
+                        "description": "크롤링 데이터 ( outside, intern , competition 셋중 하나)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "outsideData": {
+                                        "summary": "대외활동 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "adfhttwerqwrasxczx",
+                                                    "Dday": "D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "awihqwifbjqjfbo",
+                                                    "organization": "LG유플러스",
+                                                    "enterprise": "대기업",
+                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
+                                                    "participationPeriod": "23.9.22 ~ 23.12.22",
+                                                    "preferentialTreatment": "컴퓨터 활용능력, 휴학 중/시간 투자 가능",
+                                                    "personnel": "10명",
+                                                    "target": "대학생",
+                                                    "region": "서울",
+                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "internData": {
+                                        "summary": "인턴 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "adfhttwerqwrasxczx",
+                                                    "Dday": "D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "awihqwifbjqjfbo",
+                                                    "organization": "한국정보인증",
+                                                    "enterprise": "대기업",
+                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
+                                                    "preferentialTreatment": "IT/인터넷",
+                                                    "personnel": "10명",
+                                                    "target": "대학생",
+                                                    "region": "서울",
+                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "competitionData": {
+                                        "summary": "공모전 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "adfhttwerqwrasxczx",
+                                                    "Dday": "D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "awihqwifbjqjfbo",
+                                                    "organization": "한국교육개발원",
+                                                    "enterprise": "공공기관/공기업",
+                                                    "applicationPeriod": "23.8.28 ~ 23.9.11",
+                                                    "preferentialTreatment": "디자인/순수미술/공예",
+                                                    "scale": "100 만원",
+                                                    "benefits": "상장 수여",
+                                                    "target": "청소년, 대학생",
+                                                    "hompage": "awihqwifbjqjfbo",
+                                                    "detail": "html 코드"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "participationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "personnel": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "region": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "personnel": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "region": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "scale": {
+                                                    "type": "string"
+                                                },
+                                                "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/{social}/callback": {
+            "get": {
+                "tags": ["Auth"],
+                "summary": "소셜로그인하기",
+                "description": "소셜 로그인 ( google, kakao , naver 셋 중 하나)"
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "로그인하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataFound": {
+                                        "summary": "일치하는 id가 있는 경우",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                    },
+                                    "noData": {
+                                        "summary": "일치하는 id가 없는 경우",
+                                        "value": "id가 일치하는 유저가 없습니다"
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": ["id : id must be an string"]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/restoreAccessToken": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "refreshToken으로 accessToken 재발급하기",
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "accessToken": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "토큰 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "errorMessage": "토큰 형식이 일치하지 않습니다."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "토큰 인증 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "errorMessage": "로그인 후 이용 가능한 기능입니다."
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "errorMessage": "이미 로그아웃한 refreshToken입니다."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/logout": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "로그아웃하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "로그아웃 성공": {
+                                        "value": true
+                                    },
+                                    "로그아웃 실패": {
+                                        "value": false
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "errorMessage": "이미 로그아웃한 accessToken입니다."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

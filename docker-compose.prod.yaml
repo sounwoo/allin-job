@@ -1,21 +1,13 @@
 version: '3.7'
 
 services:
-    # db:
-    #     image: mysql:latest
-    #     container_name: db
-    #     restart: always
-    #     environment:
-    #         MYSQL_DATABASE: All_DB
-    #         MYSQL_ROOT_PASSWORD: root
-    #     ports:
-    #         - 3306:3306
-
     all-backend:
-        images: onionsss11/allinjob:1.0
+        build:
+            context: .
+            dockerfile: dockerfile.prod
         container_name: all-backend
         env_file:
-            - .env.prod
+            - .env
         ports:
             - 4000:4000
 

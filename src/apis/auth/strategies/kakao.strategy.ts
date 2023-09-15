@@ -1,8 +1,6 @@
 import passport from 'passport';
-import {
-    Strategy as KakaoStrategy,
-    StrategyOption,
-} from 'passport-kakao';
+import { Strategy as KakaoStrategy, StrategyOption } from 'passport-kakao';
+import { url } from '../../../common/util/callbackUrl';
 
 const registerKakaoStrategy = () => {
     passport.use(
@@ -10,26 +8,15 @@ const registerKakaoStrategy = () => {
             {
                 clientID: process.env.KAKAO_CLIENT_ID,
                 clientSecret: process.env.KAKAO_CLIENT_SEVRET,
-                callbackURL:
-                    'http://localhost:4000/login/kakao/callback',
+                callbackURL: `${url.origin}login/kakao/callback`,
             } as StrategyOption,
-            async (
-                accessToken: string,
-                refreshToken: string,
-                profile,
-                done,
-            ) => {
+            (_: string, __: string, profile, done) => {
                 try {
-                    const user = {
+                    done(null, {
                         email: profile._json.kakao_account.email,
                         provider: profile.provider,
-                    };
-                    done(null, {
-                        email: user.email,
-                        provider: user.provider,
                     });
                 } catch (error) {
-                    console.error(error);
                     done(error);
                 }
             },

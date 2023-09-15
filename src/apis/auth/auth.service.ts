@@ -5,9 +5,11 @@ import {
     IAuthLogin,
     IAuthRestoreAccessToken,
     IAuthSetRefreshToken,
-    IOAuthUser,
+    IAuthValidateUser,
 } from './interfaces/auth.interface';
 import jwt from 'jsonwebtoken';
+import redis from '../../database/redisConfig';
+import { saveBlackList } from '../../common/validator/saveBlackList';
 
 export class AuthService {
     private userService: UserService;
@@ -16,66 +18,75 @@ export class AuthService {
         this.userService = new UserService();
     }
 
-    async validateUser(
-        req: Request & IOAuthUser,
-        res: Response,
-    ): Promise<boolean> {
-        // 리팩토링 예정
-        // const email = req.user?.email && req.user.email;
-
-        // const { email, provider } = req.user!;
-        const { email } = req.user!;
-
-        const isUser = await this.userService.findOneUserByEmail(
-            email!,
-        );
+    async validateUser({
+        email,
+        res,
+    }: IAuthValidateUser): Promise<boolean | object> {
+        const isUser = await this.userService.findOneUserByEmail(email!);
 
         if (!isUser) {
-            // res.status(200).json({ email, provider });
             return false;
         } else {
-            this.setRefreshToken({ user: isUser, req, res });
+            this.setRefreshToken({ id: isUser.id, res });
             return true;
         }
     }
 
-    async login({ user, req, res }: IAuthLogin): Promise<string> {
-        this.setRefreshToken({ user, req, res });
+    async login({ id, res }: IAuthLogin): Promise<string> {
+        const isUser = await this.userService.isUserByID(id);
+        if (!isUser) return 'id가 일치하는 유저가 없습니다';
 
-        const accessToken = this.getAccessToken({ user });
-        return accessToken;
+        this.setRefreshToken({ id, res });
+
+        return this.getAccessToken({ id });
     }
 
-    getAccessToken({ user }: IAuthGetAccessToken): string {
-        return jwt.sign(
-            {
-                sub: user.id,
-            },
-            process.env.JWT_ACCESS_KEY!,
-            {
-                expiresIn: '1h',
-            },
-        );
+    async logout(req: Request): Promise<boolean> {
+        const dateNow = Math.floor(Date.now() / 1000);
+        const tokens = saveBlackList({ req, dateNow });
+
+        await Promise.all([
+            redis.set(
+                `accessToken:${tokens.acc().token}`,
+                'acc',
+                'EX',
+                tokens.acc().exp,
+            ),
+            redis.set(
+                `refreshToken:${tokens.ref().token}`,
+                'ref',
+                'EX',
+                tokens.ref().exp,
+            ),
+        ]);
+        return true;
     }
 
-    setRefreshToken({ user, req, res }: IAuthSetRefreshToken) {
+    getAccessToken({ id }: IAuthGetAccessToken): string {
+        return jwt.sign({ sub: id }, process.env.JWT_ACCESS_KEY!, {
+            expiresIn: '1h',
+        });
+    }
+
+    setRefreshToken({ id, res }: IAuthSetRefreshToken): void {
         const refreshToken = jwt.sign(
-            {
-                sub: user.id,
-            },
+            { sub: id },
             process.env.JWT_REFRESH_KEY!,
-            {
-                expiresIn: '2w',
-            },
+            { expiresIn: '2w' },
         );
 
+        // 로컬 환경
+        // res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+
+        // 배포 환경
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader(
             'Set-Cookie',
-            `refreshToken=${refreshToken}; path=/;`,
+            `refreshToken=${refreshToken};path=/; domain=.allinjob.co.kr; SameSite=None; Secure; httpOnly`,
         );
     }
 
-    restoreAccessToken({ user }: IAuthRestoreAccessToken): string {
-        return this.getAccessToken({ user });
+    restoreAccessToken({ id }: IAuthRestoreAccessToken): string {
+        return this.getAccessToken({ id });
     }
 }

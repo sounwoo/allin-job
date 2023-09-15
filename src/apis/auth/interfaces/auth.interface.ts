@@ -1,34 +1,29 @@
-import { User } from '@prisma/client';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { CreateUserDTO } from '../../users/dto/create-user.dto';
+import { UserID, UserIdAndContext } from '../../../common/interface';
 
-export interface IOAuthUser {
+export interface IOAuthSocialUser {
     user?: {
-        email?: string;
-        provider?: string;
+        email?: CreateUserDTO['email'];
+        provider?: CreateUserDTO['provider'];
     };
 }
 
 export interface IContext {
-    req: Request & IOAuthUser;
+    req: Request;
     res: Response;
+    next: NextFunction;
 }
 
-export interface IAuthGetAccessToken {
-    user: User;
-}
+export interface IAuthGetAccessToken extends UserID {}
 
-export interface IAuthSetRefreshToken {
-    user: User;
-    req: IContext['req'];
-    res: IContext['res'];
-}
+export interface IAuthRestoreAccessToken extends UserID {}
 
-export interface IAuthLogin {
-    user: User;
-    req: IContext['req'];
-    res: IContext['res'];
-}
+export interface IAuthSetRefreshToken extends UserIdAndContext {}
 
-export interface IAuthRestoreAccessToken {
-    user: User;
+export interface IAuthLogin extends UserIdAndContext {}
+
+export interface IAuthValidateUser {
+    email: CreateUserDTO['email'];
+    res: Response;
 }

@@ -4,8 +4,8 @@ WORKDIR /backend/
 COPY ./package.json /backend/
 COPY ./yarn.lock /backend/
 COPY ./prisma/schema.prisma ./prisma/schema.prisma
-RUN yarn install --production
-RUN yarn prisma generate --production
+RUN yarn install
+RUN yarn prisma generate
 
 COPY . /backend/
-CMD yarn start:prod
+CMD yarn start

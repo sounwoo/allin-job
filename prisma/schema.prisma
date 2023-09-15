@@ -10,15 +10,137 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Interest {
+  literature
+  design
+  IT
+  financial
+  entertainment
+  language
+  entrepreneurship
+  employment
+}
+
+enum Provider {
+  kakao
+  naver
+  google
+}
+
 model User {
-  id    String  @id @unique @default(uuid())
-  email String  @unique
-  provider String
-  name  String @db.VarChar(5)
-  nickname String @db.VarChar(10)
-  phone String @db.VarChar(13)
-  profileImage String 
-  major String
-  interest String
-  keyword String
+  id           String        @id @unique @default(uuid())
+  email        String        @unique
+  provider     Provider
+  name         String        @db.VarChar(5)
+  nickname     String        @unique @db.VarChar(10)
+  phone        String        @db.VarChar(13)
+  profileImage String
+  major        String
+  interest     Interest
+  keyword      Keyword[] @relation("UserKeyword")
+}
+
+model Keyword {
+  id      String        @id @unique @default(uuid())
+  keyword String        @unique
+  users   User[] @relation("UserKeyword")
+}
+
+// 대용량 데이터를 생각해서 -> 엘라스틱 서치
+model Outside {
+  id                    String @id @unique @default(uuid())
+  Dday                  String
+  title                 String
+  view                  Int
+  mainImage             String @db.LongText
+  organization          String
+  enterprise            String
+  target                String
+  applicationPeriod     String
+  participationPeriod   String
+  personnel             String
+  region                String
+  preferentialTreatment String
+  homePage              String @db.LongText
+  detail                String @db.LongText
+  benefits              String
+  interests             String
+  field                 String
+  month                 Int
+}
+
+model Intern {
+  id                    String @id @unique @default(uuid())
+  Dday                  String
+  title                 String
+  view                  Int
+  mainImage             String @db.LongText
+  organization          String
+  enterprise            String
+  applicationPeriod     String
+  preferentialTreatment String
+  personnel             String
+  target                String
+  region                String
+  homePage              String @db.LongText
+  detail                String @db.LongText
+}
+
+model Competition {
+  id                String @id @unique @default(uuid())
+  Dday              String
+  title             String
+  view              Int
+  mainImage         String @db.LongText
+  organization      String
+  enterprise        String
+  target            String
+  scale             String
+  applicationPeriod String
+  benefits          String
+  homePage          String @db.LongText
+  interests         String
+  detail            String @db.LongText
+}
+
+model Language {
+  id                String  @id @unique @default(uuid())
+  path              String
+  homePage          String
+  turn              String?
+  Dday              String
+  resultDay         String
+  applicationPeriod String
+}
+
+model QNet {
+  id            String         @id @unique @default(uuid())
+  detail        String         @db.LongText
+  scheduleInfo  String         @db.LongText
+  jmNm          String
+  engJmNm       String?
+  instiNm       String
+  implNm        String
+  examSchedules ExamSchedule[]
+  categoryId    String
+  category      Category       @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id      String @id @unique @default(uuid())
+  keyword String @unique
+  qnet    QNet[]
+}
+
+model ExamSchedule {
+  id          String @id @unique @default(uuid())
+  turn        String
+  wtReceipt   String
+  wtDday      String
+  wtResultDay String
+  ptReceipt   String
+  ptDday      String
+  resultDay   String
+  qNetId      String
+  qNet        QNet   @relation(fields: [qNetId], references: [id])
 }
