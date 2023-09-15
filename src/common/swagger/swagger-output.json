@@ -612,7 +612,7 @@
                             "format": "page",
                             "example": "1"
                         },
-                        "description": "페이지 네이션"
+                        "description": "페이지 네이션 (자격증 제외)"
                     },
                     {
                         "name": "field",
@@ -682,7 +682,7 @@
                             "format": "scale",
                             "example": "100"
                         },
-                        "description": "공모전 (시상 규모) / 1억은 1 / 2010만원이면 2010"
+                        "description": "공모전 (시상 규모) 1억단위 10000 / 이상,이하"
                     },
                     {
                         "name": "target",
