@@ -71,5 +71,5 @@ jobs:
                   --command "sudo cd allinjob" \
                   --command "echo 'y' | sudo docker system prune -a && 
                             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && 
-                            sudo docker service update --replicas 3 allinjob --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend && 
+                            sudo docker service update --replicas 3 allinjob_all-backend --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend && 
                             sudo docker service scale allinjob_all-backend=1"
