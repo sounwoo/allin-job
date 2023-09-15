@@ -1,9 +1,8 @@
 name: allinjob-ci-cd
 
 on:
-    workflow_dispatch:
     push:
-      branches: [dev]
+        branches: [dev]
 
 jobs:
     allinjob-service-deploy:
