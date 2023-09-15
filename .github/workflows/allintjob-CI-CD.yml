@@ -3,7 +3,7 @@ name: allinjob-ci-cd
 on:
     # push:
     # branches: [ci-cd]
-    pull_request:
+    push:
       branches:
       - dev
 
