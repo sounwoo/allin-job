@@ -1,12 +1,13 @@
 import { IsEmail, IsEnum, IsString, Length, Matches } from 'class-validator';
-import { Provider, Interest } from '@prisma/client';
+import { Provider } from '@prisma/client';
+
+export interface Interests {
+    [key: string]: string[];
+}
 
 export class CreateUserDTO {
     @IsEmail()
     email: string;
-
-    @IsEnum(Provider)
-    provider: Provider;
 
     @Length(2, 5)
     @Matches(/^[a-zA-Z가-힣]+$/)
@@ -25,21 +26,15 @@ export class CreateUserDTO {
     @IsString()
     major: string;
 
-    @IsEnum(Interest)
-    interest: Interest;
-
-    @IsString({ each: true }) // 각 문자열 따로 검증
-    keywords: string[];
+    interests: Interests[];
 
     constructor(data: CreateUserDTO) {
         this.email = data.email;
-        this.provider = data.provider;
         this.name = data.name;
         this.nickname = data.nickname;
         this.phone = data.phone;
         this.profileImage = data.profileImage;
         this.major = data.major;
-        this.interest = data.interest;
-        this.keywords = data.keywords;
+        this.interests = data.interests;
     }
 }

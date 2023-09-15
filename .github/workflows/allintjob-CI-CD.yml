@@ -1,0 +1,76 @@
+name: allinjob-ci-cd
+
+on:
+    push:
+        branches: [ci-cd]
+    # pull_request:
+    #   branches: [ "dev" ]
+
+jobs:
+    allinjob-service-deploy:
+        name: allinjob-service-deploy
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: yarn install
+              run: yarn install
+
+            - name: create .env file
+              run: |
+                  touch .env
+                  cat << EOF >> .env
+                  ${{ secrets.ALLINJOB_SECRET }}
+
+    build-image:
+        needs: allinjob-service-deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v1
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v1
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and Push Docker image
+              uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+              with:
+                  context: .
+                  file: ./dockerfile
+                  push: true
+                  tags: ${{ secrets.DOCKER_USERNAME }}/allinjob:1.0
+
+    allinjob-cd:
+        needs: build-image
+        name: allinjob-cd
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - id: 'auth'
+              name: 'GCP Authenticate'
+              uses: 'google-github-actions/auth@v0'
+              with:
+                  credentials_json: ${{ secrets.GCP_CREDENTIALS}}
+
+            - name: SSH in && Scale up && New image Update && Scale down
+              run: |-
+                  gcloud compute ssh --zone ${{ secrets.GCP_ZONE }} ${{ secrets.GCP_VM_NAME }} --project ${{ secrets.GCP_PROJECT_ID }} \
+                  --command "sudo cd allinjob" \
+                  --command "echo 'y' | sudo docker system prune -a && 
+                            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && 
+                            sudo docker service scale allinjob_all-backend=3 &&
+                            sudo docker service update --update-delay 5s --with-registry-auth --image onionsss11/allinjob:1.0 allinjob_all-backend && 
+                            sudo docker service scale allinjob_all-backend=1"
