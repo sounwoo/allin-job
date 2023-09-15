@@ -1,9 +1,8 @@
 name: allinjob-ci-cd
 
 on:
-    # push:
-    # branches: [ci-cd]
-    pull_request:
+    workflow_dispatch:
+    push:
         branches: [dev]
 
 jobs:
