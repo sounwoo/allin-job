@@ -50,7 +50,6 @@ export class CrawilingService {
                 ];
             }
         }
-        console.log(keywords);
 
         const obj = {
             outside: () =>
@@ -66,7 +65,7 @@ export class CrawilingService {
                         id: true,
                         title: true,
                         view: true,
-                        organization: true,
+                        enterprise: true,
                         Dday: true,
                         mainImage: true,
                         applicationPeriod: true,
@@ -88,7 +87,7 @@ export class CrawilingService {
                         id: true,
                         title: true,
                         view: true,
-                        organization: true,
+                        enterprise: true,
                         Dday: true,
                         mainImage: true,
                         applicationPeriod: true,
@@ -110,7 +109,7 @@ export class CrawilingService {
                         id: true,
                         title: true,
                         view: true,
-                        organization: true,
+                        enterprise: true,
                         Dday: true,
                         mainImage: true,
                         applicationPeriod: true,
