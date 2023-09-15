@@ -1,6 +1,7 @@
 name: allinjob-ci-cd
 
 on:
+    workflow_dispatch:
     push:
       branches: [dev]
 
