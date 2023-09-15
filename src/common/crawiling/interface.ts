@@ -92,7 +92,7 @@ export type findCrawiling =
     | {
           id: string;
           title: string;
-          organization: string;
+          enterprise: string;
           Dday: string;
           mainImage: string;
           applicationPeriod: string;

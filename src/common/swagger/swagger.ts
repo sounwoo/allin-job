@@ -17,7 +17,7 @@ const options = {
             description: 'User관련 API',
         },
         {
-            name: 'Crawiling',
+            name: 'Crawling',
             description: '크롤링 데이터 조회 API',
         },
     ],
