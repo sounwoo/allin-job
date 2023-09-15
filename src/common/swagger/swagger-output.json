@@ -72,14 +72,28 @@
                                         "value": {
                                             "id": "adfhttwerqwrasxczx",
                                             "email": "abc@abc.com",
-                                            "provider": "kakao",
+                                            "provider": "kakao, naver, google",
                                             "name": "홍길동",
                                             "nickname": "닉네임",
                                             "phone": "01012345678",
                                             "profileImage": "awihqwifbjqjfbo",
                                             "major": "컴퓨터공학",
-                                            "interest": "IT-프로그래밍",
-                                            "keyword": "웹개발"
+                                            "interests": [
+                                                {
+                                                    "id": "asdsadasdasdasdasdsef",
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "interestId": "adwwafefewfsdfdsgew",
+                                                    "keywordId": "asdwfwgregrerfsfsefe",
+                                                    "interest": {
+                                                        "id": "adwwafefewfsdfdsgew",
+                                                        "interest": "공모전, 대외활동, 자격증, 어학, 인턴"
+                                                    },
+                                                    "keyword": {
+                                                        "id": "asdwfwgregrerfsfsefe",
+                                                        "keyword": "기획/아이디어, 광고/마케팅, 사진/영상/UCC, 디자인/순수예술/공예, 네이밍/슬로건, 캐릭터/만화/게임, 건축/건설/인테리어, 과학/공학, 예체능/패션, 전시/패션, 문학/시나리오, 해외, 학술, 창업, 기타, 서포터즈, 해외탐방/무료, 해외탐방/유료, 봉사단/해외, 봉사단/국내, 마케터, 기자단, 강연, 멘토링, 경영/회계/사무, 보건/의료, 문화예술/다지안/방송, 사회복지/종교, 이용/숙박/여행/오락/스포츠, 음식서비스, 기계, 정보통신, 식품/가공, 환경/에너지, TOEIC, TOEIC.speaking and writing tests, TOEFL, TOEIC bridge, TOEIC bridge.speaking and writing tests, 대기업, 중소기업, 공공기관/공기업, 외국계기업, 중견기업, 비영리단체/협회/재단, 동아리/학생자치단체"
+                                                    }
+                                                }
+                                            ]
                                         }
                                     },
                                     "noData": {
@@ -116,11 +130,47 @@
                                                 "major": {
                                                     "type": "string"
                                                 },
-                                                "interest": {
-                                                    "type": "string"
-                                                },
-                                                "keyword": {
-                                                    "type": "string"
+                                                "interests": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "interestId": {
+                                                                "type": "string"
+                                                            },
+                                                            "keywordId": {
+                                                                "type": "string"
+                                                            },
+                                                            "interest": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "interest": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "keyword": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "keyword": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         },
@@ -189,7 +239,7 @@
                                         "summary": "아이디가 있는 경우",
                                         "value": {
                                             "email": "abc@abc.com",
-                                            "provider": "kakao"
+                                            "provider": "kakao, naver, google"
                                         }
                                     },
                                     "noData": {
@@ -248,7 +298,6 @@
             "post": {
                 "tags": ["Users"],
                 "summary": "회원가입하기",
-                "description": "provider: naver, google, kakao 중 선택 <br> interest: literature, design, IT, financial, entertainment, language, entrepreneurship, employment 중 선택",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -259,10 +308,6 @@
                                     "email": {
                                         "type": "string",
                                         "example": "abc@abc.com"
-                                    },
-                                    "provider": {
-                                        "type": "string",
-                                        "example": "google"
                                     },
                                     "name": {
                                         "type": "string",
@@ -284,19 +329,33 @@
                                         "type": "string",
                                         "example": "컴퓨터공학"
                                     },
-                                    "interest": {
-                                        "type": "string",
-                                        "example": "IT"
-                                    },
-                                    "keywords": {
+                                    "interests": {
                                         "type": "array",
                                         "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "웹개발",
-                                            "응용 프로그램 개발"
-                                        ]
+                                            "type": "object",
+                                            "properties": {
+                                                "공모전": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "기획/아이디어",
+                                                        "광고/마케팅"
+                                                    ]
+                                                },
+                                                "대외활동": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "서포터즈",
+                                                        "해외탐방/무료"
+                                                    ]
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -309,82 +368,20 @@
                         "content": {
                             "application/json": {
                                 "examples": {
-                                    "dataFound": {
+                                    "NoEMail": {
                                         "summary": "일치하는 이메일이 없는 경우",
-                                        "value": {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "email": "abc@abc.com",
-                                            "provider": "kakao",
-                                            "name": "홍길동",
-                                            "nickname": "닉네임",
-                                            "phone": "01012345678",
-                                            "profileImage": "awihqwifbjqjfbo",
-                                            "major": "컴퓨터공학",
-                                            "interest": "IT",
-                                            "keywords": [
-                                                {
-                                                    "userId": "adfhttwerqwrasxczx",
-                                                    "keywordId": "asdsadasdwdwfdv"
-                                                },
-                                                {
-                                                    "userId": "adfhttwerqwrasxczx",
-                                                    "keywordId": "eigeriigoerngkr"
-                                                }
-                                            ]
-                                        }
+                                        "description": "생성된 유저 ID 반환 및 쿠키에 이메일 전송",
+                                        "value": "asdwfsdvrgsdfaefesfgsefe"
                                     },
-                                    "noData": {
-                                        "summary": "일치하는 이메일이 있는 경우",
-                                        "value": "이미 존재하는 이메일이 있습니다."
+                                    "NoLogin": {
+                                        "summary": "소셜로그인한 이메일과 일치하지 않는 경우",
+                                        "value": "로그인한 이메일과 일치하지 않습니다."
                                     }
                                 },
                                 "schema": {
                                     "oneOf": [
                                         {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "email": {
-                                                    "type": "string"
-                                                },
-                                                "provider": {
-                                                    "type": "string"
-                                                },
-                                                "name": {
-                                                    "type": "string"
-                                                },
-                                                "nickname": {
-                                                    "type": "string"
-                                                },
-                                                "phone": {
-                                                    "type": "string"
-                                                },
-                                                "profileImage": {
-                                                    "type": "string"
-                                                },
-                                                "major": {
-                                                    "type": "string"
-                                                },
-                                                "interest": {
-                                                    "type": "string"
-                                                },
-                                                "keyword": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "userId": {
-                                                                "type": "string"
-                                                            },
-                                                            "keywordId": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                            "type": "string"
                                         },
                                         {
                                             "type": "string"
@@ -852,7 +849,7 @@
             "get": {
                 "tags": ["Auth"],
                 "summary": "소셜로그인하기",
-                "description": "소셜 로그인 ( google, kakao , naver 셋 중 하나)"
+                "description": "소셜 로그인 ( google 또는 kakao)"
             }
         },
         "/login": {

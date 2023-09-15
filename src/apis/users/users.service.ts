@@ -12,6 +12,14 @@ export class UserService {
             where: {
                 email,
             },
+            include: {
+                interests: {
+                    include: {
+                        interest: true,
+                        keyword: true,
+                    },
+                },
+            },
         });
     }
 
@@ -46,9 +54,6 @@ export class UserService {
 
         if (!(await redis.get(userData.email)))
             return '로그인한 이메일과 일치하지 않습니다.';
-
-        if (await this.findOneUserByEmail(userData.email))
-            return '이미 존재하는 이메일이 있습니다.';
 
         const create = await prisma.$transaction(async (prisma) => {
             const provider = await redis.get(userData.email);
