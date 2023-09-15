@@ -48,8 +48,8 @@ class AuthController {
                 });
 
                 const redirectPath = validateUser
-                    ? 'http://localhost:4000' // 회원가입 되어 있을때 리다이렉트 주소
-                    : `http://localhost:4000`; // 회원가입 안되어 있을때 리다이렉트 주소
+                    ? 'https://allinjob.co.kr' // 회원가입 되어 있을때 리다이렉트 주소
+                    : `https://allinjob.co.kr`; // 회원가입 안되어 있을때 리다이렉트 주소
 
                 res.redirect(redirectPath);
             } catch (err) {
