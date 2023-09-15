@@ -1,11 +1,8 @@
 name: allinjob-ci-cd
 
 on:
-    # push:
-    # branches: [ci-cd]
     push:
-      branches:
-      - dev
+      branches: [dev]
 
 jobs:
     allinjob-service-deploy:
