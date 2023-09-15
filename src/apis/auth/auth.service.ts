@@ -10,6 +10,8 @@ import {
 import jwt from 'jsonwebtoken';
 import redis from '../../database/redisConfig';
 import { saveBlackList } from '../../common/validator/saveBlackList';
+import { emailProviderType } from '../../common/types';
+import { saveCookie } from '../../common/util/save.cookie';
 
 export class AuthService {
     private userService: UserService;
@@ -19,12 +21,16 @@ export class AuthService {
     }
 
     async validateUser({
-        email,
+        req,
         res,
     }: IAuthValidateUser): Promise<boolean | object> {
+        const { email, provider } = req.user as emailProviderType;
+
         const isUser = await this.userService.findOneUserByEmail(email!);
 
         if (!isUser) {
+            await redis.set(email, provider, 'EX', 3600);
+            saveCookie(res, 'email', email);
             return false;
         } else {
             this.setRefreshToken({ id: isUser.id, res });
@@ -75,15 +81,7 @@ export class AuthService {
             { expiresIn: '2w' },
         );
 
-        // 로컬 환경
-        // res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
-
-        // 배포 환경
-        res.setHeader('Access-Control-Allow-Credentials', 'true');
-        res.setHeader(
-            'Set-Cookie',
-            `refreshToken=${refreshToken};path=/; domain=.allinjob.co.kr; SameSite=None; Secure; httpOnly`,
-        );
+        saveCookie(res, 'refreshToken', refreshToken);
     }
 
     restoreAccessToken({ id }: IAuthRestoreAccessToken): string {

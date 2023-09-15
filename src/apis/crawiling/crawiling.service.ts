@@ -12,61 +12,133 @@ import prisma from '../../database/prismaConfig';
 
 export class CrawilingService {
     async findeCrailing({ ...data }: paths): Promise<findCrawiling> {
-        const { path, ..._data } = data;
+        const { path, page, ..._data } = data;
         const datas: { [key: string]: string } = { ..._data };
 
-        const keywords: object[] = [];
+        let keywords: object[] = [];
         for (const key in _data) {
-            const temp = [
-                ...datas[key]
-                    .split(',')
-                    .map((el: string) => ({ [key]: { contains: el } })),
-            ];
-            keywords.push(...temp);
+            if (key === 'scale') {
+                const [start, end] = datas[key].split(',');
+                keywords = [
+                    ...keywords,
+                    {
+                        [key]: !end
+                            ? { gte: +start }
+                            : { gte: +start || 0, lte: +end || 0 },
+                    },
+                ];
+            } else if (key === 'mainCategory') {
+                keywords = [
+                    ...keywords,
+                    ...datas[key].split(',').map((el: string) => ({
+                        subCategory: { [key]: { keyword: el } },
+                    })),
+                ];
+            } else if (key === 'subCategory') {
+                keywords = [
+                    ...keywords,
+                    ...datas[key]
+                        .split(',')
+                        .map((el: string) => ({ [key]: { keyword: el } })),
+                ];
+            } else {
+                keywords = [
+                    ...keywords,
+                    ...datas[key]
+                        .split(',')
+                        .map((el: string) => ({ [key]: { contains: el } })),
+                ];
+            }
         }
+        console.log(keywords);
 
         const obj = {
             outside: () =>
                 prisma.outside.findMany({
-                    where: {
-                        OR: keywords.length
-                            ? keywords.map((el: object) => el)
-                            : [],
+                    where: keywords.length
+                        ? {
+                              OR: keywords.map((el: object) => el),
+                          }
+                        : {
+                              AND: [],
+                          },
+                    select: {
+                        id: true,
+                        title: true,
+                        view: true,
+                        organization: true,
+                        Dday: true,
+                        mainImage: true,
+                        applicationPeriod: true,
                     },
+                    skip: (+page - 1) * 12,
+                    take: +page * 12,
                 }),
+
             intern: () =>
                 prisma.intern.findMany({
-                    where: {
-                        OR: keywords.length
-                            ? keywords.map((el: object) => el)
-                            : [],
+                    where: keywords.length
+                        ? {
+                              OR: keywords.map((el: object) => el),
+                          }
+                        : {
+                              AND: [],
+                          },
+                    select: {
+                        id: true,
+                        title: true,
+                        view: true,
+                        organization: true,
+                        Dday: true,
+                        mainImage: true,
+                        applicationPeriod: true,
+                        region: true,
                     },
+                    skip: (+page - 1) * 12,
+                    take: +page * 12,
                 }),
             competition: () =>
                 prisma.competition.findMany({
-                    where: {
-                        OR: keywords.length
-                            ? keywords.map((el: object) => el)
-                            : [],
+                    where: keywords.length
+                        ? {
+                              OR: keywords.map((el: object) => el),
+                          }
+                        : {
+                              AND: [],
+                          },
+                    select: {
+                        id: true,
+                        title: true,
+                        view: true,
+                        organization: true,
+                        Dday: true,
+                        mainImage: true,
+                        applicationPeriod: true,
                     },
+                    skip: (+page - 1) * 12,
+                    take: +page * 12,
                 }),
             language: () =>
                 prisma.language.findMany({
                     where: {
                         OR: path.split(',').map((el) => ({ path: el })),
                     },
+                    skip: (+page - 1) * 12,
+                    take: +page * 12,
                 }),
             qnet: () =>
                 prisma.qNet.findMany({
                     where: {
-                        category: {
-                            keyword: data.category && data.category,
-                        },
+                        AND: keywords.length
+                            ? keywords.map((el: object) => el)
+                            : [],
                     },
                     include: {
                         examSchedules: true,
-                        category: {
-                            select: { keyword: true },
+                        subCategory: {
+                            include: {
+                                mainCategory: true,
+                            },
                         },
                     },
                 }),

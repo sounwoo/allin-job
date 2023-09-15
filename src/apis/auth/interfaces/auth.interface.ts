@@ -24,6 +24,6 @@ export interface IAuthSetRefreshToken extends UserIdAndContext {}
 export interface IAuthLogin extends UserIdAndContext {}
 
 export interface IAuthValidateUser {
-    email: CreateUserDTO['email'];
+    req: Request;
     res: Response;
 }

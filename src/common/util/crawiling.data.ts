@@ -1,4 +1,4 @@
-import { Category, Language, QNet } from '@prisma/client';
+import { Language, MainCategory, QNet, SubCategory } from '@prisma/client';
 import prisma from '../../database/prismaConfig';
 import {
     OutsideType,
@@ -94,7 +94,10 @@ export const createLinkareerData = async <T extends object>({
             await prisma.intern.create({ data: data as InternType }),
         competition: async () =>
             await prisma.competition.create({
-                data: data as CompetitionType,
+                data: {
+                    ...(data as CompetitionType),
+                    scale: +(data as CompetitionType).scale,
+                },
             }),
     };
 
@@ -166,19 +169,53 @@ export const examScheduleObj = {
     resultDay: '',
 };
 
-const findOrCreateCategory = async (keyword: string): Promise<Category> => {
-    return await prisma.category.upsert({
+const findSubCategory = async (
+    keyword: string,
+): Promise<SubCategory | null> => {
+    return await prisma.subCategory.findUnique({
         where: { keyword },
-        update: {},
-        create: { keyword },
     });
+};
+
+export const createMainCategory = async (
+    mainKeyword: string,
+    subKeyword: string,
+): Promise<SubCategory> => {
+    let mainCategory;
+
+    try {
+        mainCategory = await prisma.mainCategory.create({
+            data: {
+                keyword: mainKeyword,
+            },
+        });
+    } catch (error) {
+        mainCategory = await prisma.mainCategory.findUnique({
+            where: { keyword: mainKeyword },
+        });
+    }
+
+    let subCategory;
+
+    try {
+        subCategory = await prisma.subCategory.create({
+            data: {
+                keyword: subKeyword,
+                mainCategoryId: mainCategory!.id,
+            },
+        });
+    } catch (error) {
+        subCategory = await findSubCategory(subKeyword);
+    }
+
+    return subCategory!;
 };
 
 export const createQNetData = async ({
     data,
     mdobligFldNm: keyword,
 }: createQNet): Promise<QNet> => {
-    const category = await findOrCreateCategory(keyword);
+    const subCategory = await findSubCategory(keyword);
 
     return await prisma.qNet.create({
         data: {
@@ -188,7 +225,7 @@ export const createQNetData = async ({
                     data: data.examSchedules,
                 },
             },
-            categoryId: category.id,
+            subCategoryId: subCategory!.id,
         },
     });
 };
