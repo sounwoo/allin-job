@@ -122,14 +122,22 @@ model QNet {
   instiNm       String
   implNm        String
   examSchedules ExamSchedule[]
-  categoryId    String
-  category      Category       @relation(fields: [categoryId], references: [id])
+  subCategoryId String
+  subCategory   SubCategory    @relation(fields: [subCategoryId], references: [id])
 }
 
-model Category {
-  id      String @id @unique @default(uuid())
-  keyword String @unique
-  qnet    QNet[]
+model MainCategory {
+  id          String        @id @unique @default(uuid())
+  keyword     String        @unique
+  subCategory SubCategory[]
+}
+
+model SubCategory {
+  id             String       @id @unique @default(uuid())
+  keyword        String       @unique
+  qnet           QNet[]
+  mainCategoryId String
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id])
 }
 
 model ExamSchedule {

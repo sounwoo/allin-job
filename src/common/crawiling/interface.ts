@@ -58,7 +58,9 @@ export type paths = {
     benefits: string;
     month: string;
     target: string;
-    category: string;
+    mainCategory: string;
+    subCategory: string;
+    page: string;
 };
 
 export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
@@ -87,9 +89,15 @@ export interface languagePath {
 }
 
 export type findCrawiling =
-    | Competition[]
-    | Outside[]
-    | Intern[]
+    | {
+          id: string;
+          title: string;
+          organization: string;
+          Dday: string;
+          mainImage: string;
+          applicationPeriod: string;
+          view: number;
+      }[]
     | Language[]
     | QNet[];
 
@@ -102,6 +110,9 @@ export type itmeType = {
     instiNm: string;
     implNm: string;
     mdobligFldNm: string;
+    obligfldnm: string;
+    jmcd: string;
+    mdobligfldnm: string;
 };
 
 export type examSchedule = {

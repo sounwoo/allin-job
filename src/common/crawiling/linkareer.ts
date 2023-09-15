@@ -34,9 +34,6 @@ export const linkareerData = async (path: createLinkareerPaths) => {
                         .map((_, el) => $(el).html())
                         .get()
                         .join(', ');
-                    dataType.scale = dataType.scale!.replace('만 원', '');
-                    dataType.scale = dataType.scale!.replace('억 원', '0000');
-                    dataType.scale = dataType.scale!.replace('억 ', '');
                     dataType.interests = interests;
                     if (path === 'outside') {
                         // 개월수 계산
@@ -60,6 +57,13 @@ export const linkareerData = async (path: createLinkareerPaths) => {
                             .get()
                             .join(', ');
                         dataType.field = field;
+                    } else {
+                        dataType.scale = dataType.scale!.replace('만 원', '');
+                        dataType.scale = dataType.scale!.replace(
+                            '억 원',
+                            '0000',
+                        );
+                        dataType.scale = dataType.scale!.replace('억 ', '');
                     }
                 }
 
