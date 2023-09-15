@@ -17,13 +17,13 @@ enum Provider {
 }
 
 model User {
-  id           String        @id @unique @default(uuid())
-  email        String        @unique
+  id           String    @id @unique @default(uuid())
+  email        String    @unique
   provider     Provider
-  name         String        @db.VarChar(5)
-  nickname     String        @unique @db.VarChar(10)
-  phone        String        @db.VarChar(13)
-  profileImage String                         
+  name         String    @db.VarChar(5)
+  nickname     String    @unique @db.VarChar(10)
+  phone        String    @db.VarChar(13)
+  profileImage String
   major        String
   interests    UserInterest[]
 }
@@ -101,7 +101,7 @@ model Competition {
   organization      String
   enterprise        String
   target            String
-  scale             String
+  scale             Int?
   applicationPeriod String
   benefits          String
   homePage          String @db.LongText
@@ -128,14 +128,22 @@ model QNet {
   instiNm       String
   implNm        String
   examSchedules ExamSchedule[]
-  categoryId    String
-  category      Category       @relation(fields: [categoryId], references: [id])
+  subCategoryId String
+  subCategory   SubCategory    @relation(fields: [subCategoryId], references: [id])
 }
 
-model Category {
-  id      String @id @unique @default(uuid())
-  keyword String @unique
-  qnet    QNet[]
+model MainCategory {
+  id          String        @id @unique @default(uuid())
+  keyword     String        @unique
+  subCategory SubCategory[]
+}
+
+model SubCategory {
+  id             String       @id @unique @default(uuid())
+  keyword        String       @unique
+  qnet           QNet[]
+  mainCategoryId String
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id])
 }
 
 model ExamSchedule {
