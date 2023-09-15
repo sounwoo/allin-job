@@ -2,9 +2,9 @@ name: allinjob-ci-cd
 
 on:
     # push:
-        # branches: [ci-cd]
+    # branches: [ci-cd]
     pull_request:
-      branches: [ "dev" ]
+        branches: [dev]
 
 jobs:
     allinjob-service-deploy:
