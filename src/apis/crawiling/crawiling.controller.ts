@@ -1,6 +1,7 @@
 import { Request, Router, Response } from 'express';
 import { CrawilingService } from './crawiling.service';
 import { createPaths, paths } from '../../common/crawiling/interface';
+import { asyncHandler } from '../../middleware/async.handler';
 
 class CrawilingController {
     router = Router();
@@ -13,8 +14,8 @@ class CrawilingController {
     }
 
     init() {
-        this.router.get('/finde', this.findeCrawiling.bind(this));
-        this.router.get('/data/:path', this.crawiling.bind(this));
+        this.router.get('/finde', asyncHandler(this.findeCrawiling.bind(this)));
+        this.router.get('/data/:path', asyncHandler(this.crawiling.bind(this)));
     }
 
     async findeCrawiling(req: Request, res: Response) {
