@@ -605,6 +605,16 @@
                         "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, (언어는 여러개 조회 가능 toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
                     },
                     {
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "description": "path 경로에 따른 전체 개수 조회"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "schema": {
@@ -721,6 +731,12 @@
                         "content": {
                             "application/json": {
                                 "examples": {
+                                    "dataLength": {
+                                        "summary": "path 경로에 따른 데이터 개수",
+                                        "value": {
+                                            "data": 60
+                                        }
+                                    },
                                     "outsideData": {
                                         "summary": "대외활동 데이터",
                                         "value": {
@@ -824,6 +840,9 @@
                                 },
                                 "schema": {
                                     "oneOf": [
+                                        {
+                                            "type": "number"
+                                        },
                                         {
                                             "type": "object",
                                             "properties": {
