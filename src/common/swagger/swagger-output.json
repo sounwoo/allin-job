@@ -592,7 +592,7 @@
         "/crawling/finde": {
             "get": {
                 "tags": ["Crawling"],
-                "summary": "링커리어 크롤링 데이터 조회하기",
+                "summary": "크롤링 데이터 리스트 조회하기",
                 "parameters": [
                     {
                         "name": "path",
@@ -984,16 +984,422 @@
                                                         }
                                                     }
                                                 },
-                                                "categoryId": {
+                                                "subCategoryId": {
                                                     "type": "string"
                                                 },
-                                                "category": {
+                                                "subCategory": {
                                                     "type": "object",
                                                     "properties": {
-                                                        "keyword": {
+                                                        "mainCategoryId": {
                                                             "type": "string"
+                                                        },
+                                                        "mainCategory": {
+                                                            "keyword": {
+                                                                "type": "string"
+                                                            }
                                                         }
                                                     }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawling/findeDetail": {
+            "get": {
+                "tags": ["Crawling"],
+                "summary": "크롤링 데이터 상세 조회",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "outside"
+                        },
+                        "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, 언어 : toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "02c3c0fd-5716-4982-8347-30920d1f409d"
+                        },
+                        "description": "크롤링 데이터 id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "outsideData": {
+                                        "summary": "대외활동 데이터",
+                                        "value": {
+                                            "data": {
+                                                "id": "대외활동 id : asdasda",
+                                                "Dday": "남은 일수 : D-10",
+                                                "title": "제목 : 모집",
+                                                "view": 100,
+                                                "mainImage": "이미지 url",
+                                                "organization": "조직 : (주)~~",
+                                                "enterprise": "주최기관 : 대기업",
+                                                "applicationPeriod": "접수기간 : 23.9.12 ~ 23.9.18",
+                                                "participationPeriod": "활동기간 : 23.10.4 ~ 23.12.31",
+                                                "preferentialTreatment": "우대상항 : 컴퓨터 활용능력, 휴학 중/시간 투자 가능",
+                                                "personnel": "모집 인원 : 10명",
+                                                "target": "참여 대상 : 대학생",
+                                                "region": "지역 : 서울",
+                                                "hompage": "주체 홈페이지 :awihqwifbjqjfbo",
+                                                "benefits": "활동 혜택 : 활동비,입사시 혜택",
+                                                "interests": "관심 분야 : 콘텐츠, 디자인/사진/영상",
+                                                "field": "활동 분야 : 서포터즈 마케터",
+                                                "detail": "html 코드"
+                                            }
+                                        }
+                                    },
+                                    "internData": {
+                                        "summary": "인턴 데이터",
+                                        "value": {
+                                            "data": {
+                                                "id": "인턴 id : adfhttwerqwrasxczx",
+                                                "Dday": "남은 일수 : D-10",
+                                                "title": "제목",
+                                                "view": 100,
+                                                "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                "organization": "조직 : 한국정보인증",
+                                                "enterprise": "주체 기관 : 대기업",
+                                                "applicationPeriod": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                "preferentialTreatment": "모집 직무 : IT/인터넷",
+                                                "personnel": "채용인원 : 10명",
+                                                "target": "채용형태 : 인턴",
+                                                "region": "지역 : 서울",
+                                                "hompage": "채용 홈페이지 : http://~~",
+                                                "detail": "html 코드"
+                                            }
+                                        }
+                                    },
+                                    "competitionData": {
+                                        "summary": "공모전 데이터",
+                                        "value": {
+                                            "data": {
+                                                "id": "공모전 id : adfhttwerqwrasxczx",
+                                                "Dday": "남은 일수 : D-10",
+                                                "title": "제목",
+                                                "view": 100,
+                                                "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                "organization": "조직 : 한국교육개발원",
+                                                "enterprise": "주체 기관 : 공공기관/공기업",
+                                                "applicationPeriod": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                "scale": 100,
+                                                "benefits": "활동 혜택 : 상장 수여",
+                                                "target": "참여대상 : 청소년, 대학생",
+                                                "interest": "공모분야 : 디자인/순수미술/공예",
+                                                "hompage": "주체 홈페이지 : http://~~",
+                                                "detail": "html 코드"
+                                            }
+                                        }
+                                    },
+                                    "languageData": {
+                                        "summary": "언어별 데이터",
+                                        "value": {
+                                            "data": {
+                                                "id": "언어별 id : adfhttwerqwrasxczx",
+                                                "path": "조회 목록 : toeic,toeicBR",
+                                                "homePage": "접수 홈페이지 : http://~~",
+                                                "turn": "회차 : 1회차 or null",
+                                                "Dday": "시험날짜 : 2023.11.26(일)오전9시20분",
+                                                "resultDay": "결과 발표 날짜 : 2023.12.06(수)낮12시",
+                                                "applicationPeriod": "접수 기간 : 정기접수:2023.10.09(월)오전10시~2023.11.13(월)오전10시특별추가:2023.11.15(수)오전10시~2023.11.23(목)낮12시"
+                                            }
+                                        }
+                                    },
+                                    "qnetData": {
+                                        "summary": "자격증 데이터",
+                                        "value": {
+                                            "data": {
+                                                "id": "자격증 id : adfhttwerqwrasxczx",
+                                                "detail": "html 코드",
+                                                "scheduleInfo": "시험 일정 설명 : html 코드",
+                                                "jmNm": "자격증명 : 에너지산업기사",
+                                                "engJmNm": "자격증 영어명 : Engineer Energy Management or null",
+                                                "instiNm": "과련부처 : 통겨청",
+                                                "implNm": "시행기관 : 한국산업인력공단",
+                                                "examSchedules": [
+                                                    {
+                                                        "id": "회차 id : adfhttwerqwrasxczx",
+                                                        "turn": "회차 : 2023년정기기사4회",
+                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                        "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                        "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                    }
+                                                ],
+                                                "subCategoryId": "서브카테고리 id : adfhttwerqwrasxczx"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "participationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "personnel": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "region": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "interests": {
+                                                    "type": "string"
+                                                },
+                                                "field": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "personnel": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "region": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "organization": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                },
+                                                "scale": {
+                                                    "type": "number"
+                                                },
+                                                "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "interest": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "turn": {
+                                                    "type": "string | null"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "resultDay": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "detail": {
+                                                    "type": "string"
+                                                },
+                                                "scheduleInfo": {
+                                                    "type": "string"
+                                                },
+                                                "jmNm": {
+                                                    "type": "string"
+                                                },
+                                                "engJmNm": {
+                                                    "type": "string | null"
+                                                },
+                                                "instiNm": {
+                                                    "type": "string"
+                                                },
+                                                "implNm": {
+                                                    "type": "string"
+                                                },
+                                                "examSchedules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "turn": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtResultDay": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "resultDay": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "subCategoryId": {
+                                                    "type": "string"
                                                 }
                                             }
                                         }

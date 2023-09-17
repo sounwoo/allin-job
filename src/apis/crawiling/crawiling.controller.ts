@@ -42,7 +42,7 @@ class CrawlingController {
     async findeDetailCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { path, id } = req.query as findeDetailType;
-        res.status(400).json({
+        res.status(200).json({
             data: await this.crawlingService.findeDetailCrawling({ path, id }),
         });
     }
