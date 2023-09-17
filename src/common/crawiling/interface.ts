@@ -63,6 +63,11 @@ export type paths = {
     page: string;
 };
 
+export type findeDetailType = {
+    path: 'outside' | 'intern' | 'competition' | 'qnet';
+    id: string;
+};
+
 export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
 export type createLanguagePaths =
     | 'toeic'
@@ -88,7 +93,7 @@ export interface languagePath {
     dataObj: languageDetail;
 }
 
-export type findCrawiling =
+export type findCrawling =
     | {
           id: string;
           title: string;
@@ -100,6 +105,8 @@ export type findCrawiling =
       }[]
     | Language[]
     | QNet[];
+
+export type findeDetail = Competition | Outside | Intern | Language | QNet;
 
 export type createCrawiling = Competition | Outside | Intern;
 

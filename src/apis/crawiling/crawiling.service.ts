@@ -2,7 +2,9 @@ import {
     createLanguagePaths,
     createLinkareerPaths,
     createPaths,
-    findCrawiling,
+    findCrawling,
+    findeDetail,
+    findeDetailType,
     paths,
 } from '../../common/crawiling/interface';
 import { languageData } from '../../common/crawiling/language';
@@ -10,8 +12,8 @@ import { linkareerData } from '../../common/crawiling/linkareer';
 import { QNetData } from '../../common/crawiling/q-net';
 import prisma from '../../database/prismaConfig';
 
-export class CrawilingService {
-    async findeCrailing({ ...data }: paths): Promise<findCrawiling> {
+export class CrawlingService {
+    async findeCrawling({ ...data }: paths): Promise<findCrawling> {
         const { path, page, ..._data } = data;
         const datas: { [key: string]: string } = { ..._data };
 
@@ -145,7 +147,28 @@ export class CrawilingService {
         return (obj[path] || obj['language'])();
     }
 
-    async crawiling(path: createPaths): Promise<boolean> {
+    async findeDetailCrawling({
+        path,
+        id,
+    }: findeDetailType): Promise<findeDetail | null> {
+        const obj = {
+            outside: () => prisma.outside.findUnique({ where: { id } }),
+            intern: () => prisma.intern.findUnique({ where: { id } }),
+            competition: () => prisma.competition.findUnique({ where: { id } }),
+            language: () => prisma.language.findUnique({ where: { id } }),
+            qnet: () =>
+                prisma.qNet.findUnique({
+                    where: { id },
+                    include: {
+                        examSchedules: true,
+                    },
+                }),
+        };
+
+        return (obj[path] || obj['language'])();
+    }
+
+    async crawling(path: createPaths): Promise<boolean> {
         const linkareer = ['outside', 'intern', 'competition'];
         const language = [
             'toeic',
