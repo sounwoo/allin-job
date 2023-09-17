@@ -63,6 +63,8 @@ export type paths = {
     page: string;
 };
 
+export type fidneCrawlingType = paths & { count: string };
+
 export type findeDetailType = {
     path: 'outside' | 'intern' | 'competition' | 'qnet';
     id: string;
