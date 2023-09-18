@@ -1,5 +1,6 @@
 import { Request, Router, Response } from 'express';
 import { CrawlingService } from './crawiling.service';
+import { Container } from 'typedi';
 import {
     createPaths,
     fidneCrawlingType,
@@ -11,10 +12,11 @@ class CrawlingController {
     router = Router();
     path = '/crawling';
 
-    private crawlingService: CrawlingService;
-    constructor() {
+    constructor(
+        private readonly crawlingService: CrawlingService, //
+    ) {
         this.init();
-        this.crawlingService = new CrawlingService();
+        this.crawlingService = crawlingService;
     }
 
     init() {
@@ -57,4 +59,4 @@ class CrawlingController {
             : res.status(400).json({ result: '실패' });
     }
 }
-export default new CrawlingController();
+export default new CrawlingController(Container.get(CrawlingService));
