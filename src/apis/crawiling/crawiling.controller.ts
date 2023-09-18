@@ -34,9 +34,9 @@ class CrawlingController {
             ...data,
         });
 
-        result.length
-            ? res.status(200).json({ data: count ? result.length : result })
-            : res.status(400).json({ data: null });
+        res.status(200).json({
+            data: result.length ? (count ? result.length : result) : null,
+        });
     }
 
     async findeDetailCrawling(req: Request, res: Response) {
