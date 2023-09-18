@@ -1,3 +1,4 @@
+import { Provider } from '@prisma/client';
 import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
 
 export type email = {
@@ -23,5 +24,5 @@ export type cookie = {
 
 export type emailProviderType = {
     email: CreateUserDTO['email'];
-    provider: CreateUserDTO['provider'];
+    provider: Provider;
 };

@@ -9,6 +9,7 @@ export class CreateUserDTO {
     @IsEmail()
     email: string;
 
+    @IsString()
     @Length(2, 5)
     @Matches(/^[a-zA-Z가-힣]+$/)
     name: string;
@@ -17,6 +18,7 @@ export class CreateUserDTO {
     @Matches(/^[a-zA-Z가-힣]+$/)
     nickname: string;
 
+    @IsString()
     @Matches(/^010[0-9]{8}$/)
     phone: string;
 

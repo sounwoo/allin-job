@@ -12,6 +12,7 @@ import redis from '../../database/redisConfig';
 import { saveBlackList } from '../../common/validator/saveBlackList';
 import { emailProviderType } from '../../common/types';
 import { saveCookie } from '../../common/util/save.cookie';
+import CustomError from '../../common/error/customError';
 
 export class AuthService {
     private userService: UserService;
@@ -40,7 +41,8 @@ export class AuthService {
 
     async login({ id, res }: IAuthLogin): Promise<string> {
         const isUser = await this.userService.isUserByID(id);
-        if (!isUser) return 'id가 일치하는 유저가 없습니다';
+        if (!isUser)
+            throw new CustomError('id가 일치하는 유저가 없습니다', 400);
 
         this.setRefreshToken({ id, res });
 
