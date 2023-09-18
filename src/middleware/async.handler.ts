@@ -5,9 +5,7 @@ export const asyncHandler = (requestHandler: any) => {
         try {
             await requestHandler(req, res, next);
         } catch (err) {
-            console.log(err);
-            res.status(500).send({ error: '서버문제' });
-            // next(err);
+            next(err);
         }
     };
 };

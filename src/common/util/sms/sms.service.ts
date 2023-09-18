@@ -16,10 +16,7 @@ export class SmsService {
         const newLine = '\n';
         const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
         const url2 = `/sms/v2/services/${uri}/messages`;
-        const hmac = CryptoJS.algo.HMAC.create(
-            CryptoJS.algo.SHA256,
-            secretKey,
-        );
+        const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
         hmac.update(method);
         hmac.update(space);
         hmac.update(url2);
@@ -50,8 +47,7 @@ export class SmsService {
             });
             await redis.set(phone, token, 'EX', 300);
             return true;
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
             return false;
         }
     }
@@ -61,9 +57,7 @@ export class SmsService {
         return +randomNumber.toString().padStart(5, '0');
     }
 
-    async validateToken(
-        validateToken: ValidateTokenDTO,
-    ): Promise<boolean> {
+    async validateToken(validateToken: ValidateTokenDTO): Promise<boolean> {
         const { token, phone } = validateToken;
         const getToken = await redis.get(phone);
         return +getToken! === token ? true : false;

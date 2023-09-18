@@ -5,6 +5,7 @@ import {
     IUserFindOneUserByID,
 } from './interfaces/user.interface';
 import redis from '../../database/redisConfig';
+import CustomError from '../../common/error/customError';
 
 export class UserService {
     findOneUserByEmail(email: string): Promise<User | null> {
@@ -53,7 +54,7 @@ export class UserService {
         const { interests, ...userData } = createDTO;
 
         if (!(await redis.get(userData.email)))
-            return '로그인한 이메일과 일치하지 않습니다.';
+            throw new CustomError('로그인한 이메일과 일치하지 않습니다.', 400);
 
         const create = await prisma.$transaction(async (prisma) => {
             const provider = await redis.get(userData.email);

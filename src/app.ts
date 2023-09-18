@@ -9,6 +9,7 @@ import naver from './apis/auth/strategies/naver.strategy';
 import session from 'express-session';
 import swaggerFile from './common/swagger/swagger-output.json';
 import swaggerUi from 'swagger-ui-express';
+import errorHandler from './common/error/error.handler';
 
 const app = express();
 
@@ -29,11 +30,14 @@ app.use(
         secret: process.env.SESSION_SECRET_KEY!,
         resave: false,
         saveUninitialized: false,
+        cookie: {
+            maxAge: 0,
+        },
     }),
 );
 
-Controllers.map((contoller) => {
-    app.use(contoller.path, contoller.router);
+Controllers.map((controller) => {
+    app.use(controller.path, controller.router);
 });
 
 passport.serializeUser((user: any, done) => {
@@ -47,6 +51,8 @@ passport.deserializeUser((user: any, done) => {
 google();
 naver();
 kakao();
+
+app.use(errorHandler);
 
 app.get('/', (_, res) => {
     res.send('서버 연결 완료!!!!!!!!');
