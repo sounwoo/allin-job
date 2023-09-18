@@ -72,8 +72,8 @@ export class CrawlingService {
                         mainImage: true,
                         applicationPeriod: true,
                     },
-                    skip: (+page - 1) * 12,
-                    take: +page * 12,
+                    ...(page && { skip: (+page - 1) * 12 }),
+                    ...(page && { take: +page * 12 }),
                 }),
 
             intern: () =>
@@ -95,8 +95,8 @@ export class CrawlingService {
                         applicationPeriod: true,
                         region: true,
                     },
-                    skip: (+page - 1) * 12,
-                    take: +page * 12,
+                    ...(page && { skip: (+page - 1) * 12 }),
+                    ...(page && { take: +page * 12 }),
                 }),
             competition: () =>
                 prisma.competition.findMany({
@@ -116,16 +116,16 @@ export class CrawlingService {
                         mainImage: true,
                         applicationPeriod: true,
                     },
-                    skip: (+page - 1) * 12,
-                    take: +page * 12,
+                    ...(page && { skip: (+page - 1) * 12 }),
+                    ...(page && { take: +page * 12 }),
                 }),
             language: () =>
                 prisma.language.findMany({
                     where: {
                         OR: path.split(',').map((el) => ({ path: el })),
                     },
-                    skip: (+page - 1) * 12,
-                    take: +page * 12,
+                    ...(page && { skip: (+page - 1) * 12 }),
+                    ...(page && { take: +page * 12 }),
                 }),
             qnet: () =>
                 prisma.qNet.findMany({

@@ -2,8 +2,8 @@ import { Request, Router, Response } from 'express';
 import { CrawlingService } from './crawiling.service';
 import {
     createPaths,
+    fidneCrawlingType,
     findeDetailType,
-    paths,
 } from '../../common/crawiling/interface';
 import { asyncHandler } from '../../middleware/async.handler';
 
@@ -28,21 +28,21 @@ class CrawlingController {
 
     async findeCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
-        const { ...data } = req.query as paths;
+        const { count, ...data } = req.query as fidneCrawlingType;
 
         const result = await this.crawlingService.findeCrawling({
             ...data,
         });
 
         result.length
-            ? res.status(200).json({ data: result })
+            ? res.status(200).json({ data: count ? result.length : result })
             : res.status(400).json({ data: null });
     }
 
     async findeDetailCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { path, id } = req.query as findeDetailType;
-        res.status(400).json({
+        res.status(200).json({
             data: await this.crawlingService.findeDetailCrawling({ path, id }),
         });
     }
