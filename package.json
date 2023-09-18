@@ -33,9 +33,11 @@
         "passport-naver": "^1.0.6",
         "prisma": "^5.1.1",
         "redis": "^4.6.7",
+        "reflect-metadata": "^0.1.13",
         "swagger-autogen": "^2.23.5",
         "swagger-ui-express": "^5.0.0",
         "ts-node": "^10.9.1",
+        "typedi": "^0.10.0",
         "typescript": "^5.1.6"
     },
     "devDependencies": {

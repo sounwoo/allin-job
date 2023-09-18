@@ -1,5 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
+import 'reflect-metadata';
 import cors from 'cors';
 import { Controllers } from './apis/index';
 import passport from 'passport';
