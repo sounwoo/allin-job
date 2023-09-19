@@ -30,7 +30,6 @@ class CrawlingController {
     async findeCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { count, ...data } = req.query as fidneCrawlingType;
-        console.log(count);
         const result = await this.crawlingService.findeCrawling({
             ...data,
         });

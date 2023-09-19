@@ -1,20 +1,21 @@
 import { PrismaClient } from '@prisma/client';
+import { error } from 'console';
+import { Service } from 'typedi';
 
-const prisma = new PrismaClient({
-    datasources: {
-        db: {
-            url: process.env.DATABASE_URL,
-        },
-    },
-});
+@Service()
+class CustomPrismaClient extends PrismaClient {
+    constructor() {
+        super({
+            datasources: {
+                db: {
+                    url: process.env.DATABASE_URL,
+                },
+            },
+        });
+        this.$connect()
+            .then(() => console.log('Prisma 연결 성공'))
+            .catch((err) => console.log('Prisma 실패', err));
+    }
+}
 
-prisma
-    .$connect()
-    .then(() => {
-        console.log('connected');
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-
-export default prisma;
+export default new CustomPrismaClient();
