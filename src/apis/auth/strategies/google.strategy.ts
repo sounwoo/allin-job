@@ -11,7 +11,7 @@ const registerGoogleStrategy = () => {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: `${url.origin}login/google/callback`,
+                callbackURL: `${url.local}login/google/callback`,
             } as _StrategyOptionsBase,
             (_: string, __: string, profile: Profile, done) => {
                 try {

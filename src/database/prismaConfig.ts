@@ -3,7 +3,7 @@ import { error } from 'console';
 import { Service } from 'typedi';
 
 @Service()
-class CustomPrismaClient extends PrismaClient {
+export class CustomPrismaClient extends PrismaClient {
     constructor() {
         super({
             datasources: {
@@ -17,5 +17,3 @@ class CustomPrismaClient extends PrismaClient {
             .catch((err) => console.log('Prisma 실패', err));
     }
 }
-
-export default new CustomPrismaClient();

@@ -8,18 +8,19 @@ import {
     IAuthValidateUser,
 } from './interfaces/auth.interface';
 import jwt from 'jsonwebtoken';
-import redis from '../../database/redisConfig';
+import RedisClient from '../../database/redisConfig';
 import { saveBlackList } from '../../common/validator/saveBlackList';
 import { emailProviderType } from '../../common/types';
 import { saveCookie } from '../../common/util/save.cookie';
 import CustomError from '../../common/error/customError';
+import { Service } from 'typedi';
 
+@Service()
 export class AuthService {
-    private userService: UserService;
-
-    constructor() {
-        this.userService = new UserService();
-    }
+    constructor(
+        private readonly userService: UserService, //
+        private readonly redis: RedisClient,
+    ) {}
 
     async validateUser({
         req,
@@ -30,7 +31,7 @@ export class AuthService {
         const isUser = await this.userService.findOneUserByEmail(email!);
 
         if (!isUser) {
-            await redis.set(email, provider, 'EX', 3600);
+            await this.redis.set(email, provider, 'EX', 3600);
             saveCookie(res, 'email', email);
             return false;
         } else {
@@ -54,13 +55,13 @@ export class AuthService {
         const tokens = saveBlackList({ req, dateNow });
 
         await Promise.all([
-            redis.set(
+            this.redis.set(
                 `accessToken:${tokens.acc().token}`,
                 'acc',
                 'EX',
                 tokens.acc().exp,
             ),
-            redis.set(
+            this.redis.set(
                 `refreshToken:${tokens.ref().token}`,
                 'ref',
                 'EX',

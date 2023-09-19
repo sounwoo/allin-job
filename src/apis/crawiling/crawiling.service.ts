@@ -10,13 +10,13 @@ import {
 import { languageData } from '../../common/crawiling/language';
 import { linkareerData } from '../../common/crawiling/linkareer';
 import { QNetData } from '../../common/crawiling/q-net';
-import PrismaClient from '../../database/prismaConfig';
+import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 
 @Service()
 export class CrawlingService {
     constructor(
-        private readonly prisma = PrismaClient, //
+        private readonly prisma: CustomPrismaClient, //
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<findCrawling> {

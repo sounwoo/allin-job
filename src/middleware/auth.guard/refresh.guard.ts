@@ -1,41 +1,34 @@
 import jwt from 'jsonwebtoken';
 import { cookie } from '../../common/types';
 import { NextFunction, Request, Response } from 'express';
-import redis from '../../database/redisConfig';
+import RedisClient from '../../database/redisConfig';
+import CustomError from '../../common/error/customError';
+import Container from 'typedi';
+import { asyncHandler } from '../async.handler';
 
-const refreshGuard = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-) => {
-    const { cookie } = req.headers as cookie;
-    const [tokenFormat, refreshToken] = cookie
-        ? cookie
-              .replace('=', '= ')
-              .split(' ')
-              .map((token) => token.replace(';', ''))
-        : ['', ''];
-
-    if (tokenFormat !== 'refreshToken=') {
-        return res.status(400).send({
-            errorMessage: '토큰 형식이 일치하지 않습니다.',
-        });
+class RefreshGuard {
+    constructor(
+        private readonly redis: RedisClient, //
+    ) {
+        this.handle = asyncHandler(this.handle.bind(this));
     }
-    try {
-        const blacklist = await redis.get(`refreshToken:${refreshToken}`);
+
+    async handle(req: Request, res: Response, next: NextFunction) {
+        const { cookie } = req.headers as cookie;
+        const [tokenFormat, refreshToken] = cookie && cookie.split('=');
+
+        if (tokenFormat !== 'refreshToken')
+            throw new CustomError('토큰 형식이 일치하지 않습니다.', 400);
+
+        const blacklist = await this.redis.get(`refreshToken:${refreshToken}`);
         if (blacklist)
-            return res.status(400).send('이미 로그아웃한 refreshToken입니다.');
+            throw new CustomError('이미 로그아웃한 refreshToken입니다.', 400);
 
         const validate = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY!);
         req.user = { id: validate.sub as string };
 
         next();
-    } catch (err) {
-        console.log(err);
-        res.status(401).send({
-            errorMessage: '로그인 후 이용 가능한 기능입니다.',
-        });
     }
-};
+}
 
-export default refreshGuard;
+export default new RefreshGuard(Container.get(RedisClient));

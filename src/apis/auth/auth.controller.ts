@@ -6,17 +6,18 @@ import { validateDTO } from '../../common/validator/validateDTO';
 import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
 import { idType } from '../../common/types';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
-import refreshGuard from '../../middleware/auth.guard/refresh.guard';
 import { asyncHandler } from '../../middleware/async.handler';
+import { Container } from 'typedi';
+import RefreshGuard from '../../middleware/auth.guard/refresh.guard';
 
 class AuthController {
     router = Router();
     path = '/login';
 
-    private authService: AuthService;
-    constructor() {
+    constructor(
+        private readonly authService: AuthService, //
+    ) {
         this.init();
-        this.authService = new AuthService();
     }
 
     init() {
@@ -29,13 +30,13 @@ class AuthController {
 
         this.router.post(
             '/logout',
-            AccessGuard,
+            AccessGuard.handle,
             asyncHandler(this.logout.bind(this)),
         );
 
         this.router.post(
             '/restoreAccessToken',
-            refreshGuard,
+            RefreshGuard.handle,
             asyncHandler(this.restoreAccessToken.bind(this)),
         );
     }
@@ -55,8 +56,8 @@ class AuthController {
             });
 
             const redirectPath = validateUser
-                ? 'https://allinjob.co.kr' // 회원가입 되어 있을때 리다이렉트 주소
-                : `https://allinjob.co.kr`; // 회원가입 안되어 있을때 리다이렉트 주소
+                ? 'http://localhost:4000' // 회원가입 되어 있을때 리다이렉트 주소
+                : `http://localhost:4000`; // 회원가입 안되어 있을때 리다이렉트 주소
 
             res.redirect(redirectPath);
         });
@@ -67,11 +68,13 @@ class AuthController {
         const { id } = req.body as idType;
 
         await validateDTO(new LoginDTO({ id }));
-        res.status(200).json(await this.authService.login({ id, res }));
+        res.status(200).json({
+            data: await this.authService.login({ id, res }),
+        });
     }
 
     async logout(req: Request, res: Response) {
-        res.status(200).json(await this.authService.logout(req));
+        res.status(200).json({ data: await this.authService.logout(req) });
     }
 
     async restoreAccessToken(req: Request, res: Response) {
@@ -79,8 +82,10 @@ class AuthController {
         const { id } = req.user as idType;
 
         await validateDTO(new restoreAccessTokenDTO({ id }));
-        res.status(200).json(this.authService.restoreAccessToken({ id }));
+        res.status(200).json({
+            data: this.authService.restoreAccessToken({ id }),
+        });
     }
 }
 
-export default new AuthController();
+export default new AuthController(Container.get(AuthService));

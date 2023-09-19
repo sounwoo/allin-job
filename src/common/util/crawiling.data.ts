@@ -1,5 +1,5 @@
 import { Language, MainCategory, QNet, SubCategory } from '@prisma/client';
-import prisma from '../../database/prismaConfig';
+import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
     OutsideType,
     InternType,
@@ -10,7 +10,7 @@ import {
     createLinkareerPaths,
     createQNet,
 } from '../crawiling/interface';
-
+const prisma = new CustomPrismaClient();
 export const linkareerType = (path: string, i: number) => {
     let url, dataType;
     let interestsType = 'jss14';

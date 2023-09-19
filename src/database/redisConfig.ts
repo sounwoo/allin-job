@@ -1,10 +1,17 @@
 import Redis from 'ioredis';
+import { Service } from 'typedi';
 
-const redisClient = new Redis(process.env.REDIS_URL!);
+@Service()
+export default class RedisClient extends Redis {
+    constructor() {
+        super(process.env.REDIS_URL!);
 
-redisClient.on('connect', () => console.info('Redis 연결성공'));
-redisClient.on('error', (err) =>
-    console.error('Redis Client Error!!!', err.message),
-);
+        this.on('connect', () => {
+            console.info('Redis 연결성공');
+        });
 
-export default redisClient;
+        this.on('error', (err) => {
+            console.error('Redis Client Error!!!', err.message);
+        });
+    }
+}
