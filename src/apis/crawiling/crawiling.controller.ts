@@ -16,7 +16,6 @@ class CrawlingController {
         private readonly crawlingService: CrawlingService, //
     ) {
         this.init();
-        this.crawlingService = crawlingService;
     }
 
     init() {
@@ -31,7 +30,6 @@ class CrawlingController {
     async findeCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { count, ...data } = req.query as fidneCrawlingType;
-
         const result = await this.crawlingService.findeCrawling({
             ...data,
         });
