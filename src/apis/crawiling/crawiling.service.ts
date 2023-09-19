@@ -10,17 +10,13 @@ import {
 import { languageData } from '../../common/crawiling/language';
 import { linkareerData } from '../../common/crawiling/linkareer';
 import { QNetData } from '../../common/crawiling/q-net';
-import prisma from '../../database/prismaConfig';
+import PrismaClient from '../../database/prismaConfig';
 import { Service } from 'typedi';
 
 @Service()
 export class CrawlingService {
     constructor(
-        private readonly outside = prisma.outside, //
-        private readonly intern = prisma.intern,
-        private readonly competition = prisma.competition,
-        private readonly language = prisma.language,
-        private readonly qnet = prisma.qNet,
+        private readonly prisma = PrismaClient, //
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<findCrawling> {
@@ -65,7 +61,7 @@ export class CrawlingService {
 
         const obj = {
             outside: () =>
-                this.outside.findMany({
+                this.prisma.outside.findMany({
                     where: keywords.length
                         ? {
                               OR: keywords.map((el: object) => el),
@@ -87,7 +83,7 @@ export class CrawlingService {
                 }),
 
             intern: () =>
-                this.intern.findMany({
+                this.prisma.intern.findMany({
                     where: keywords.length
                         ? {
                               OR: keywords.map((el: object) => el),
@@ -109,7 +105,7 @@ export class CrawlingService {
                     ...(page && { take: +page * 12 }),
                 }),
             competition: () =>
-                this.competition.findMany({
+                this.prisma.competition.findMany({
                     where: keywords.length
                         ? {
                               OR: keywords.map((el: object) => el),
@@ -130,7 +126,7 @@ export class CrawlingService {
                     ...(page && { take: +page * 12 }),
                 }),
             language: () =>
-                this.language.findMany({
+                this.prisma.language.findMany({
                     where: {
                         OR: path.split(',').map((el) => ({ path: el })),
                     },
@@ -138,7 +134,7 @@ export class CrawlingService {
                     ...(page && { take: +page * 12 }),
                 }),
             qnet: () =>
-                this.qnet.findMany({
+                this.prisma.qNet.findMany({
                     where: {
                         AND: keywords.length
                             ? keywords.map((el: object) => el)
@@ -162,12 +158,13 @@ export class CrawlingService {
         id,
     }: findeDetailType): Promise<findeDetail | null> {
         const obj = {
-            outside: () => this.outside.findUnique({ where: { id } }),
-            intern: () => this.intern.findUnique({ where: { id } }),
-            competition: () => this.competition.findUnique({ where: { id } }),
-            language: () => this.language.findUnique({ where: { id } }),
+            outside: () => this.prisma.outside.findUnique({ where: { id } }),
+            intern: () => this.prisma.intern.findUnique({ where: { id } }),
+            competition: () =>
+                this.prisma.competition.findUnique({ where: { id } }),
+            language: () => this.prisma.language.findUnique({ where: { id } }),
             qnet: () =>
-                this.qnet.findUnique({
+                this.prisma.qNet.findUnique({
                     where: { id },
                     include: {
                         examSchedules: true,
