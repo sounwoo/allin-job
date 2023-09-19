@@ -9,6 +9,7 @@ import AccessGuard from '../../middleware/auth.guard/access.guard';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import RefreshGuard from '../../middleware/auth.guard/refresh.guard';
+import { url } from '../../common/util/callbackUrl';
 
 class AuthController {
     router = Router();
@@ -56,8 +57,8 @@ class AuthController {
             });
 
             const redirectPath = validateUser
-                ? 'http://localhost:4000' // 회원가입 되어 있을때 리다이렉트 주소
-                : `http://localhost:4000`; // 회원가입 안되어 있을때 리다이렉트 주소
+                ? `${url().domain}` // 회원가입 되어 있을때 리다이렉트 주소
+                : `${url().domain}`; // 회원가입 안되어 있을때 리다이렉트 주소
 
             res.redirect(redirectPath);
         });

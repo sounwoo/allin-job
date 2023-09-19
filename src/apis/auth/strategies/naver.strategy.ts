@@ -8,7 +8,7 @@ const registerNaverStrategy = () => {
             {
                 clientID: process.env.NAVER_CLIENT_ID,
                 clientSecret: process.env.NAVER_CLIENT_SECRET,
-                callbackURL: `${url.origin}login/naver/callback`,
+                callbackURL: `${url().domain}login/naver/callback`,
             } as StrategyOption,
             (_: string, __: string, profile: Profile, done) => {
                 try {
