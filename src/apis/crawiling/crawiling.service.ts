@@ -158,10 +158,21 @@ export class CrawlingService {
         id,
     }: findeDetailType): Promise<findeDetail | null> {
         const obj = {
-            outside: () => this.prisma.outside.findUnique({ where: { id } }),
-            intern: () => this.prisma.intern.findUnique({ where: { id } }),
+            outside: () =>
+                this.prisma.outside.update({
+                    where: { id },
+                    data: { view: { increment: 1 } },
+                }),
+            intern: () =>
+                this.prisma.intern.update({
+                    where: { id },
+                    data: { view: { increment: 1 } },
+                }),
             competition: () =>
-                this.prisma.competition.findUnique({ where: { id } }),
+                this.prisma.competition.update({
+                    where: { id },
+                    data: { view: { increment: 1 } },
+                }),
             language: () => this.prisma.language.findUnique({ where: { id } }),
             qnet: () =>
                 this.prisma.qNet.findUnique({
