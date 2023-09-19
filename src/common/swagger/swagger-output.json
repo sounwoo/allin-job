@@ -70,35 +70,39 @@
                                     "dataFound": {
                                         "summary": "회원가입이 되어 있을 때",
                                         "value": {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "email": "abc@abc.com",
-                                            "provider": "kakao, naver, google",
-                                            "name": "홍길동",
-                                            "nickname": "닉네임",
-                                            "phone": "01012345678",
-                                            "profileImage": "awihqwifbjqjfbo",
-                                            "major": "컴퓨터공학",
-                                            "interests": [
-                                                {
-                                                    "id": "asdsadasdasdasdasdsef",
-                                                    "userId": "adfhttwerqwrasxczx",
-                                                    "interestId": "adwwafefewfsdfdsgew",
-                                                    "keywordId": "asdwfwgregrerfsfsefe",
-                                                    "interest": {
-                                                        "id": "adwwafefewfsdfdsgew",
-                                                        "interest": "공모전, 대외활동, 자격증, 어학, 인턴"
-                                                    },
-                                                    "keyword": {
-                                                        "id": "asdwfwgregrerfsfsefe",
-                                                        "keyword": "기획/아이디어, 광고/마케팅, 사진/영상/UCC, 디자인/순수예술/공예, 네이밍/슬로건, 캐릭터/만화/게임, 건축/건설/인테리어, 과학/공학, 예체능/패션, 전시/패션, 문학/시나리오, 해외, 학술, 창업, 기타, 서포터즈, 해외탐방/무료, 해외탐방/유료, 봉사단/해외, 봉사단/국내, 마케터, 기자단, 강연, 멘토링, 경영/회계/사무, 보건/의료, 문화예술/다지안/방송, 사회복지/종교, 이용/숙박/여행/오락/스포츠, 음식서비스, 기계, 정보통신, 식품/가공, 환경/에너지, TOEIC, TOEIC.speaking and writing tests, TOEFL, TOEIC bridge, TOEIC bridge.speaking and writing tests, 대기업, 중소기업, 공공기관/공기업, 외국계기업, 중견기업, 비영리단체/협회/재단, 동아리/학생자치단체"
+                                            "data": {
+                                                "id": "adfhttwerqwrasxczx",
+                                                "email": "abc@abc.com",
+                                                "provider": "kakao, naver, google",
+                                                "name": "홍길동",
+                                                "nickname": "닉네임",
+                                                "phone": "01012345678",
+                                                "profileImage": "awihqwifbjqjfbo",
+                                                "major": "컴퓨터공학",
+                                                "interests": [
+                                                    {
+                                                        "id": "asdsadasdasdasdasdsef",
+                                                        "userId": "adfhttwerqwrasxczx",
+                                                        "interestId": "adwwafefewfsdfdsgew",
+                                                        "keywordId": "asdwfwgregrerfsfsefe",
+                                                        "interest": {
+                                                            "id": "adwwafefewfsdfdsgew",
+                                                            "interest": "공모전, 대외활동, 자격증, 어학, 인턴"
+                                                        },
+                                                        "keyword": {
+                                                            "id": "asdwfwgregrerfsfsefe",
+                                                            "keyword": "기획/아이디어, 광고/마케팅, 사진/영상/UCC, 디자인/순수예술/공예, 네이밍/슬로건, 캐릭터/만화/게임, 건축/건설/인테리어, 과학/공학, 예체능/패션, 전시/패션, 문학/시나리오, 해외, 학술, 창업, 기타, 서포터즈, 해외탐방/무료, 해외탐방/유료, 봉사단/해외, 봉사단/국내, 마케터, 기자단, 강연, 멘토링, 경영/회계/사무, 보건/의료, 문화예술/다지안/방송, 사회복지/종교, 이용/숙박/여행/오락/스포츠, 음식서비스, 기계, 정보통신, 식품/가공, 환경/에너지, TOEIC, TOEIC.speaking and writing tests, TOEFL, TOEIC bridge, TOEIC bridge.speaking and writing tests, 대기업, 중소기업, 공공기관/공기업, 외국계기업, 중견기업, 비영리단체/협회/재단, 동아리/학생자치단체"
+                                                        }
                                                     }
-                                                }
-                                            ]
+                                                ]
+                                            }
                                         }
                                     },
                                     "noData": {
                                         "summary": "회원가입이 되어 있지 않을 때",
-                                        "value": null
+                                        "value": {
+                                            "data": null
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -238,13 +242,17 @@
                                     "dataFound": {
                                         "summary": "아이디가 있는 경우",
                                         "value": {
-                                            "email": "abc@abc.com",
-                                            "provider": "kakao, naver, google"
+                                            "data": {
+                                                "email": "abc@abc.com",
+                                                "provider": "kakao, naver, google"
+                                            }
                                         }
                                     },
                                     "noData": {
                                         "summary": "아이디가 없는 경우",
-                                        "value": null
+                                        "value": {
+                                            "data": null
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -381,15 +389,43 @@
                         "description": "응답 성공",
                         "content": {
                             "application/json": {
+                                "summary": "일치하는 이메일이 없는 경우",
+                                "description": "생성된 유저 ID 반환 및 쿠키에 이메일 전송",
+                                "example": {
+                                    "data": "asdwfsdvrgsdfaefesfgsefe"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
                                 "examples": {
-                                    "NoEMail": {
-                                        "summary": "일치하는 이메일이 없는 경우",
-                                        "description": "생성된 유저 ID 반환 및 쿠키에 이메일 전송",
-                                        "value": "asdwfsdvrgsdfaefesfgsefe"
+                                    "TypeError": {
+                                        "summary": "타입이 일치하지 않는 경우",
+                                        "value": {
+                                            "data": {
+                                                "email": "email must be an email",
+                                                "provider": "provider must be a string",
+                                                "name": "name must be a string",
+                                                "nickname": "nickname must be a string",
+                                                "phone": "phone must be a string",
+                                                "profileImage": "profileImage must be a string",
+                                                "major": "major must be a string",
+                                                "interest": "interest must be a string",
+                                                "keyword": "keyword must be a string"
+                                            }
+                                        }
                                     },
                                     "NoLogin": {
                                         "summary": "소셜로그인한 이메일과 일치하지 않는 경우",
-                                        "value": "로그인한 이메일과 일치하지 않습니다."
+                                        "value": {
+                                            "data": "로그인한 이메일과 일치하지 않습니다."
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -400,26 +436,6 @@
                                         {
                                             "type": "string"
                                         }
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "요청 형식 에러",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": [
-                                        "email : email must be an email",
-                                        "provider : provider must be a string",
-                                        "name : name must be a string",
-                                        "nickname : nickname must be a string",
-                                        "phone : phone must be a string",
-                                        "profileImage : profileImage must be a string",
-                                        "major : major must be a string",
-                                        "interest : interest must be a string",
-                                        "keyword : keyword must be a string"
                                     ]
                                 }
                             }
@@ -466,10 +482,14 @@
                             "application/json": {
                                 "examples": {
                                     "SMS 토큰 전송 성공": {
-                                        "value": true
+                                        "value": {
+                                            "data": true
+                                        }
                                     },
                                     "SMS 토큰 전송 실패": {
-                                        "value": false
+                                        "value": {
+                                            "data": false
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -549,10 +569,14 @@
                             "application/json": {
                                 "examples": {
                                     "SMS 토큰 검증 성공": {
-                                        "value": true
+                                        "value": {
+                                            "data": true
+                                        }
                                     },
                                     "SMS 토큰 검증 실패": {
-                                        "value": false
+                                        "value": {
+                                            "data": false
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -1486,14 +1510,32 @@
                         "description": "응답 성공",
                         "content": {
                             "application/json": {
+                                "summary": "일치하는 id가 있는 경우",
+                                "example": {
+                                    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
                                 "examples": {
-                                    "dataFound": {
-                                        "summary": "일치하는 id가 있는 경우",
-                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                    "TypeError": {
+                                        "summary": "타입 에러인 경우",
+                                        "value": {
+                                            "error": "id : id must be an string"
+                                        }
                                     },
                                     "noData": {
                                         "summary": "일치하는 id가 없는 경우",
-                                        "value": "id가 일치하는 유저가 없습니다"
+                                        "value": {
+                                            "data": "id가 일치하는 유저가 없습니다"
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -1505,16 +1547,6 @@
                                             "type": "string"
                                         }
                                     ]
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "요청 형식 에러",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": ["id : id must be an string"]
                                 }
                             }
                         }
@@ -1554,16 +1586,38 @@
                                         }
                                     }
                                 },
-                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                "example": {
+                                    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                }
                             }
                         }
                     },
                     "400": {
-                        "description": "토큰 형식 에러",
                         "content": {
                             "application/json": {
-                                "example": {
-                                    "errorMessage": "토큰 형식이 일치하지 않습니다."
+                                "examples": {
+                                    "TokenTypeError": {
+                                        "summary": "토큰 형식 에러인 경우",
+                                        "value": {
+                                            "error": "토큰 형식이 일치하지 않습니다."
+                                        }
+                                    },
+                                    "AlreadyLogout": {
+                                        "summary": "이미 로그아웃한 경우",
+                                        "value": {
+                                            "error": "이미 로그아웃한 refreshToken입니다."
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -1573,17 +1627,7 @@
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "errorMessage": "로그인 후 이용 가능한 기능입니다."
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "서버 에러",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "errorMessage": "이미 로그아웃한 refreshToken입니다."
+                                    "error": "로그인 후 이용 가능한 기능입니다."
                                 }
                             }
                         }
@@ -1619,10 +1663,14 @@
                             "application/json": {
                                 "examples": {
                                     "로그아웃 성공": {
-                                        "value": true
+                                        "value": {
+                                            "data": true
+                                        }
                                     },
                                     "로그아웃 실패": {
-                                        "value": false
+                                        "value": {
+                                            "data": false
+                                        }
                                     }
                                 },
                                 "schema": {
@@ -1647,12 +1695,32 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "서버 에러",
+                    "400": {
                         "content": {
                             "application/json": {
-                                "example": {
-                                    "errorMessage": "이미 로그아웃한 accessToken입니다."
+                                "examples": {
+                                    "TokenTypeError": {
+                                        "summary": "토큰 형식 에러인 경우",
+                                        "value": {
+                                            "error": "토큰 형식이 일치하지 않습니다."
+                                        }
+                                    },
+                                    "AlreadyLogout": {
+                                        "summary": "이미 로그아웃한 경우",
+                                        "value": {
+                                            "error": "이미 로그아웃한 accessToken입니다."
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
                                 }
                             }
                         }

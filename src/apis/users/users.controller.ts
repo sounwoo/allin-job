@@ -9,18 +9,19 @@ import { validateDTO } from '../../common/validator/validateDTO';
 import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
 import { email, findOneUserByIDType } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
+import { Container } from 'typedi';
 
 class UserController {
     router = Router();
     path = '/user';
 
-    private userService: UserService;
-    private smsService: SmsService;
-    constructor() {
+    constructor(
+        private readonly userService: UserService,
+        private readonly smsService: SmsService,
+    ) {
         this.init();
-        this.userService = new UserService();
-        this.smsService = new SmsService();
     }
+
     init() {
         this.router.get(
             '/findOneUserByEmail',
@@ -52,7 +53,9 @@ class UserController {
         // #swagger.tags = ['Users']
         const { email } = req.query as email;
         await validateDTO(new FindOneUserByEmailDTO({ email }));
-        res.status(200).json(await this.userService.findOneUserByEmail(email));
+        res.status(200).json({
+            data: await this.userService.findOneUserByEmail(email),
+        });
     }
 
     async findOneUserByID(req: Request, res: Response) {
@@ -63,37 +66,40 @@ class UserController {
             name,
             phone,
         });
-        res.status(200).json(user.length === 0 ? null : user);
+        res.status(200).json({ data: user.length ? user : null });
     }
 
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
+        await validateDTO(new CreateUserDTO(req.body));
 
-        const createDTO = new CreateUserDTO(req.body);
-        await validateDTO(createDTO);
-
-        const user = await this.userService.createUser({
-            createDTO,
+        res.status(200).json({
+            data: await this.userService.createUser({
+                createDTO: req.body,
+            }),
         });
-        res.status(200).json(user);
     }
 
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { phone } = req.body;
         await validateDTO(new SendTokenSmsDTO({ phone }));
-        res.status(200).json(await this.smsService.sendTokenSMS(phone));
+        res.status(200).json({
+            data: await this.smsService.sendTokenSMS(phone),
+        });
     }
 
     async validateToken(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const validateTokenDTO = new ValidateTokenDTO(req.body);
-        await validateDTO(validateTokenDTO);
+        await validateDTO(new ValidateTokenDTO(req.body));
 
-        res.status(200).json(
-            await this.smsService.validateToken(validateTokenDTO),
-        );
+        res.status(200).json({
+            data: await this.smsService.validateToken(req.body),
+        });
     }
 }
 
-export default new UserController();
+export default new UserController(
+    Container.get(UserService),
+    Container.get(SmsService),
+);

@@ -1,9 +1,12 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-import redis from '../../../database/redisConfig';
+import RedisClient from '../../../database/redisConfig';
 import { ValidateTokenDTO } from './dto/validateToken.dto';
+import { Service } from 'typedi';
 
+@Service()
 export class SmsService {
+    constructor(private readonly redis: RedisClient) {}
     async sendTokenSMS(phone: string): Promise<boolean> {
         const token = this.createToken();
         const receiver = phone;
@@ -27,29 +30,25 @@ export class SmsService {
         const hash = hmac.finalize();
         const signature = hash.toString(CryptoJS.enc.Base64);
 
-        try {
-            axios({
-                method,
-                url,
-                headers: {
-                    'Content-type': 'application/json; charset=utf-8',
-                    'x-ncp-iam-access-key': accessKey,
-                    'x-ncp-apigw-timestamp': date,
-                    'x-ncp-apigw-signature-v2': signature,
-                },
-                data: {
-                    type: 'SMS',
-                    contentType: 'COMM',
-                    from: process.env.SMS_SENDER,
-                    content: `[올인잡] 인증번호 [${token}]를 입력해주세요.`,
-                    messages: [{ to: `${receiver}` }],
-                },
-            });
-            await redis.set(phone, token, 'EX', 300);
-            return true;
-        } catch (error) {
-            return false;
-        }
+        axios({
+            method,
+            url,
+            headers: {
+                'Content-type': 'application/json; charset=utf-8',
+                'x-ncp-iam-access-key': accessKey,
+                'x-ncp-apigw-timestamp': date,
+                'x-ncp-apigw-signature-v2': signature,
+            },
+            data: {
+                type: 'SMS',
+                contentType: 'COMM',
+                from: process.env.SMS_SENDER,
+                content: `[올인잡] 인증번호 [${token}]를 입력해주세요.`,
+                messages: [{ to: `${receiver}` }],
+            },
+        });
+        await this.redis.set(phone, token, 'EX', 300);
+        return true;
     }
 
     createToken(): number {
@@ -59,7 +58,8 @@ export class SmsService {
 
     async validateToken(validateToken: ValidateTokenDTO): Promise<boolean> {
         const { token, phone } = validateToken;
-        const getToken = await redis.get(phone);
-        return +getToken! === token ? true : false;
+        const getToken = await this.redis.get(phone);
+        return +getToken! === token;
     }
 }
+//
