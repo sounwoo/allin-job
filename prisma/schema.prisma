@@ -17,15 +17,61 @@ enum Provider {
 }
 
 model User {
-  id           String         @id @unique @default(uuid())
-  email        String         @unique
-  provider     Provider
-  name         String         @db.VarChar(5)
-  nickname     String         @unique @db.VarChar(10)
-  phone        String         @db.VarChar(13)
-  profileImage String
-  major        String
-  interests    UserInterest[]
+  id            String          @id @unique @default(uuid())
+  email         String          @unique
+  provider      Provider
+  name          String          @db.VarChar(5)
+  nickname      String          @unique @db.VarChar(10)
+  phone         String          @db.VarChar(13)
+  profileImage  String
+  major         String
+  interests     UserInterest[]
+  communities   Community[]
+  comments      Comment[]
+  communityLike CommunityLike[]
+  CommentLike   CommentLike[]
+}
+
+model Community {
+  id              String          @id @unique @default(uuid())
+  path            String          @db.VarChar(20)
+  title           String          @db.VarChar(30)
+  detail          String          @db.LongText
+  view            Int             @default(0)
+  likeCount       Int             @default(0)
+  commentCount    Int             @default(0)
+  createAt        DateTime        @default(dbgenerated("NOW()")) @db.DateTime
+  userId          String?
+  user            User?           @relation(fields: [userId], references: [id])
+  communitiyLikes CommunityLike[]
+  comments        Comment[]
+}
+
+model Comment {
+  id          String        @id @unique @default(uuid())
+  comment     String        @db.VarChar(100)
+  createAt    DateTime      @default(dbgenerated("NOW()")) @db.DateTime
+  userId      String?
+  user        User?         @relation(fields: [userId], references: [id])
+  communityId String?
+  community   Community?    @relation(fields: [communityId], references: [id])
+  CommentLike CommentLike[]
+}
+
+model CommunityLike {
+  id          String     @id @unique @default(uuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  communityId String?
+  community   Community? @relation(fields: [communityId], references: [id])
+}
+
+model CommentLike {
+  id        String   @id @unique @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
 }
 
 model Interest {

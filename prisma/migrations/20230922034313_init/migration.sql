@@ -16,6 +16,54 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Community` (
+    `id` VARCHAR(191) NOT NULL,
+    `path` VARCHAR(20) NOT NULL,
+    `title` VARCHAR(30) NOT NULL,
+    `detail` LONGTEXT NOT NULL,
+    `view` INTEGER NOT NULL DEFAULT 0,
+    `likeCount` INTEGER NOT NULL DEFAULT 0,
+    `commentCount` INTEGER NOT NULL DEFAULT 0,
+    `createAt` DATETIME NOT NULL DEFAULT NOW(),
+    `userId` VARCHAR(191) NULL,
+
+    UNIQUE INDEX `Community_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Comment` (
+    `id` VARCHAR(191) NOT NULL,
+    `comment` VARCHAR(100) NOT NULL,
+    `createAt` DATETIME NOT NULL DEFAULT NOW(),
+    `userId` VARCHAR(191) NULL,
+    `communityId` VARCHAR(191) NULL,
+
+    UNIQUE INDEX `Comment_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CommunityLike` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `communityId` VARCHAR(191) NULL,
+
+    UNIQUE INDEX `CommunityLike_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CommentLike` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NULL,
+    `commentId` VARCHAR(191) NULL,
+
+    UNIQUE INDEX `CommentLike_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Interest` (
     `id` VARCHAR(191) NOT NULL,
     `interest` VARCHAR(191) NOT NULL,
@@ -188,6 +236,27 @@ CREATE TABLE `_InterestToKeyword` (
     UNIQUE INDEX `_InterestToKeyword_AB_unique`(`A`, `B`),
     INDEX `_InterestToKeyword_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Community` ADD CONSTRAINT `Community_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Comment` ADD CONSTRAINT `Comment_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Comment` ADD CONSTRAINT `Comment_communityId_fkey` FOREIGN KEY (`communityId`) REFERENCES `Community`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CommunityLike` ADD CONSTRAINT `CommunityLike_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CommunityLike` ADD CONSTRAINT `CommunityLike_communityId_fkey` FOREIGN KEY (`communityId`) REFERENCES `Community`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CommentLike` ADD CONSTRAINT `CommentLike_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CommentLike` ADD CONSTRAINT `CommentLike_commentId_fkey` FOREIGN KEY (`commentId`) REFERENCES `Comment`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `UserInterest` ADD CONSTRAINT `UserInterest_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
