@@ -1,15 +1,19 @@
+import { Language, QNet, SubCategory } from '@prisma/client';
 import {
+    CompetitionType,
+    InternType,
+    OutsideType,
+    createCrawiling,
     createLanguagePaths,
     createLinkareerPaths,
     createPaths,
+    createQNet,
     findCrawling,
     findeDetail,
     findeDetailType,
+    languagePath,
     paths,
 } from '../../common/crawiling/interface';
-import { languageData } from '../../common/crawiling/language';
-import { linkareerData } from '../../common/crawiling/linkareer';
-import { QNetData } from '../../common/crawiling/q-net';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 
@@ -186,24 +190,100 @@ export class CrawlingService {
         return (obj[path] || obj['language'])();
     }
 
-    async crawling(path: createPaths): Promise<boolean> {
-        const linkareer = ['outside', 'intern', 'competition'];
-        const language = [
-            'toeic',
-            'toeicBR',
-            'toeicSW',
-            'toeicWT',
-            'toeicST',
-            'ch',
-            'jp',
-            'jpSP',
-        ];
-        const data = linkareer.includes(path)
-            ? await linkareerData(path as createLinkareerPaths)
-            : language.includes(path)
-            ? await languageData(path as createLanguagePaths)
-            : await QNetData();
+    async findSubCategory(keyword: string): Promise<SubCategory | null> {
+        return await this.prisma.subCategory.findUnique({
+            where: { keyword },
+        });
+    }
 
-        return !!data.length;
+    async createMainCategory(
+        mainKeyword: string,
+        subKeyword: string,
+    ): Promise<SubCategory> {
+        let mainCategory;
+
+        try {
+            mainCategory = await this.prisma.mainCategory.create({
+                data: {
+                    keyword: mainKeyword,
+                },
+            });
+        } catch (error) {
+            mainCategory = await this.prisma.mainCategory.findUnique({
+                where: { keyword: mainKeyword },
+            });
+        }
+
+        let subCategory;
+
+        try {
+            subCategory = await this.prisma.subCategory.create({
+                data: {
+                    keyword: subKeyword,
+                    mainCategoryId: mainCategory!.id,
+                },
+            });
+        } catch (error) {
+            subCategory = await this.findSubCategory(subKeyword);
+        }
+
+        return subCategory!;
+    }
+
+    async createLanguageData({
+        path,
+        homePage,
+        dataObj,
+    }: languagePath): Promise<Language> {
+        return await this.prisma.language.create({
+            data: { path, homePage, ...dataObj },
+        });
+    }
+
+    async createLinkareerData<T extends object>({
+        data,
+        path,
+        month,
+    }: {
+        data: T;
+        path: createLinkareerPaths;
+        month: number;
+    }): Promise<createCrawiling> {
+        const result = {
+            outside: async () =>
+                await this.prisma.outside.create({
+                    data: { ...(data as OutsideType), month },
+                }),
+            intern: async () =>
+                await this.prisma.intern.create({ data: data as InternType }),
+            competition: async () =>
+                await this.prisma.competition.create({
+                    data: {
+                        ...(data as CompetitionType),
+                        scale: +(data as CompetitionType).scale,
+                    },
+                }),
+        };
+
+        return result[path]();
+    }
+
+    async createQNetData({
+        data,
+        mdobligFldNm: keyword,
+    }: createQNet): Promise<QNet> {
+        const subCategory = await this.findSubCategory(keyword);
+
+        return await this.prisma.qNet.create({
+            data: {
+                ...data,
+                examSchedules: {
+                    createMany: {
+                        data: data.examSchedules,
+                    },
+                },
+                subCategoryId: subCategory!.id,
+            },
+        });
     }
 }
