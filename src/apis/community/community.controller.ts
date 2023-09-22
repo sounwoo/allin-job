@@ -9,6 +9,7 @@ import { CreateCommunityDTO } from './dto/create.input';
 import { FindOneCommunityDTO } from './dto/findOneCommunity';
 import { FindManyCommunityDTO } from './dto/findManyCommunity';
 import { ToggleLikeCommunityDTO } from './dto/toggleLikeCommunity';
+import { CreateCommunityCommentDTO } from './dto/create.comment.input';
 
 class CommunityController {
     router = Router();
@@ -31,6 +32,11 @@ class CommunityController {
             '/like/:id',
             accessGuard.handle,
             asyncHandler(this.toggleLike.bind(this)),
+        );
+        this.router.post(
+            '/comment',
+            accessGuard.handle,
+            asyncHandler(this.createComment.bind(this)),
         );
     }
 
@@ -82,6 +88,22 @@ class CommunityController {
             data: await this.communityService.toggleLike({
                 userId,
                 communityId,
+            }),
+        });
+    }
+
+    async createComment(req: Request, res: Response) {
+        const { id: userId } = req.user as idType;
+        const { comment, id: communityId } = req.body;
+
+        await validateDTO(
+            new CreateCommunityCommentDTO({ userId, communityId, comment }),
+        );
+        res.status(200).json({
+            data: await this.communityService.createComment({
+                userId,
+                communityId,
+                comment,
             }),
         });
     }
