@@ -42,6 +42,7 @@ class CommunityController {
 
         this.router.post(
             '/comment',
+            Validate.createCommunityComment,
             accessGuard.handle,
             asyncHandler(this.createComment.bind(this)),
         );

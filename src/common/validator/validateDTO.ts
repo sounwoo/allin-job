@@ -7,6 +7,7 @@ import { FindOneCommunityDTO } from '../../apis/community/dto/findOneCommunity';
 import { FindManyCommunityDTO } from '../../apis/community/dto/findManyCommunity';
 import { idType, pathType } from '../types';
 import { ToggleLikeCommunityDTO } from '../../apis/community/dto/toggleLikeCommunity';
+import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
 
 class Validate {
     constructor() {
@@ -54,6 +55,19 @@ class Validate {
         const { id: userId } = req.user as idType;
         const { id: communityId } = req.params as idType;
         await this.errors(new ToggleLikeCommunityDTO({ userId, communityId }));
+
+        next();
+    }
+    async createCommunityComment(
+        req: Request,
+        _: Response,
+        next: NextFunction,
+    ) {
+        const { id: userId } = req.user as idType;
+        const { comment, id: communityId } = req.body;
+        await this.errors(
+            new CreateCommunityCommentDTO({ userId, communityId, comment }),
+        );
 
         next();
     }
