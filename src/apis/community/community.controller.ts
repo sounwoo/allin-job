@@ -8,6 +8,7 @@ import { validateDTO } from '../../common/validator/validateDTO';
 import { CreateCommunityDTO } from './dto/create.input';
 import { FindOneCommunityDTO } from './dto/findOneCommunity';
 import { FindManyCommunityDTO } from './dto/findManyCommunity';
+import { ToggleLikeCommunityDTO } from './dto/toggleLikeCommunity';
 
 class CommunityController {
     router = Router();
@@ -25,14 +26,16 @@ class CommunityController {
             asyncHandler(this.create.bind(this)),
         );
         this.router.get('/', asyncHandler(this.fidneMany.bind(this)));
-        this.router.get(
-            '/:id',
+        this.router.get('/:id', asyncHandler(this.findeOne.bind(this)));
+        this.router.patch(
+            '/like/:id',
             accessGuard.handle,
-            asyncHandler(this.findeOne.bind(this)),
+            asyncHandler(this.toggleLike.bind(this)),
         );
     }
 
     async create(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { id } = req.user as idType;
         const createCommunity = req.body;
 
@@ -47,24 +50,39 @@ class CommunityController {
     }
 
     async fidneMany(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { path } = req.query as pathType;
 
         path &&
             (await validateDTO(
                 new FindManyCommunityDTO(req.query as pathType),
             ));
-
+        const data = await this.communityService.findeMany({ path });
         res.status(200).json({
-            data: await this.communityService.findeMany({ path }),
+            data: data.length ? data : null,
         });
     }
 
     async findeOne(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { id } = req.params as idType;
         await validateDTO(new FindOneCommunityDTO(req.params as idType));
 
         res.status(200).json({
             data: await this.communityService.findOne({ id }),
+        });
+    }
+
+    async toggleLike(req: Request, res: Response) {
+        const { id: userId } = req.user as idType;
+        const { id: communityId } = req.params as idType;
+
+        await validateDTO(new ToggleLikeCommunityDTO({ userId, communityId }));
+        res.status(200).json({
+            data: await this.communityService.toggleLike({
+                userId,
+                communityId,
+            }),
         });
     }
 }
