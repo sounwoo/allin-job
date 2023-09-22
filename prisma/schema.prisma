@@ -29,7 +29,7 @@ model User {
   communities   Community[]
   comments      Comment[]
   communityLike CommunityLike[]
-  CommentLike   CommentLike[]
+  commentLike   CommentLike[]
 }
 
 model Community {
