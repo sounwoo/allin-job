@@ -10,6 +10,7 @@ import {
 } from '../../common/crawiling/interface';
 import { asyncHandler } from '../../middleware/async.handler';
 import { PathCrawling } from '../../common/crawiling/path.crwaling';
+import AccessGuard from '../../middleware/auth.guard/access.guard';
 
 class CrawlingController {
     router = Router();
@@ -28,7 +29,13 @@ class CrawlingController {
             '/findeDetail',
             asyncHandler(this.findeDetailCrawling.bind(this)),
         );
-        this.router.get('/data/:path', asyncHandler(this.crawling.bind(this)));
+        this.router.get('/data', asyncHandler(this.crawling.bind(this)));
+
+        // this.router.get(
+        //     '/myKeywordCrawling',
+        //     AccessGuard.handle,
+        //     asyncHandler(this.myKeywordCrawling.bind(this)),
+        // );
     }
 
     async findeCrawling(req: Request, res: Response) {
@@ -52,31 +59,85 @@ class CrawlingController {
     }
 
     async crawling(req: Request, res: Response) {
-        const path = req.params.path as createPaths;
+        const { path, test } = req.query as createPaths;
 
         const linkareer = ['outside', 'intern', 'competition'];
-        const language = [
-            'toeic',
-            'toeicBR',
-            'toeicSW',
-            'toeicWT',
-            'toeicST',
-            'ch',
-            'jp',
-            'jpSP',
-        ];
+
         const data = linkareer.includes(path)
             ? await this.pathCrawling.linkareerData(
                   path as createLinkareerPaths,
               )
-            : language.includes(path)
-            ? await this.pathCrawling.languageData(path as createLanguagePaths)
+            : path === 'language'
+            ? await this.pathCrawling.languageData({ path, test })
             : await this.pathCrawling.QNetData();
 
         res.status(data.length ? 200 : 400).json({
             data: data.length ? '성공' : '실패',
         });
     }
+
+    //나의 관심 커리어 조회하기
+    // async myKeywordCrawling(req: Request, res: Response) {
+    //     // #swagger.tags = ['Crawling']
+
+    //     const userKeyword = await this.userService.findUserKeyword({
+    //         id: (req.user as idType).id,
+    //         path: (req.query as pathType).path,
+    //     });
+    //     console.log(userKeyword, '12321312');
+
+    //     let result: object[] = [];
+    //     const { count, ...data } = req.query as fidneCrawlingType;
+
+    //     switch (req.query.path) {
+    //         case 'competition':
+    //             result = await this.crawlingService.findeCrawling({
+    //                 ...data,
+    //                 interests: userKeyword,
+    //             });
+    //             break;
+    //         case 'outside':
+    //             result = await this.crawlingService.findeCrawling({
+    //                 ...data,
+    //                 field: userKeyword,
+    //             });
+    //             break;
+    //         case 'intern':
+    //             result = await this.crawlingService.findeCrawling({
+    //                 ...data,
+    //                 enterprise: userKeyword,
+    //             });
+    //             break;
+    //         case 'qnet':
+    //             const subCategories = userKeyword
+    //                 .split(',')
+    //                 .map((subcategory) => subcategory.trim());
+
+    //             for (const subCategory of subCategories) {
+    //                 const partialResult =
+    //                     await this.crawlingService.findeCrawling({
+    //                         ...data,
+
+    //                         subCategory,
+    //                     });
+    //                 result = result.concat(partialResult);
+    //             }
+    //             break;
+    //         case 'language':
+    //             //todo
+    //             result = await this.crawlingService.findeCrawling({
+    //                 ...data,
+    //             });
+    //             break;
+    //         default:
+    //             result = [];
+    //             break;
+    //     }
+
+    //     res.status(200).json({
+    //         data: result.length ? (count ? result.length : result) : null,
+    //     });
+    // }
 }
 export default new CrawlingController(
     Container.get(CrawlingService),

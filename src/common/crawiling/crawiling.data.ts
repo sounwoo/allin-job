@@ -65,9 +65,9 @@ export const linkareerType = (path: string, i: number) => {
     return { url, dataType, detailClass, mainImageType, interestsType };
 };
 
-export const languageType = (path: string) => {
+export const languageType = (test: string) => {
     let url = 'https://www.toeicswt.co.kr/receipt/examSchList.php';
-    let pathType = 'tbody > tr';
+    let testType = 'tbody > tr';
     let dataObj: languageDetail = {
         turn: '',
         Dday: '',
@@ -75,7 +75,7 @@ export const languageType = (path: string) => {
         applicationPeriod: '',
     };
 
-    switch (path) {
+    switch (test) {
         case 'toeic':
             url = 'https://exam.toeic.co.kr/receipt/examSchList.php';
             break;
@@ -84,11 +84,11 @@ export const languageType = (path: string) => {
             dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
             break;
         case 'toeicSW':
-            pathType = 'tr.speakingwriting';
+            testType = 'tr.speakingwriting';
             dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
             break;
         case 'toeicWT':
-            pathType = 'tr.writing';
+            testType = 'tr.writing';
             dataObj = { Dday: '', resultDay: '', applicationPeriod: '' };
             break;
         case 'toeicST':
@@ -107,7 +107,7 @@ export const languageType = (path: string) => {
             break;
     }
 
-    return { url, pathType, dataObj };
+    return { url, testType, dataObj };
 };
 
 export const examScheduleObj = {

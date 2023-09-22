@@ -1,4 +1,4 @@
-import { Provider, User } from '@prisma/client';
+import { Provider, User, UserInterest } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
     IUserCreateDTO,
@@ -7,6 +7,7 @@ import {
 import RedisClient from '../../database/redisConfig';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
+// import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
 
 @Service()
 export class UserService {
@@ -14,6 +15,42 @@ export class UserService {
         private readonly prisma: CustomPrismaClient, //
         private readonly redis: RedisClient,
     ) {}
+
+    // 로그인한 유저의 interestId, keywordId 가져오기
+    async findUserKeyword({ id, path }: FindUserKeywordDTO): Promise<string> {
+        const user = await this.prisma.userInterest.findMany({
+            where: {
+                userId: id,
+            },
+            select: {
+                interestId: true,
+                keywordId: true,
+            },
+        });
+
+        // path에 해당하는 interest모델에서 id 가져오기
+        const pathId = (
+            await this.prisma.interest.findUnique({
+                where: { interest: path },
+                select: { id: true },
+            })
+        )?.id;
+
+        // 유저의 keyword 뽑아서 한줄로 입력 형태 만들기
+        return (
+            await this.prisma.keyword.findMany({
+                where: {
+                    id: {
+                        in: user
+                            .filter((item) => item.interestId === pathId)
+                            .map((item) => item.keywordId),
+                    },
+                },
+            })
+        )
+            .map((keyword) => keyword.keyword)
+            .join(',');
+    }
 
     findOneUserByEmail(email: string): Promise<User | null> {
         return this.prisma.user.findUnique({
