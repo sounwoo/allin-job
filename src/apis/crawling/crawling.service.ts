@@ -190,8 +190,8 @@ export class CrawlingService {
         return (obj[path] || obj['language'])();
     }
 
-    async findSubCategory(keyword: string): Promise<SubCategory | null> {
-        return await this.prisma.subCategory.findUnique({
+    findSubCategory(keyword: string): Promise<SubCategory | null> {
+        return this.prisma.subCategory.findUnique({
             where: { keyword },
         });
     }
@@ -230,12 +230,12 @@ export class CrawlingService {
         return subCategory!;
     }
 
-    async createLanguageData({
+    createLanguageData({
         path,
         homePage,
         dataObj,
     }: languagePath): Promise<Language> {
-        return await this.prisma.language.create({
+        return this.prisma.language.create({
             data: { path, homePage, ...dataObj },
         });
     }
