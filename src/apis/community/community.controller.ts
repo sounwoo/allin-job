@@ -4,12 +4,7 @@ import { Request, Response, Router } from 'express';
 import { asyncHandler } from '../../middleware/async.handler';
 import accessGuard from '../../middleware/auth.guard/access.guard';
 import { idType, pathType } from '../../common/types';
-import { validateDTO } from '../../common/validator/validateDTO';
-import { CreateCommunityDTO } from './dto/create.input';
-import { FindOneCommunityDTO } from './dto/findOneCommunity';
-import { FindManyCommunityDTO } from './dto/findManyCommunity';
-import { ToggleLikeCommunityDTO } from './dto/toggleLikeCommunity';
-import { CreateCommunityCommentDTO } from './dto/create.comment.input';
+import Validate from '../../common/validator/validateDTO';
 
 class CommunityController {
     router = Router();
@@ -23,13 +18,18 @@ class CommunityController {
     init() {
         this.router.post(
             '/create',
+            Validate.createCommunity,
             accessGuard.handle,
             asyncHandler(this.create.bind(this)),
         );
-        this.router.get('/', asyncHandler(this.fidneMany.bind(this)));
-        this.router.get('/:id', asyncHandler(this.findeOne.bind(this)));
-        this.router.patch(
-            '/like/:id',
+        this.router.get(
+            '/',
+            Validate.findManyCommunity,
+            asyncHandler(this.fidneMany.bind(this)),
+        );
+        this.router.get(
+            '/:id',
+            Validate.findOneCommunity,
             accessGuard.handle,
             asyncHandler(this.toggleLike.bind(this)),
         );
@@ -45,8 +45,6 @@ class CommunityController {
         const { id } = req.user as idType;
         const createCommunity = req.body;
 
-        await validateDTO(new CreateCommunityDTO(createCommunity));
-
         res.status(200).json({
             data: await this.communityService.create({
                 id,
@@ -59,11 +57,6 @@ class CommunityController {
         // #swagger.tags = ['Community']
         const { path } = req.query as pathType;
 
-        path &&
-            (await validateDTO(
-                new FindManyCommunityDTO(req.query as pathType),
-            ));
-        const data = await this.communityService.findeMany({ path });
         res.status(200).json({
             data: data.length ? data : null,
         });
@@ -72,7 +65,6 @@ class CommunityController {
     async findeOne(req: Request, res: Response) {
         // #swagger.tags = ['Community']
         const { id } = req.params as idType;
-        await validateDTO(new FindOneCommunityDTO(req.params as idType));
 
         res.status(200).json({
             data: await this.communityService.findOne({ id }),
@@ -83,7 +75,6 @@ class CommunityController {
         const { id: userId } = req.user as idType;
         const { id: communityId } = req.params as idType;
 
-        await validateDTO(new ToggleLikeCommunityDTO({ userId, communityId }));
         res.status(200).json({
             data: await this.communityService.toggleLike({
                 userId,
@@ -96,9 +87,6 @@ class CommunityController {
         const { id: userId } = req.user as idType;
         const { comment, id: communityId } = req.body;
 
-        await validateDTO(
-            new CreateCommunityCommentDTO({ userId, communityId, comment }),
-        );
         res.status(200).json({
             data: await this.communityService.createComment({
                 userId,
