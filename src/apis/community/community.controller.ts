@@ -4,12 +4,7 @@ import { Request, Response, Router } from 'express';
 import { asyncHandler } from '../../middleware/async.handler';
 import accessGuard from '../../middleware/auth.guard/access.guard';
 import { idType, pathType } from '../../common/types';
-// import { validateDTO } from '../../common/validator/validateDTO';
-import { CreateCommunityDTO } from './dto/create.input';
-import { FindOneCommunityDTO } from './dto/findOneCommunity';
-import { FindManyCommunityDTO } from './dto/findManyCommunity';
 import Validate from '../../common/validator/validateDTO';
-import { next } from 'cheerio/lib/api/traversing';
 
 class CommunityController {
     router = Router();
