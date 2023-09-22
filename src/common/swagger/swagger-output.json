@@ -2254,6 +2254,319 @@
                     }
                 }
             }
+        },
+        "/community/like/{id}": {
+            "patch": {
+                "tags": ["Community"],
+                "summary": "취준job담 좋아요(등록/취소) ",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                        },
+                        "description": "취준job담 커뮤니티 id"
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "좋아요 등록,취소(본인만있다면 null)": {
+                                        "value": {
+                                            "data": {
+                                                "count": 1,
+                                                "toggleLikes": [
+                                                    {
+                                                        "id": "좋아요 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                        "userId": "좋아요한 사람 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                        "communityId": "1f058c7e-da22-4f5d-9ef9-b560d83d409d",
+                                                        "user": {
+                                                            "id": "좋아요한 사람 id : a134c044-7acd-4685-8a60-2c7537417508",
+                                                            "email": "mna7805@gmail.com",
+                                                            "provider": "google",
+                                                            "name": "홍길동",
+                                                            "nickname": "닉네임",
+                                                            "phone": "01012345678",
+                                                            "profileImage": "profile url",
+                                                            "major": "컴퓨터공학"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "좋아요 없을때": {
+                                        "value": {
+                                            "data": "null"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "count": {
+                                                    "type": "number"
+                                                },
+                                                "toggleLikes": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "communityId": {
+                                                                "type": "string"
+                                                            },
+                                                            "user": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "provider": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "nickname": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "profileImage": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "major": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "noData": {
+                                        "summary": "일치하는 id가 없는 경우",
+                                        "value": {
+                                            "data": "id가 일치하는 유저가 없습니다"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/community/comment": {
+            "post": {
+                "tags": ["Community"],
+                "summary": "취준job담 댓글 등록",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "취준job담 id"
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "댓글 내용"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "count": 5,
+                                        "comments": [
+                                            {
+                                                "id": "040437ac-c725-4b99-9434-d10087158b90",
+                                                "comment": "댓글 내용",
+                                                "createAt": "2023-09-22T14:39:22.000Z",
+                                                "userId": "a134c044-7acd-4685-8a60-2c7537417508",
+                                                "communityId": "1f058c7e-da22-4f5d-9ef9-b560d83d409d",
+                                                "user": {
+                                                    "id": "a134c044-7acd-4685-8a60-2c7537417508",
+                                                    "email": "abc@abc.com",
+                                                    "provider": "google",
+                                                    "name": "홍길동",
+                                                    "nickname": "닉네임",
+                                                    "phone": "01012345678",
+                                                    "profileImage": "profile url",
+                                                    "major": "컴퓨터공학"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "count": {
+                                                    "type": "number"
+                                                },
+                                                "comments": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "comment": {
+                                                                "type": "string"
+                                                            },
+                                                            "createAt": {
+                                                                "type": "date"
+                                                            },
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "communityId": {
+                                                                "type": "string"
+                                                            },
+                                                            "user": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "provider": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "nickname": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "profileImage": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "major": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "noData": {
+                                        "summary": "일치하는 id가 없는 경우",
+                                        "value": {
+                                            "data": "id가 일치하는 유저가 없습니다"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

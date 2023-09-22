@@ -58,7 +58,7 @@ class CommunityController {
     async fidneMany(req: Request, res: Response) {
         // #swagger.tags = ['Community']
         const { path } = req.query as pathType;
-
+        console.log(path);
         path &&
             (await validateDTO(
                 new FindManyCommunityDTO(req.query as pathType),
@@ -80,31 +80,40 @@ class CommunityController {
     }
 
     async toggleLike(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { id: userId } = req.user as idType;
         const { id: communityId } = req.params as idType;
 
         await validateDTO(new ToggleLikeCommunityDTO({ userId, communityId }));
+        const toggleLikes = await this.communityService.toggleLike({
+            userId,
+            communityId,
+        });
+
         res.status(200).json({
-            data: await this.communityService.toggleLike({
-                userId,
-                communityId,
-            }),
+            data: toggleLikes.length
+                ? { count: toggleLikes.length, toggleLikes }
+                : null,
         });
     }
 
     async createComment(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { id: userId } = req.user as idType;
         const { comment, id: communityId } = req.body;
 
         await validateDTO(
             new CreateCommunityCommentDTO({ userId, communityId, comment }),
         );
+
+        const comments = await this.communityService.createComment({
+            userId,
+            communityId,
+            comment,
+        });
+
         res.status(200).json({
-            data: await this.communityService.createComment({
-                userId,
-                communityId,
-                comment,
-            }),
+            data: comments.length ? { count: comments.length, comments } : null,
         });
     }
 }
