@@ -57,6 +57,8 @@ class CommunityController {
         // #swagger.tags = ['Community']
         const { path } = req.query as pathType;
 
+        const data = await this.communityService.findeMany({ path });
+
         res.status(200).json({
             data: data.length ? data : null,
         });
