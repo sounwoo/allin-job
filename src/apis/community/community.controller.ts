@@ -8,6 +8,8 @@ import { validateDTO } from '../../common/validator/validateDTO';
 import { CreateCommunityDTO } from './dto/create.input';
 import { FindOneCommunityDTO } from './dto/findOneCommunity';
 import { FindManyCommunityDTO } from './dto/findManyCommunity';
+import { ToggleLikeCommunityDTO } from './dto/toggleLikeCommunity';
+import { CreateCommunityCommentDTO } from './dto/create.comment.input';
 
 class CommunityController {
     router = Router();
@@ -26,6 +28,16 @@ class CommunityController {
         );
         this.router.get('/', asyncHandler(this.fidneMany.bind(this)));
         this.router.get('/:id', asyncHandler(this.findeOne.bind(this)));
+        this.router.patch(
+            '/like/:id',
+            accessGuard.handle,
+            asyncHandler(this.toggleLike.bind(this)),
+        );
+        this.router.post(
+            '/comment',
+            accessGuard.handle,
+            asyncHandler(this.createComment.bind(this)),
+        );
     }
 
     async create(req: Request, res: Response) {
@@ -64,6 +76,35 @@ class CommunityController {
 
         res.status(200).json({
             data: await this.communityService.findOne({ id }),
+        });
+    }
+
+    async toggleLike(req: Request, res: Response) {
+        const { id: userId } = req.user as idType;
+        const { id: communityId } = req.params as idType;
+
+        await validateDTO(new ToggleLikeCommunityDTO({ userId, communityId }));
+        res.status(200).json({
+            data: await this.communityService.toggleLike({
+                userId,
+                communityId,
+            }),
+        });
+    }
+
+    async createComment(req: Request, res: Response) {
+        const { id: userId } = req.user as idType;
+        const { comment, id: communityId } = req.body;
+
+        await validateDTO(
+            new CreateCommunityCommentDTO({ userId, communityId, comment }),
+        );
+        res.status(200).json({
+            data: await this.communityService.createComment({
+                userId,
+                communityId,
+                comment,
+            }),
         });
     }
 }
