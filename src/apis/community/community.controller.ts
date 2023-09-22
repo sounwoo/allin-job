@@ -31,8 +31,15 @@ class CommunityController {
             '/:id',
             Validate.findOneCommunity,
             accessGuard.handle,
+            asyncHandler(this.findeOne.bind(this)),
+        );
+        this.router.patch(
+            '/like/:id',
+            Validate.toggleLikeCommunity,
+            accessGuard.handle,
             asyncHandler(this.toggleLike.bind(this)),
         );
+
         this.router.post(
             '/comment',
             accessGuard.handle,

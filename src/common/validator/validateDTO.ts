@@ -6,6 +6,7 @@ import { asyncHandler } from '../../middleware/async.handler';
 import { FindOneCommunityDTO } from '../../apis/community/dto/findOneCommunity';
 import { FindManyCommunityDTO } from '../../apis/community/dto/findManyCommunity';
 import { idType, pathType } from '../types';
+import { ToggleLikeCommunityDTO } from '../../apis/community/dto/toggleLikeCommunity';
 
 class Validate {
     constructor() {
@@ -45,6 +46,14 @@ class Validate {
 
     async findOneCommunity(req: Request, _: Response, next: NextFunction) {
         await this.errors(new FindOneCommunityDTO(req.params as idType));
+
+        next();
+    }
+
+    async toggleLikeCommunity(req: Request, _: Response, next: NextFunction) {
+        const { id: userId } = req.user as idType;
+        const { id: communityId } = req.params as idType;
+        await this.errors(new ToggleLikeCommunityDTO({ userId, communityId }));
 
         next();
     }
