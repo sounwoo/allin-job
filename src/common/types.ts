@@ -9,6 +9,10 @@ export type idType = {
     id: string;
 };
 
+export type pathType = {
+    path: string;
+};
+
 export type findOneUserByIDType = {
     name: CreateUserDTO['name'];
     phone: CreateUserDTO['phone'];

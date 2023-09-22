@@ -4,6 +4,7 @@ import CustomError from '../../common/error/customError';
 import { Community } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import { ICommunityCreate } from './interfaces/community.interface';
+import { idType, pathType } from '../../common/types';
 
 @Service()
 export class CommunityService {
@@ -24,14 +25,14 @@ export class CommunityService {
         });
     }
 
-    findeMany({ path }: { path: string | undefined }): Promise<Community[]> {
+    findeMany({ path }: pathType): Promise<Community[]> {
         return this.prisma.community.findMany({
             where: { path },
             include: { user: true },
         });
     }
 
-    findOne({ id }: { id: string }): Promise<Community> {
+    findOne({ id }: idType): Promise<Community> {
         return this.prisma.community.update({
             where: { id },
             data: {
