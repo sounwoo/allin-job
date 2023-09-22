@@ -1,12 +1,15 @@
 import { Request, Router, Response } from 'express';
-import { CrawlingService } from './crawiling.service';
+import { CrawlingService } from './crawling.service';
 import { Container } from 'typedi';
 import {
+    createLanguagePaths,
+    createLinkareerPaths,
     createPaths,
     fidneCrawlingType,
     findeDetailType,
 } from '../../common/crawiling/interface';
 import { asyncHandler } from '../../middleware/async.handler';
+import { PathCrawling } from '../../common/crawiling/path.crwaling';
 
 class CrawlingController {
     router = Router();
@@ -14,6 +17,7 @@ class CrawlingController {
 
     constructor(
         private readonly crawlingService: CrawlingService, //
+        private readonly pathCrawling: PathCrawling,
     ) {
         this.init();
     }
@@ -50,11 +54,31 @@ class CrawlingController {
     async crawling(req: Request, res: Response) {
         const path = req.params.path as createPaths;
 
-        const result = await this.crawlingService.crawling(path);
+        const linkareer = ['outside', 'intern', 'competition'];
+        const language = [
+            'toeic',
+            'toeicBR',
+            'toeicSW',
+            'toeicWT',
+            'toeicST',
+            'ch',
+            'jp',
+            'jpSP',
+        ];
+        const data = linkareer.includes(path)
+            ? await this.pathCrawling.linkareerData(
+                  path as createLinkareerPaths,
+              )
+            : language.includes(path)
+            ? await this.pathCrawling.languageData(path as createLanguagePaths)
+            : await this.pathCrawling.QNetData();
 
-        result
-            ? res.status(200).json({ result: '성공' })
-            : res.status(400).json({ result: '실패' });
+        res.status(data.length ? 200 : 400).json({
+            data: data.length ? '성공' : '실패',
+        });
     }
 }
-export default new CrawlingController(Container.get(CrawlingService));
+export default new CrawlingController(
+    Container.get(CrawlingService),
+    Container.get(PathCrawling),
+);

@@ -1,16 +1,5 @@
-import { Language, MainCategory, QNet, SubCategory } from '@prisma/client';
-import { CustomPrismaClient } from '../../database/prismaConfig';
-import {
-    OutsideType,
-    InternType,
-    CompetitionType,
-    createCrawiling,
-    languagePath,
-    languageDetail,
-    createLinkareerPaths,
-    createQNet,
-} from '../crawiling/interface';
-const prisma = new CustomPrismaClient();
+import { languageDetail } from './interface';
+
 export const linkareerType = (path: string, i: number) => {
     let url, dataType;
     let interestsType = 'jss14';
@@ -76,34 +65,6 @@ export const linkareerType = (path: string, i: number) => {
     return { url, dataType, detailClass, mainImageType, interestsType };
 };
 
-export const createLinkareerData = async <T extends object>({
-    data,
-    path,
-    month,
-}: {
-    data: T;
-    path: createLinkareerPaths;
-    month: number;
-}): Promise<createCrawiling> => {
-    const result = {
-        outside: async () =>
-            await prisma.outside.create({
-                data: { ...(data as OutsideType), month },
-            }),
-        intern: async () =>
-            await prisma.intern.create({ data: data as InternType }),
-        competition: async () =>
-            await prisma.competition.create({
-                data: {
-                    ...(data as CompetitionType),
-                    scale: +(data as CompetitionType).scale,
-                },
-            }),
-    };
-
-    return result[path]();
-};
-
 export const languageType = (path: string) => {
     let url = 'https://www.toeicswt.co.kr/receipt/examSchList.php';
     let pathType = 'tbody > tr';
@@ -149,16 +110,6 @@ export const languageType = (path: string) => {
     return { url, pathType, dataObj };
 };
 
-export const createLanguageData = async ({
-    path,
-    homePage,
-    dataObj,
-}: languagePath): Promise<Language> => {
-    return await prisma.language.create({
-        data: { path, homePage, ...dataObj },
-    });
-};
-
 export const examScheduleObj = {
     turn: '',
     wtReceipt: '',
@@ -167,65 +118,4 @@ export const examScheduleObj = {
     ptReceipt: '',
     ptDday: '',
     resultDay: '',
-};
-
-const findSubCategory = async (
-    keyword: string,
-): Promise<SubCategory | null> => {
-    return await prisma.subCategory.findUnique({
-        where: { keyword },
-    });
-};
-
-export const createMainCategory = async (
-    mainKeyword: string,
-    subKeyword: string,
-): Promise<SubCategory> => {
-    let mainCategory;
-
-    try {
-        mainCategory = await prisma.mainCategory.create({
-            data: {
-                keyword: mainKeyword,
-            },
-        });
-    } catch (error) {
-        mainCategory = await prisma.mainCategory.findUnique({
-            where: { keyword: mainKeyword },
-        });
-    }
-
-    let subCategory;
-
-    try {
-        subCategory = await prisma.subCategory.create({
-            data: {
-                keyword: subKeyword,
-                mainCategoryId: mainCategory!.id,
-            },
-        });
-    } catch (error) {
-        subCategory = await findSubCategory(subKeyword);
-    }
-
-    return subCategory!;
-};
-
-export const createQNetData = async ({
-    data,
-    mdobligFldNm: keyword,
-}: createQNet): Promise<QNet> => {
-    const subCategory = await findSubCategory(keyword);
-
-    return await prisma.qNet.create({
-        data: {
-            ...data,
-            examSchedules: {
-                createMany: {
-                    data: data.examSchedules,
-                },
-            },
-            subCategoryId: subCategory!.id,
-        },
-    });
 };
