@@ -55,7 +55,7 @@ model Comment {
   user        User?         @relation(fields: [userId], references: [id])
   communityId String?
   community   Community?    @relation(fields: [communityId], references: [id])
-  CommentLike CommentLike[]
+  commentLike CommentLike[]
 }
 
 model CommunityLike {

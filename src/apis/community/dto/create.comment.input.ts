@@ -1,10 +1,12 @@
 import { IsString } from 'class-validator';
-import { ICommunityToggleLike } from '../interfaces/community.interface';
-import { Comment } from '@prisma/client';
+import { Comment, Community, User } from '@prisma/client';
 
 export class CreateCommunityCommentDTO {
-    userId: ICommunityToggleLike['userId'];
-    communityId: ICommunityToggleLike['communityId'];
+    @IsString()
+    userId: User['id'];
+
+    @IsString()
+    communityId: Community['id'];
 
     @IsString()
     comment: Comment['comment'];

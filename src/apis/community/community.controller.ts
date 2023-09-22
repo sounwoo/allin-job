@@ -56,7 +56,6 @@ class CommunityController {
     async fidneMany(req: Request, res: Response) {
         // #swagger.tags = ['Community']
         const { path } = req.query as pathType;
-
         const data = await this.communityService.findeMany({ path });
 
         res.status(200).json({
@@ -74,27 +73,35 @@ class CommunityController {
     }
 
     async toggleLike(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { id: userId } = req.user as idType;
         const { id: communityId } = req.params as idType;
 
+        const toggleLikes = await this.communityService.toggleLike({
+            userId,
+            communityId,
+        });
+
         res.status(200).json({
-            data: await this.communityService.toggleLike({
-                userId,
-                communityId,
-            }),
+            data: toggleLikes.length
+                ? { count: toggleLikes.length, toggleLikes }
+                : null,
         });
     }
 
     async createComment(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
         const { id: userId } = req.user as idType;
         const { comment, id: communityId } = req.body;
 
+        const comments = await this.communityService.createComment({
+            userId,
+            communityId,
+            comment,
+        });
+
         res.status(200).json({
-            data: await this.communityService.createComment({
-                userId,
-                communityId,
-                comment,
-            }),
+            data: comments.length ? { count: comments.length, comments } : null,
         });
     }
 }
