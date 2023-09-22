@@ -28,7 +28,9 @@ export class CommunityService {
     findeMany({ path }: pathType): Promise<Community[]> {
         return this.prisma.community.findMany({
             where: { path },
-            include: { user: true },
+            include: {
+                user: true,
+            },
         });
     }
 
@@ -39,7 +41,13 @@ export class CommunityService {
                 view: { increment: 1 },
             },
             include: {
+                user: true,
                 comments: {
+                    include: {
+                        user: true,
+                    },
+                },
+                communitiyLikes: {
                     include: {
                         user: true,
                     },
