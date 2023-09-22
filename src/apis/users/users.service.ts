@@ -27,18 +27,20 @@ export class UserService {
                         keyword: true,
                     },
                 },
+                communities: true,
             },
         });
     }
 
-    async isUserByID(id: string): Promise<boolean> {
-        return (await this.prisma.user.findUnique({
+    isUserByID(id: string): Promise<User | null> {
+        return this.prisma.user.findUnique({
             where: {
                 id,
             },
-        }))
-            ? true
-            : false;
+            include: {
+                communities: true,
+            },
+        });
     }
 
     findOneUserByID({
