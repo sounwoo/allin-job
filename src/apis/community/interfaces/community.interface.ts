@@ -9,3 +9,8 @@ export interface ICommunityCreate {
         detail: Community['detail'];
     };
 }
+
+export interface ICommunityToggleLike {
+    userId: idType['id'];
+    communityId: Community['id'];
+}
