@@ -3,11 +3,12 @@ import CustomError from '../error/customError';
 import { NextFunction, Request, Response } from 'express';
 import { CreateCommunityDTO } from '../../apis/community/dto/create.input';
 import { asyncHandler } from '../../middleware/async.handler';
-import { FindOneCommunityDTO } from '../../apis/community/dto/findOneCommunity';
-import { FindManyCommunityDTO } from '../../apis/community/dto/findManyCommunity';
+import { FindOneCommunityDTO } from '../../apis/community/dto/findOne.community';
+import { FindManyCommunityDTO } from '../../apis/community/dto/findMany.community';
 import { idType, pathType } from '../types';
-import { ToggleLikeCommunityDTO } from '../../apis/community/dto/toggleLikeCommunity';
+import { ToggleLikeCommunityDTO } from '../../apis/community/dto/create.community.toggleLike';
 import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
+import { CommentLikeCommunityDTO } from '../../apis/community/dto/create.comment.like.input';
 
 class Validate {
     constructor() {
@@ -15,6 +16,15 @@ class Validate {
         this.findOneCommunity = asyncHandler(this.findOneCommunity.bind(this));
         this.findManyCommunity = asyncHandler(
             this.findManyCommunity.bind(this),
+        );
+        this.toggleLikeCommunity = asyncHandler(
+            this.toggleLikeCommunity.bind(this),
+        );
+        this.createCommunityComment = asyncHandler(
+            this.createCommunityComment.bind(this),
+        );
+        this.commentLikeCommunity = asyncHandler(
+            this.commentLikeCommunity.bind(this),
         );
     }
 
@@ -52,9 +62,8 @@ class Validate {
     }
 
     async toggleLikeCommunity(req: Request, _: Response, next: NextFunction) {
-        const { id: userId } = req.user as idType;
         const { id: communityId } = req.params as idType;
-        await this.errors(new ToggleLikeCommunityDTO({ userId, communityId }));
+        await this.errors(new ToggleLikeCommunityDTO({ communityId }));
 
         next();
     }
@@ -63,11 +72,17 @@ class Validate {
         _: Response,
         next: NextFunction,
     ) {
-        const { id: userId } = req.user as idType;
         const { comment, id: communityId } = req.body;
         await this.errors(
-            new CreateCommunityCommentDTO({ userId, communityId, comment }),
+            new CreateCommunityCommentDTO({ communityId, comment }),
         );
+
+        next();
+    }
+
+    async commentLikeCommunity(req: Request, _: Response, next: NextFunction) {
+        const { id: commentId } = req.params as idType;
+        await this.errors(new CommentLikeCommunityDTO({ commentId }));
 
         next();
     }

@@ -46,6 +46,13 @@ class CommunityController {
             accessGuard.handle,
             asyncHandler(this.createComment.bind(this)),
         );
+
+        this.router.patch(
+            '/comment/like/:id',
+            Validate.commentLikeCommunity,
+            accessGuard.handle,
+            asyncHandler(this.commentLike.bind(this)),
+        );
     }
 
     async create(req: Request, res: Response) {
@@ -110,6 +117,23 @@ class CommunityController {
 
         res.status(200).json({
             data: comments.length ? { count: comments.length, comments } : null,
+        });
+    }
+
+    async commentLike(req: Request, res: Response) {
+        // #swagger.tags = ['Community']
+        const { id: userId } = req.user as idType;
+        const { id: commentId } = req.params as idType;
+
+        const commentLike = await this.communityService.commentLike({
+            userId,
+            commentId,
+        });
+
+        res.status(200).json({
+            data: commentLike.length
+                ? { count: commentLike.length, commentLike }
+                : null,
         });
     }
 }
