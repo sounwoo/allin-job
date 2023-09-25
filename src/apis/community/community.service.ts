@@ -22,13 +22,13 @@ export class CommunityService {
     ) {}
 
     async create({
-        id,
+        id: userId,
         createCommunity,
     }: ICommunityCreate): Promise<Community> {
-        const isUser = await this.userService.isUserByID(id);
-        if (!isUser) throw new CustomError('존재하지 않는 아이디입니다.', 400);
+        await this.userService.isUserByID(userId);
+
         return this.prisma.community.create({
-            data: { userId: isUser.id, ...createCommunity },
+            data: { userId, ...createCommunity },
         });
     }
 
@@ -66,8 +66,7 @@ export class CommunityService {
         userId,
         communityId,
     }: ICommunityToggleLike): Promise<CommunityLike[]> {
-        const isUser = await this.userService.isUserByID(userId);
-        if (!isUser) throw new CustomError('존재하지 않는 아이디입니다.', 400);
+        await this.userService.isUserByID(userId);
 
         const likeCommunity = await this.prisma.communityLike.findFirst({
             where: { AND: [{ communityId, userId }] },
@@ -100,8 +99,7 @@ export class CommunityService {
         communityId,
         comment,
     }: ICreateCommunityComment): Promise<Comment[]> {
-        const isUser = await this.userService.isUserByID(userId);
-        if (!isUser) throw new CustomError('존재하지 않는 아이디입니다.', 400);
+        await this.userService.isUserByID(userId);
 
         return await this.prisma.community
             .update({
@@ -133,8 +131,7 @@ export class CommunityService {
         userId,
         commentId,
     }: ICommentLikeCommunity): Promise<CommentLike[]> {
-        const isUser = await this.userService.isUserByID(userId);
-        if (!isUser) throw new CustomError('존재하지 않는 아이디입니다.', 400);
+        await this.userService.isUserByID(userId);
 
         const commentLike = await this.prisma.commentLike.findFirst({
             where: { AND: [{ commentId, userId }] },
