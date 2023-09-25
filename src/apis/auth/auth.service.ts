@@ -41,9 +41,7 @@ export class AuthService {
     }
 
     async login({ id, res }: IAuthLogin): Promise<string> {
-        const isUser = await this.userService.isUserByID(id);
-        if (!isUser)
-            throw new CustomError('id가 일치하는 유저가 없습니다', 400);
+        await this.userService.isUserByID(id);
 
         this.setRefreshToken({ id, res });
 
