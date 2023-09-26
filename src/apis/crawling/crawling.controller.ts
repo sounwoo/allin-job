@@ -2,6 +2,7 @@ import { Request, Router, Response } from 'express';
 import { CrawlingService } from './crawling.service';
 import { Container } from 'typedi';
 import {
+    Path,
     createLanguagePaths,
     createLinkareerPaths,
     createPaths,
@@ -29,6 +30,7 @@ class CrawlingController {
             asyncHandler(this.findeDetailCrawling.bind(this)),
         );
         this.router.get('/data/:path', asyncHandler(this.crawling.bind(this)));
+        this.router.get('/main/:path', asyncHandler(this.bestData.bind(this)));
     }
 
     async findeCrawling(req: Request, res: Response) {
@@ -75,6 +77,14 @@ class CrawlingController {
 
         res.status(data.length ? 200 : 400).json({
             data: data.length ? '성공' : '실패',
+        });
+    }
+
+    async bestData(req: Request, res: Response) {
+        const { path } = req.params as Path;
+        const result = await this.crawlingService.bsetData({ path });
+        res.status(200).json({
+            data: result.length ? result : null,
         });
     }
 }

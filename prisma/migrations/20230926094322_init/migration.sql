@@ -185,6 +185,7 @@ CREATE TABLE `QNet` (
     `engJmNm` VARCHAR(191) NULL,
     `instiNm` VARCHAR(191) NOT NULL,
     `implNm` VARCHAR(191) NOT NULL,
+    `view` INTEGER NOT NULL DEFAULT 0,
     `subCategoryId` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `QNet_id_key`(`id`),

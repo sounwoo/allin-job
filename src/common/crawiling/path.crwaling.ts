@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { examScheduleObj, languageType, linkareerType } from './crawiling.data';
+import { languageType, linkareerType } from './crawiling.data';
 import {
     createLanguagePaths,
     createLinkareerPaths,
@@ -193,7 +193,15 @@ export class PathCrawling {
                     const examSchedules: examSchedule[] = [];
 
                     $('tbody > tr').each((_, el) => {
-                        examScheduleObj;
+                        const examScheduleObj = {
+                            turn: '',
+                            wtReceipt: '',
+                            wtDday: '',
+                            wtResultDay: '',
+                            ptReceipt: '',
+                            ptDday: '',
+                            resultDay: '',
+                        };
                         $(el)
                             .find('td')
                             .each((indexs, els) => {
