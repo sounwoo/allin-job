@@ -58,12 +58,12 @@ export interface createQNet {
 }
 
 export type Path = {
-    path: 'outside' | 'intern' | 'competition' | 'qnet' | 'language';
+    path: 'outside' | 'intern' | 'competition' | 'qnet';
 };
 
 export type paths = {
     id: idType['id'];
-    path: Path['path'];
+    path: Path['path'] | 'language';
     enterprise: string;
     preferentialTreatment: string;
     region: string;
