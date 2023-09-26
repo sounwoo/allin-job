@@ -2,6 +2,8 @@ import { Request, Router, Response } from 'express';
 import { CrawlingService } from './crawling.service';
 import { Container } from 'typedi';
 import {
+    Path,
+    createLanguagePaths,
     createLinkareerPaths,
     createPaths,
     fidneCrawlingType,
@@ -29,8 +31,8 @@ class CrawlingController {
             '/findeDetail',
             asyncHandler(this.findeDetailCrawling.bind(this)),
         );
-        this.router.get('/data', asyncHandler(this.crawling.bind(this)));
-
+        this.router.get('/data/:path', asyncHandler(this.crawling.bind(this)));
+        this.router.get('/main/:path', asyncHandler(this.bestData.bind(this)));
         this.router.get(
             '/myKeywordCrawling',
             AccessGuard.handle,
@@ -76,6 +78,13 @@ class CrawlingController {
         });
     }
 
+
+    async bestData(req: Request, res: Response) {
+        const { path } = req.params as Path;
+        const result = await this.crawlingService.bsetData({ path });
+        res.status(200).json({
+            data: result.length ? result : null,
+    }
     async myKeywordCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { count, ...data } = req.query as fidneCrawlingType;
@@ -89,6 +98,7 @@ class CrawlingController {
             data: result.length ? (count ? result.length : result) : null,
         });
     }
+  }   
 }
 export default new CrawlingController(
     Container.get(CrawlingService),

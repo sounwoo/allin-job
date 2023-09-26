@@ -107,13 +107,3 @@ export const languageType = (test: string) => {
 
     return { url, testType, dataObj };
 };
-
-export const examScheduleObj = {
-    turn: '',
-    wtReceipt: '',
-    wtDday: '',
-    wtResultDay: '',
-    ptReceipt: '',
-    ptDday: '',
-    resultDay: '',
-};

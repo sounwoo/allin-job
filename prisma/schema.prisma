@@ -180,6 +180,7 @@ model QNet {
   engJmNm       String?
   instiNm       String
   implNm        String
+  view          Int            @default(0)
   examSchedules ExamSchedule[]
   subCategoryId String
   subCategory   SubCategory    @relation(fields: [subCategoryId], references: [id])

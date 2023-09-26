@@ -1,4 +1,11 @@
-import { Competition, Intern, Language, Outside, QNet } from '@prisma/client';
+import {
+    Community,
+    Competition,
+    Intern,
+    Language,
+    Outside,
+    QNet,
+} from '@prisma/client';
 import { Request } from 'express';
 import { idType } from '../types';
 
@@ -50,9 +57,13 @@ export interface createQNet {
     mdobligFldNm: string;
 }
 
+export type Path = {
+    path: 'outside' | 'intern' | 'competition' | 'qnet' | 'language';
+};
+
 export type paths = {
     id: idType['id'];
-    path: 'outside' | 'intern' | 'competition' | 'qnet' | 'language';
+    path: Path['path'];
     enterprise: string;
     preferentialTreatment: string;
     region: string;
@@ -70,7 +81,7 @@ export type paths = {
 export type fidneCrawlingType = paths & { count: string };
 
 export type findeDetailType = {
-    path: 'outside' | 'intern' | 'competition' | 'qnet' | 'language';
+    path: Path['path'];
     id: string;
 };
 
@@ -115,7 +126,8 @@ export type findCrawling =
           view: number;
       }[]
     | Language[]
-    | QNet[];
+    | QNet[]
+    | Community[];
 
 export type findeDetail = Competition | Outside | Intern | Language | QNet;
 

@@ -3,6 +3,7 @@ import {
     CompetitionType,
     InternType,
     OutsideType,
+    Path,
     createCrawiling,
     createLinkareerPaths,
     createQNet,
@@ -141,7 +142,13 @@ export class CrawlingService {
                         },
                     }),
                     include: {
-                        examSchedules: true,
+                        examSchedules: {
+                            skip: 0,
+                            take: 1,
+                            orderBy: {
+                                resultDay: 'asc',
+                            },
+                        },
                         subCategory: {
                             include: {
                                 mainCategory: true,
@@ -195,8 +202,9 @@ export class CrawlingService {
                 }),
             language: () => this.prisma.language.findUnique({ where: { id } }),
             qnet: () =>
-                this.prisma.qNet.findUnique({
+                this.prisma.qNet.update({
                     where: { id },
+                    data: { view: { increment: 1 } },
                     include: {
                         examSchedules: true,
                     },
@@ -302,5 +310,84 @@ export class CrawlingService {
                 subCategoryId: subCategory!.id,
             },
         });
+    }
+
+    async bsetData({ path }: Path): Promise<findCrawling> {
+        const dataDB = {
+            outside: async () =>
+                (
+                    await this.prisma.outside.findMany({
+                        select: {
+                            id: true,
+                            title: true,
+                            view: true,
+                            enterprise: true,
+                            Dday: true,
+                            mainImage: true,
+                            applicationPeriod: true,
+                        },
+                        orderBy: { view: 'asc' },
+                    })
+                ).slice(0, 12),
+            competition: async () =>
+                (
+                    await this.prisma.competition.findMany({
+                        select: {
+                            id: true,
+                            title: true,
+                            view: true,
+                            enterprise: true,
+                            Dday: true,
+                            mainImage: true,
+                            applicationPeriod: true,
+                        },
+                        orderBy: {
+                            view: 'desc',
+                        },
+                    })
+                ).slice(0, 12),
+            intern: async () =>
+                (
+                    await this.prisma.intern.findMany({
+                        select: {
+                            id: true,
+                            title: true,
+                            view: true,
+                            enterprise: true,
+                            Dday: true,
+                            mainImage: true,
+                            applicationPeriod: true,
+                            region: true,
+                        },
+                        orderBy: {
+                            view: 'asc',
+                        },
+                    })
+                ).slice(0, 12),
+            qnet: async () =>
+                (
+                    await this.prisma.qNet.findMany({
+                        include: {
+                            examSchedules: {
+                                skip: 0,
+                                take: 1,
+                                orderBy: {
+                                    resultDay: 'asc',
+                                },
+                            },
+                        },
+                    })
+                ).slice(0, 12),
+            community: async () =>
+                (
+                    await this.prisma.community.findMany({
+                        orderBy: {
+                            view: 'asc',
+                        },
+                    })
+                ).slice(0, 12),
+        };
+
+        return dataDB[path]();
     }
 }
