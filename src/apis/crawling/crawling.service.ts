@@ -202,8 +202,8 @@ export class CrawlingService {
         return (obj[path] || obj['language'])();
     }
 
-    async findSubCategory(keyword: string): Promise<SubCategory | null> {
-        return await this.prisma.subCategory.findUnique({
+    findSubCategory(keyword: string): Promise<SubCategory | null> {
+        return this.prisma.subCategory.findUnique({
             where: { keyword },
         });
     }

@@ -20,6 +20,10 @@ const options = {
             name: 'Crawling',
             description: '크롤링 데이터 조회 API',
         },
+        {
+            name: 'Community',
+            description: '취준job담 API',
+        },
     ],
 };
 

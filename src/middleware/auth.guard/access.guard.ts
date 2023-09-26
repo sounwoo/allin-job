@@ -15,6 +15,7 @@ class AccessGuard {
 
     async handle(req: Request, _: Response, next: NextFunction) {
         const { authorization } = req.headers as authorization;
+
         const [tokenFormat, accessToken] =
             authorization && authorization.split(' ');
 

@@ -1,5 +1,6 @@
-import { Community } from '@prisma/client';
 import { IsString } from 'class-validator';
+import { CreateCommunityDTO } from './create.input';
+import { Community } from '@prisma/client';
 
 export class FindManyCommunityDTO {
     @IsString()

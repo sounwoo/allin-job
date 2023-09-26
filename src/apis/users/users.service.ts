@@ -69,8 +69,8 @@ export class UserService {
         });
     }
 
-    isUserByID(id: string): Promise<User | null> {
-        return this.prisma.user.findUnique({
+    async isUserByID(id: string): Promise<User> {
+        const isUser = await this.prisma.user.findUnique({
             where: {
                 id,
             },
@@ -78,6 +78,9 @@ export class UserService {
                 communities: true,
             },
         });
+        if (!isUser)
+            throw new CustomError('id가 일치하는 유저가 없습니다', 400);
+        return isUser;
     }
 
     findOneUserByID({
