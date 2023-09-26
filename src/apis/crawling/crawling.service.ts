@@ -384,6 +384,9 @@ export class CrawlingService {
                     orderBy: {
                         view: 'asc',
                     },
+                    include: {
+                        user: true,
+                    },
                     take: 12,
                 }),
         };
