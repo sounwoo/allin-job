@@ -13,7 +13,7 @@ class RefreshGuard {
         this.handle = asyncHandler(this.handle.bind(this));
     }
 
-    async handle(req: Request, res: Response, next: NextFunction) {
+    async handle(req: Request, _: Response, next: NextFunction) {
         const { cookie } = req.headers as cookie;
         const [tokenFormat, refreshToken] = cookie && cookie.split('=');
 

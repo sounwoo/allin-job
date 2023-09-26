@@ -2,7 +2,6 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import { languageType, linkareerType } from './crawiling.data';
 import {
-    createLanguagePaths,
     createLinkareerPaths,
     createPaths,
     examSchedule,

@@ -3,7 +3,6 @@ import { CrawlingService } from './crawling.service';
 import { Container } from 'typedi';
 import {
     Path,
-    createLanguagePaths,
     createLinkareerPaths,
     createPaths,
     fidneCrawlingType,
@@ -31,7 +30,7 @@ class CrawlingController {
             '/findeDetail',
             asyncHandler(this.findeDetailCrawling.bind(this)),
         );
-        this.router.get('/data/:path', asyncHandler(this.crawling.bind(this)));
+        this.router.get('/data', asyncHandler(this.crawling.bind(this)));
         this.router.get('/main/:path', asyncHandler(this.bestData.bind(this)));
         this.router.get(
             '/myKeywordCrawling',

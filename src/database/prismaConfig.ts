@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { error } from 'console';
 import { Service } from 'typedi';
 
 @Service()

@@ -1,5 +1,4 @@
-import { IsEmail, IsEnum, IsString, Length, Matches } from 'class-validator';
-import { Provider } from '@prisma/client';
+import { IsEmail, IsString, Length, Matches } from 'class-validator';
 
 export interface Interests {
     [key: string]: string[];
