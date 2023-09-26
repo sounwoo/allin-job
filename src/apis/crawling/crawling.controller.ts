@@ -79,12 +79,14 @@ class CrawlingController {
     }
 
     async bestData(req: Request, res: Response) {
+        // #swagger.tags = ['Crawling']
         const { path } = req.params as Path;
         const result = await this.crawlingService.bsetData({ path });
         res.status(200).json({
             data: result.length ? result : null,
         });
     }
+
     async myKeywordCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { count, ...data } = req.query as fidneCrawlingType;

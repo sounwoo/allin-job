@@ -631,6 +631,329 @@
                 }
             }
         },
+        "/crawling/main/{path}": {
+            "get": {
+                "tags": ["Crawling"],
+                "summary": "main page 12개(조회수 기준으로) 조회하기",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "outside"
+                        },
+                        "description": "데이터 조회 outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, community: 취준job담"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "outsideData": {
+                                        "summary": "대외활동 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "대외활동 id : asdasda",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집",
+                                                    "view": 100,
+                                                    "mainImage": "이미지 url",
+                                                    "enterprise": "주최기관 : 대기업",
+                                                    "applicationPeriod": "접수기간 : 23.9.12 ~ 23.9.18"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "internData": {
+                                        "summary": "인턴 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "인턴 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "enterprise": "주체 기관 : 대기업",
+                                                    "applicationPeriod": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "competitionData": {
+                                        "summary": "공모전 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "공모전 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "enterprise": "주체 기관 : 공공기관/공기업",
+                                                    "applicationPeriod": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "qnetData": {
+                                        "summary": "자격증 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "자격증 id : adfhttwerqwrasxczx",
+                                                    "jmNm": "자격증명 : 에너지산업기사",
+                                                    "engJmNm": "자격증 영어명 : Engineer Energy Management or null",
+                                                    "instiNm": "과련부처 : 통겨청",
+                                                    "implNm": "시행기관 : 한국산업인력공단",
+                                                    "examSchedules": [
+                                                        {
+                                                            "id": "회차 id : adfhttwerqwrasxczx",
+                                                            "turn": "회차 : 2023년정기기사4회",
+                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "communituData": {
+                                        "summary": "취중job담 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "커뮤니티 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                    "path": "경로 : 공모전/대외활동",
+                                                    "title": "제목 : 공모전 활동",
+                                                    "detail": "상세내용 : html코드",
+                                                    "createAt": "등록 시간 : 2023-09-16",
+                                                    "view": 0,
+                                                    "likeCount": 0,
+                                                    "commentCount": 0,
+                                                    "userId": "유저 아이디 :255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "turn": {
+                                                    "type": "string | null"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "resultDay": {
+                                                    "type": "string"
+                                                },
+                                                "applicationPeriod": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "jmNm": {
+                                                    "type": "string"
+                                                },
+                                                "engJmNm": {
+                                                    "type": "string | null"
+                                                },
+                                                "instiNm": {
+                                                    "type": "string"
+                                                },
+                                                "implNm": {
+                                                    "type": "string"
+                                                },
+                                                "examSchedules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "turn": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtResultDay": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "resultDay": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "array",
+                                            "itmes": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "path": {
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "detail": {
+                                                        "type": "string"
+                                                    },
+                                                    "view": {
+                                                        "type": "number"
+                                                    },
+                                                    "likeCount": {
+                                                        "type": "number"
+                                                    },
+                                                    "commentCount": {
+                                                        "type": "number"
+                                                    },
+                                                    "userId": {
+                                                        "type": "stiring"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/crawling/finde": {
             "get": {
                 "tags": ["Crawling"],
@@ -849,8 +1172,6 @@
                                             "data": [
                                                 {
                                                     "id": "자격증 id : adfhttwerqwrasxczx",
-                                                    "detail": "html 코드",
-                                                    "scheduleInfo": "시험 일정 설명 : html 코드",
                                                     "jmNm": "자격증명 : 에너지산업기사",
                                                     "engJmNm": "자격증 영어명 : Engineer Energy Management or null",
                                                     "instiNm": "과련부처 : 통겨청",
@@ -866,15 +1187,7 @@
                                                             "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                             "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                         }
-                                                    ],
-                                                    "subCategoryId": "서브카테고리 id : adfhttwerqwrasxczx",
-                                                    "subCategory": {
-                                                        "keyword": "서브 카테고리 : 에너지.기상",
-                                                        "mainCategoryId": "메인 카테고리 id : adfhttwerqwrasxczx",
-                                                        "mainCategory": {
-                                                            "keyword": "메인 카테고리 : 환경.에너지"
-                                                        }
-                                                    }
+                                                    ]
                                                 }
                                             ]
                                         }
@@ -995,12 +1308,6 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "detail": {
-                                                    "type": "string"
-                                                },
-                                                "scheduleInfo": {
-                                                    "type": "string"
-                                                },
                                                 "jmNm": {
                                                     "type": "string"
                                                 },
@@ -1040,22 +1347,6 @@
                                                                 "type": "string"
                                                             },
                                                             "resultDay": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "subCategoryId": {
-                                                    "type": "string"
-                                                },
-                                                "subCategory": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "mainCategoryId": {
-                                                            "type": "string"
-                                                        },
-                                                        "mainCategory": {
-                                                            "keyword": {
                                                                 "type": "string"
                                                             }
                                                         }
@@ -1482,6 +1773,7 @@
                 }
             }
         },
+
         "/login/{social}/callback": {
             "get": {
                 "tags": ["Auth"],
@@ -1783,6 +2075,7 @@
                                 "example": {
                                     "data": {
                                         "id": "커뮤니티 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                        "path": "경로 : 공모전/대외활동",
                                         "title": "제목 : 공모전 활동",
                                         "detail": "상세내용 : html코드",
                                         "createAt": "등록 시간 : 2023-09-16",
@@ -1798,6 +2091,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "id": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
                                                     "type": "string"
                                                 },
                                                 "title": {
