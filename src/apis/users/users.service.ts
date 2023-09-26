@@ -7,7 +7,7 @@ import {
 import RedisClient from '../../database/redisConfig';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
-// import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
+import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
 
 @Service()
 export class UserService {
@@ -16,40 +16,45 @@ export class UserService {
         private readonly redis: RedisClient,
     ) {}
 
-    // 로그인한 유저의 interestId, keywordId 가져오기
-    async findUserKeyword({ id, path }: FindUserKeywordDTO): Promise<string> {
-        const user = await this.prisma.userInterest.findMany({
-            where: {
-                userId: id,
-            },
-            select: {
-                interestId: true,
-                keywordId: true,
-            },
-        });
-
-        // path에 해당하는 interest모델에서 id 가져오기
-        const pathId = (
-            await this.prisma.interest.findUnique({
-                where: { interest: path },
-                select: { id: true },
-            })
-        )?.id;
-
-        // 유저의 keyword 뽑아서 한줄로 입력 형태 만들기
-        return (
-            await this.prisma.keyword.findMany({
+    async findUserKeyword({
+        id,
+        path,
+        classify,
+    }: FindUserKeywordDTO): Promise<string> {
+        return await this.prisma.user
+            .findUnique({
                 where: {
-                    id: {
-                        in: user
-                            .filter((item) => item.interestId === pathId)
-                            .map((item) => item.keywordId),
+                    id,
+                },
+                include: {
+                    interests: {
+                        include: {
+                            interest: true,
+                            keyword: true,
+                        },
                     },
                 },
             })
-        )
-            .map((keyword) => keyword.keyword)
-            .join(',');
+            .then(async (result) => {
+                let keywords = result!.interests.map(
+                    (interest) =>
+                        interest.interest.interest === path &&
+                        interest.keyword.keyword,
+                );
+                if (classify) {
+                    keywords = await Promise.all(
+                        keywords.map(async (test) => {
+                            return test &&
+                                (await this.prisma.language.findFirst({
+                                    where: { test, classify },
+                                }))
+                                ? test
+                                : false;
+                        }),
+                    );
+                }
+                return keywords.filter((el) => el).join(',');
+            });
     }
 
     findOneUserByEmail(email: string): Promise<User | null> {
@@ -107,7 +112,7 @@ export class UserService {
             throw new CustomError('로그인한 이메일과 일치하지 않습니다.', 400);
 
         return await this.prisma.$transaction(async (prisma) => {
-            const user = await this.prisma.user.create({
+            const user = await prisma.user.create({
                 data: {
                     ...userData,
                     provider: provider as Provider,
@@ -117,7 +122,7 @@ export class UserService {
                 interests.map(async (el) => {
                     const interest = Object.keys(el)[0];
                     const keywords = Object.values(el)[0];
-                    const createdInterest = await this.prisma.interest.upsert({
+                    const createdInterest = await prisma.interest.upsert({
                         where: { interest },
                         update: {},
                         create: { interest },
@@ -125,13 +130,12 @@ export class UserService {
 
                     return Promise.all(
                         keywords.map(async (keyword) => {
-                            const createdKeyword =
-                                await this.prisma.keyword.upsert({
-                                    where: { keyword },
-                                    update: {},
-                                    create: { keyword },
-                                });
-                            await this.prisma.userInterest.create({
+                            const createdKeyword = await prisma.keyword.upsert({
+                                where: { keyword },
+                                update: {},
+                                create: { keyword },
+                            });
+                            await prisma.userInterest.create({
                                 data: {
                                     userId: user.id,
                                     interestId: createdInterest.id,

@@ -1,5 +1,6 @@
 import { Competition, Intern, Language, Outside, QNet } from '@prisma/client';
 import { Request } from 'express';
+import { idType } from '../types';
 
 interface CommonType {
     Dday: string;
@@ -50,6 +51,7 @@ export interface createQNet {
 }
 
 export type paths = {
+    id: idType['id'];
     path: 'outside' | 'intern' | 'competition' | 'qnet' | 'language';
     enterprise: string;
     preferentialTreatment: string;

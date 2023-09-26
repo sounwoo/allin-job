@@ -1,11 +1,12 @@
 import { IsEmail } from 'class-validator';
 import { CreateUserDTO } from './create-user.dto';
+import { User } from '@prisma/client';
 
 export class FindOneUserByEmailDTO {
     @IsEmail()
-    email: CreateUserDTO['email'];
+    email: User['email'];
 
-    constructor(data: Pick<CreateUserDTO, 'email'>) {
+    constructor(data: FindOneUserByEmailDTO) {
         this.email = data.email;
     }
 }

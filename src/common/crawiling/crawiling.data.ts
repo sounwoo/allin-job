@@ -103,8 +103,6 @@ export const languageType = (test: string) => {
         case 'jpSP':
             url = 'https://www.ybmsjpt.co.kr/receipt/examSchList.php';
             break;
-        default:
-            break;
     }
 
     return { url, testType, dataObj };

@@ -4,16 +4,13 @@ import {
     InternType,
     OutsideType,
     createCrawiling,
-    createLanguagePaths,
     createLinkareerPaths,
-    createPaths,
     createQNet,
     findCrawling,
     findeDetail,
     findeDetailType,
     languagePath,
     paths,
-    testType,
 } from '../../common/crawiling/interface';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
@@ -63,17 +60,14 @@ export class CrawlingService {
                 );
             }
         }
-
         const obj = {
             outside: () =>
                 this.prisma.outside.findMany({
-                    where: keywords.length
-                        ? {
-                              OR: keywords.map((el: object) => el),
-                          }
-                        : {
-                              AND: [],
-                          },
+                    ...(keywords.length && {
+                        where: {
+                            OR: keywords.map((el: object) => el),
+                        },
+                    }),
                     select: {
                         id: true,
                         title: true,
@@ -89,13 +83,11 @@ export class CrawlingService {
 
             intern: () =>
                 this.prisma.intern.findMany({
-                    where: keywords.length
-                        ? {
-                              OR: keywords.map((el: object) => el),
-                          }
-                        : {
-                              AND: [],
-                          },
+                    ...(keywords.length && {
+                        where: {
+                            OR: keywords.map((el: object) => el),
+                        },
+                    }),
                     select: {
                         id: true,
                         title: true,
@@ -111,13 +103,11 @@ export class CrawlingService {
                 }),
             competition: () =>
                 this.prisma.competition.findMany({
-                    where: keywords.length
-                        ? {
-                              OR: keywords.map((el: object) => el),
-                          }
-                        : {
-                              AND: [],
-                          },
+                    ...(keywords.length && {
+                        where: {
+                            OR: keywords.map((el: object) => el),
+                        },
+                    }),
                     select: {
                         id: true,
                         title: true,
@@ -133,13 +123,10 @@ export class CrawlingService {
             language: () =>
                 this.prisma.language.findMany({
                     where: data.classify
-                        ? keywords.length >= 3
-                            ? {
-                                  OR: keywords.map((el: object) => el),
-                              }
-                            : {
-                                  AND: keywords.map((el: object) => el),
-                              }
+                        ? {
+                              AND: keywords.filter((el: any) => el.classify),
+                              OR: keywords.filter((el: any) => !el.classify),
+                          }
                         : {
                               OR: keywords.map((el: object) => el),
                           },
@@ -148,11 +135,11 @@ export class CrawlingService {
                 }),
             qnet: () =>
                 this.prisma.qNet.findMany({
-                    where: {
-                        AND: keywords.length
-                            ? keywords.map((el: object) => el)
-                            : [],
-                    },
+                    ...(keywords.length && {
+                        where: {
+                            OR: keywords.map((el: object) => el),
+                        },
+                    }),
                     include: {
                         examSchedules: true,
                         subCategory: {
@@ -166,8 +153,25 @@ export class CrawlingService {
         return (obj[path] || obj['language'])();
     }
 
-    // user service
-    // findCrawling
+    async myKeywordCrawling({ ...data }: paths): Promise<findCrawling> {
+        const userKeyword = await this.userService.findUserKeyword({
+            ...data,
+        });
+        const obj = {
+            competition: 'interests',
+            outside: 'field',
+            intern: 'enterprise',
+            qnet: 'mainCategory',
+            language: 'test',
+        };
+
+        const params = {
+            ...data,
+            [obj[data.path]]: userKeyword,
+        };
+
+        return await this.findeCrawling(params);
+    }
 
     async findeDetailCrawling({
         path,

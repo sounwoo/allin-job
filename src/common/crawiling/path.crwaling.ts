@@ -122,7 +122,7 @@ export class PathCrawling {
     }
 
     async languageData({ test, path }: createPaths) {
-        const { testType, dataObj, url } = languageType(path);
+        const { testType, dataObj, url } = languageType(test);
         const result = await axios.get(url);
         const $ = cheerio.load(result.data);
         $(testType).each((_, el) => {
