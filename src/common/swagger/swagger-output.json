@@ -740,7 +740,17 @@
                                                     "view": 0,
                                                     "likeCount": 0,
                                                     "commentCount": 0,
-                                                    "userId": "유저 아이디 :255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                                    "userId": "유저 아이디 :255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                    "user": {
+                                                        "id": "e03c1b88-0b4f-46fb-90a8-ccb349c044d7",
+                                                        "email": "mna800@naver.com",
+                                                        "provider": "kakao",
+                                                        "name": "홍길동",
+                                                        "nickname": "닉네임",
+                                                        "phone": "01012345678",
+                                                        "profileImage": "profile url",
+                                                        "major": "컴퓨터공학"
+                                                    }
                                                 }
                                             ]
                                         }
@@ -932,6 +942,39 @@
                                                     },
                                                     "userId": {
                                                         "type": "stiring"
+                                                    },
+                                                    "user": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "user": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "provider": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "nickname": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "profileImage": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "major": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
