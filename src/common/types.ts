@@ -13,6 +13,10 @@ export type pathType = {
     path: string;
 };
 
+export type classifyType = {
+    classify: string;
+};
+
 export type findOneUserByIDType = {
     name: CreateUserDTO['name'];
     phone: CreateUserDTO['phone'];

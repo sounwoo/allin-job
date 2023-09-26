@@ -6,6 +6,8 @@ import {
     Outside,
     QNet,
 } from '@prisma/client';
+import { Request } from 'express';
+import { idType } from '../types';
 
 interface CommonType {
     Dday: string;
@@ -56,10 +58,11 @@ export interface createQNet {
 }
 
 export type Path = {
-    path: 'outside' | 'intern' | 'competition' | 'qnet';
+    path: 'outside' | 'intern' | 'competition' | 'qnet' | 'language';
 };
 
 export type paths = {
+    id: idType['id'];
     path: Path['path'];
     enterprise: string;
     preferentialTreatment: string;
@@ -72,6 +75,7 @@ export type paths = {
     mainCategory: string;
     subCategory: string;
     page: string;
+    classify: string;
 };
 
 export type fidneCrawlingType = paths & { count: string };
@@ -82,7 +86,8 @@ export type findeDetailType = {
 };
 
 export type createLinkareerPaths = 'outside' | 'intern' | 'competition';
-export type createLanguagePaths =
+export type createLanguagePaths = 'language';
+export type testType =
     | 'toeic'
     | 'toeicBR'
     | 'toeicSW'
@@ -91,7 +96,10 @@ export type createLanguagePaths =
     | 'jp'
     | 'jpSP';
 
-export type createPaths = createLinkareerPaths & createLanguagePaths;
+export type createPaths = {
+    path: createLinkareerPaths & createLanguagePaths;
+    test: testType;
+};
 
 export interface languageDetail {
     turn?: string;
@@ -101,7 +109,8 @@ export interface languageDetail {
 }
 
 export interface languagePath {
-    path: createLanguagePaths;
+    test: string;
+    classify: string;
     homePage: string;
     dataObj: languageDetail;
 }

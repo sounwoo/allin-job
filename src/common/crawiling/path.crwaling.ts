@@ -4,6 +4,7 @@ import { languageType, linkareerType } from './crawiling.data';
 import {
     createLanguagePaths,
     createLinkareerPaths,
+    createPaths,
     examSchedule,
     itmeType,
 } from './interface';
@@ -120,11 +121,11 @@ export class PathCrawling {
             });
     }
 
-    async languageData(path: createLanguagePaths) {
-        const { pathType, dataObj, url } = languageType(path);
+    async languageData({ test, path }: createPaths) {
+        const { testType, dataObj, url } = languageType(test);
         const result = await axios.get(url);
         const $ = cheerio.load(result.data);
-        $(pathType).each((_, el) => {
+        $(testType).each((_, el) => {
             $(el)
                 .find('td')
                 .each((indexs, els) => {
@@ -135,9 +136,12 @@ export class PathCrawling {
                             .replace(/\s+/g, '');
                     }
                 });
-
+            let classify: string = '영어';
+            if (test.includes('ch')) classify = '중국어';
+            else if (test.includes('jp')) classify = '일본어';
             this.crawlingServcie.createLanguageData({
-                path,
+                test,
+                classify,
                 homePage: url,
                 dataObj,
             });
