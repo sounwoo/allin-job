@@ -151,7 +151,7 @@ export class CrawlingService {
                             skip: 0,
                             take: 1,
                             orderBy: {
-                                resultDay: 'asc',
+                                resultDay: 'desc',
                             },
                         },
                     },
@@ -325,7 +325,7 @@ export class CrawlingService {
                         mainImage: true,
                         applicationPeriod: true,
                     },
-                    orderBy: { view: 'asc' },
+                    orderBy: { view: 'desc' },
                     take: 12,
                 }),
             competition: () =>
@@ -357,7 +357,7 @@ export class CrawlingService {
                         region: true,
                     },
                     orderBy: {
-                        view: 'asc',
+                        view: 'desc',
                     },
                     take: 12,
                 }),
@@ -373,7 +373,7 @@ export class CrawlingService {
                             skip: 0,
                             take: 1,
                             orderBy: {
-                                resultDay: 'asc',
+                                resultDay: 'desc',
                             },
                         },
                     },
@@ -382,7 +382,7 @@ export class CrawlingService {
             community: () =>
                 this.prisma.community.findMany({
                     orderBy: {
-                        view: 'asc',
+                        view: 'desc',
                     },
                     include: {
                         user: true,
