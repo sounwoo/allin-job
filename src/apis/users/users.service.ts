@@ -1,4 +1,4 @@
-import { Provider, User, UserInterest } from '@prisma/client';
+import { Provider, User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
     IUserCreateDTO,

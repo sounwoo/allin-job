@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import {  Request, Response, Router } from 'express';
 import passport from 'passport';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';

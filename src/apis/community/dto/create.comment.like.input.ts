@@ -1,5 +1,4 @@
 import { IsString } from 'class-validator';
-
 import { Comment } from '@prisma/client';
 
 export class CommentLikeCommunityDTO {

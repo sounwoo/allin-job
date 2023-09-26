@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { UserService } from '../users/users.service';
 import {
     IAuthGetAccessToken,
@@ -12,7 +12,6 @@ import RedisClient from '../../database/redisConfig';
 import { saveBlackList } from '../../common/validator/saveBlackList';
 import { emailProviderType } from '../../common/types';
 import { saveCookie } from '../../common/util/save.cookie';
-import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
 
 @Service()

@@ -1,6 +1,5 @@
 import { Service } from 'typedi';
 import { UserService } from '../users/users.service';
-import CustomError from '../../common/error/customError';
 import { Comment, CommentLike, Community, CommunityLike } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
@@ -10,8 +9,6 @@ import {
     ICreateCommunityComment,
 } from './interfaces/community.interface';
 import { idType, pathType } from '../../common/types';
-import { CreateCommunityCommentDTO } from './dto/create.comment.input';
-import { CommentLikeCommunityDTO } from './dto/create.comment.like.input';
 
 @Service()
 export class CommunityService {

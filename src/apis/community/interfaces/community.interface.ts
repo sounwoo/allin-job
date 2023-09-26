@@ -1,4 +1,3 @@
-import { Comment, Community } from '@prisma/client';
 import { idType } from '../../../common/types';
 import { CreateCommunityCommentDTO } from '../dto/create.comment.input';
 import { CommentLikeCommunityDTO } from '../dto/create.comment.like.input';
