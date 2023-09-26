@@ -24,7 +24,7 @@ export class CrawlingService {
         private readonly userService: UserService, //
     ) {}
 
-    async findeCrawling({ ...data }: paths): Promise<findCrawling> {
+    async findeCrawling({ ...data }: paths): Promise<any> {
         const { path, page, ..._data } = data;
         const datas: { [key: string]: string } = { ..._data };
         const keywords: object[] = [];
@@ -141,17 +141,17 @@ export class CrawlingService {
                             OR: keywords.map((el: object) => el),
                         },
                     }),
-                    include: {
+                    select: {
+                        jmNm: true,
+                        engJmNm: true,
+                        instiNm: true,
+                        implNm: true,
+                        view: true,
                         examSchedules: {
                             skip: 0,
                             take: 1,
                             orderBy: {
                                 resultDay: 'asc',
-                            },
-                        },
-                        subCategory: {
-                            include: {
-                                mainCategory: true,
                             },
                         },
                     },
@@ -314,78 +314,78 @@ export class CrawlingService {
 
     async bsetData({ path }: Path): Promise<findCrawling> {
         const dataDB = {
-            outside: async () =>
-                (
-                    await this.prisma.outside.findMany({
-                        select: {
-                            id: true,
-                            title: true,
-                            view: true,
-                            enterprise: true,
-                            Dday: true,
-                            mainImage: true,
-                            applicationPeriod: true,
-                        },
-                        orderBy: { view: 'asc' },
-                    })
-                ).slice(0, 12),
-            competition: async () =>
-                (
-                    await this.prisma.competition.findMany({
-                        select: {
-                            id: true,
-                            title: true,
-                            view: true,
-                            enterprise: true,
-                            Dday: true,
-                            mainImage: true,
-                            applicationPeriod: true,
-                        },
-                        orderBy: {
-                            view: 'desc',
-                        },
-                    })
-                ).slice(0, 12),
-            intern: async () =>
-                (
-                    await this.prisma.intern.findMany({
-                        select: {
-                            id: true,
-                            title: true,
-                            view: true,
-                            enterprise: true,
-                            Dday: true,
-                            mainImage: true,
-                            applicationPeriod: true,
-                            region: true,
-                        },
-                        orderBy: {
-                            view: 'asc',
-                        },
-                    })
-                ).slice(0, 12),
-            qnet: async () =>
-                (
-                    await this.prisma.qNet.findMany({
-                        include: {
-                            examSchedules: {
-                                skip: 0,
-                                take: 1,
-                                orderBy: {
-                                    resultDay: 'asc',
-                                },
+            outside: () =>
+                this.prisma.outside.findMany({
+                    select: {
+                        id: true,
+                        title: true,
+                        view: true,
+                        enterprise: true,
+                        Dday: true,
+                        mainImage: true,
+                        applicationPeriod: true,
+                    },
+                    orderBy: { view: 'asc' },
+                    take: 12,
+                }),
+            competition: () =>
+                this.prisma.competition.findMany({
+                    select: {
+                        id: true,
+                        title: true,
+                        view: true,
+                        enterprise: true,
+                        Dday: true,
+                        mainImage: true,
+                        applicationPeriod: true,
+                    },
+                    orderBy: {
+                        view: 'desc',
+                    },
+                    take: 12,
+                }),
+            intern: () =>
+                this.prisma.intern.findMany({
+                    select: {
+                        id: true,
+                        title: true,
+                        view: true,
+                        enterprise: true,
+                        Dday: true,
+                        mainImage: true,
+                        applicationPeriod: true,
+                        region: true,
+                    },
+                    orderBy: {
+                        view: 'asc',
+                    },
+                    take: 12,
+                }),
+            qnet: () =>
+                this.prisma.qNet.findMany({
+                    select: {
+                        jmNm: true,
+                        engJmNm: true,
+                        instiNm: true,
+                        implNm: true,
+                        view: true,
+                        examSchedules: {
+                            skip: 0,
+                            take: 1,
+                            orderBy: {
+                                resultDay: 'asc',
                             },
                         },
-                    })
-                ).slice(0, 12),
-            community: async () =>
-                (
-                    await this.prisma.community.findMany({
-                        orderBy: {
-                            view: 'asc',
-                        },
-                    })
-                ).slice(0, 12),
+                    },
+                    take: 12,
+                }),
+            community: () =>
+                this.prisma.community.findMany({
+                    orderBy: {
+                        view: 'asc',
+                    },
+                    take: 12,
+                }),
         };
 
         return dataDB[path]();

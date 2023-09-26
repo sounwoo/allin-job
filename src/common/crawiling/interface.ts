@@ -1,12 +1,12 @@
 import {
     Community,
     Competition,
+    ExamSchedule,
     Intern,
     Language,
     Outside,
     QNet,
 } from '@prisma/client';
-import { Request } from 'express';
 import { idType } from '../types';
 
 interface CommonType {
@@ -126,7 +126,14 @@ export type findCrawling =
           view: number;
       }[]
     | Language[]
-    | QNet[]
+    | {
+          view: number;
+          jmNm: string;
+          engJmNm: string | null;
+          instiNm: string;
+          implNm: string;
+          examSchedules: ExamSchedule[];
+      }[]
     | Community[];
 
 export type findeDetail = Competition | Outside | Intern | Language | QNet;
