@@ -165,7 +165,8 @@ CREATE TABLE `Competition` (
 -- CreateTable
 CREATE TABLE `Language` (
     `id` VARCHAR(191) NOT NULL,
-    `path` VARCHAR(191) NOT NULL,
+    `classify` VARCHAR(191) NOT NULL,
+    `test` VARCHAR(191) NOT NULL,
     `homePage` VARCHAR(191) NOT NULL,
     `turn` VARCHAR(191) NULL,
     `Dday` VARCHAR(191) NOT NULL,

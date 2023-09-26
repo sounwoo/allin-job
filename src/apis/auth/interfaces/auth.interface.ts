@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateUserDTO } from '../../users/dto/create-user.dto';
 import { UserID, UserIdAndContext } from '../../../common/interface';
+import { Provider } from '@prisma/client';
 
 export interface IOAuthSocialUser {
     user?: {
         email?: CreateUserDTO['email'];
-        provider?: CreateUserDTO['provider'];
+        provider?: Provider;
     };
 }
 

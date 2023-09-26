@@ -2,7 +2,6 @@ import { Request, Router, Response } from 'express';
 import { CrawlingService } from './crawling.service';
 import { Container } from 'typedi';
 import {
-    createLanguagePaths,
     createLinkareerPaths,
     createPaths,
     fidneCrawlingType,
@@ -10,13 +9,15 @@ import {
 } from '../../common/crawiling/interface';
 import { asyncHandler } from '../../middleware/async.handler';
 import { PathCrawling } from '../../common/crawiling/path.crwaling';
+import AccessGuard from '../../middleware/auth.guard/access.guard';
+import { idType } from '../../common/types';
 
 class CrawlingController {
     router = Router();
     path = '/crawling';
 
     constructor(
-        private readonly crawlingService: CrawlingService, //
+        private readonly crawlingService: CrawlingService,
         private readonly pathCrawling: PathCrawling,
     ) {
         this.init();
@@ -28,7 +29,13 @@ class CrawlingController {
             '/findeDetail',
             asyncHandler(this.findeDetailCrawling.bind(this)),
         );
-        this.router.get('/data/:path', asyncHandler(this.crawling.bind(this)));
+        this.router.get('/data', asyncHandler(this.crawling.bind(this)));
+
+        this.router.get(
+            '/myKeywordCrawling',
+            AccessGuard.handle,
+            asyncHandler(this.myKeywordCrawling.bind(this)),
+        );
     }
 
     async findeCrawling(req: Request, res: Response) {
@@ -52,29 +59,34 @@ class CrawlingController {
     }
 
     async crawling(req: Request, res: Response) {
-        const path = req.params.path as createPaths;
+        const { path, test } = req.query as createPaths;
 
         const linkareer = ['outside', 'intern', 'competition'];
-        const language = [
-            'toeic',
-            'toeicBR',
-            'toeicSW',
-            'toeicWT',
-            'toeicST',
-            'ch',
-            'jp',
-            'jpSP',
-        ];
+
         const data = linkareer.includes(path)
             ? await this.pathCrawling.linkareerData(
                   path as createLinkareerPaths,
               )
-            : language.includes(path)
-            ? await this.pathCrawling.languageData(path as createLanguagePaths)
+            : path === 'language'
+            ? await this.pathCrawling.languageData({ path, test })
             : await this.pathCrawling.QNetData();
 
         res.status(data.length ? 200 : 400).json({
             data: data.length ? '성공' : '실패',
+        });
+    }
+
+    async myKeywordCrawling(req: Request, res: Response) {
+        // #swagger.tags = ['Crawling']
+        const { count, ...data } = req.query as fidneCrawlingType;
+        const { id } = req.user as idType;
+        const result = await this.crawlingService.myKeywordCrawling({
+            ...data,
+            id,
+        });
+
+        res.status(200).json({
+            data: result.length ? (count ? result.length : result) : null,
         });
     }
 }

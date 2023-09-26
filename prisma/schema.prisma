@@ -16,6 +16,12 @@ enum Provider {
   google
 }
 
+enum Classify {
+  en
+  ch
+  jp
+}
+
 model User {
   id            String          @id @unique @default(uuid())
   email         String          @unique
@@ -157,7 +163,8 @@ model Competition {
 
 model Language {
   id                String  @id @unique @default(uuid())
-  path              String
+  classify          String
+  test              String
   homePage          String
   turn              String?
   Dday              String
