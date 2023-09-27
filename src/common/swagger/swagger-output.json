@@ -2221,6 +2221,36 @@
                             "example": "공모전/대외활동"
                         },
                         "description": "카테고리 선택(선택 안할시 전체데이터 조회)"
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "title",
+                            "example": "공모전 활동"
+                        },
+                        "description": "제목으로 검색"
+                    },
+                    {
+                        "name": "nickName",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "nickName",
+                            "example": "닉네임"
+                        },
+                        "description": "작성자로 검색"
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "content",
+                            "example": "공모"
+                        },
+                        "description": "제목 + 내용이 포함된 데이터 조회"
                     }
                 ],
                 "responses": {
