@@ -3,8 +3,9 @@ import { CommunityService } from './community.service';
 import { Request, Response, Router } from 'express';
 import { asyncHandler } from '../../middleware/async.handler';
 import accessGuard from '../../middleware/auth.guard/access.guard';
-import { idType, pathType } from '../../common/types';
+import { idType } from '../../common/types';
 import Validate from '../../common/validator/validateDTO';
+import { FindManyCommunityDTO } from './dto/findMany.community';
 
 class CommunityController {
     router = Router();
@@ -70,8 +71,10 @@ class CommunityController {
 
     async fidneMany(req: Request, res: Response) {
         // #swagger.tags = ['Community']
-        const { path } = req.query as pathType;
-        const data = await this.communityService.findeMany({ path });
+
+        const data = await this.communityService.findeMany({
+            ...(req.query as FindManyCommunityDTO),
+        });
 
         res.status(200).json({
             data: data.length ? data : null,

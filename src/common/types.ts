@@ -1,4 +1,4 @@
-import { Provider } from '@prisma/client';
+import { Community, Provider, User } from '@prisma/client';
 import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
 
 export type email = {
