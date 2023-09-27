@@ -62,11 +62,12 @@ class UserController {
         // #swagger.tags = ['Users']
         const { name, phone } = req.query as findOneUserByIDType;
         await validateDTO(new FindOneUserByIdDTO({ name, phone }));
-        const user = await this.userService.findOneUserByID({
-            name,
-            phone,
+        res.status(200).json({
+            data: await this.userService.findOneUserByID({
+                name,
+                phone,
+            }),
         });
-        res.status(200).json({ data: user.length ? user : null });
     }
 
     async createUser(req: Request, res: Response) {

@@ -62,4 +62,3 @@ export class SmsService {
         return +getToken! === token;
     }
 }
-//
