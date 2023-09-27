@@ -8,7 +8,8 @@ import {
     ICommunityToggleLike,
     ICreateCommunityComment,
 } from './interfaces/community.interface';
-import { idType, pathType } from '../../common/types';
+import { idType } from '../../common/types';
+import { FindManyCommunityDTO } from './dto/findMany.community';
 
 @Service()
 export class CommunityService {
@@ -29,9 +30,24 @@ export class CommunityService {
         });
     }
 
-    findeMany({ path }: pathType): Promise<Community[]> {
+    findeMany({
+        path,
+        title,
+        nickName: nickname,
+        content,
+    }: FindManyCommunityDTO): Promise<Community[]> {
         return this.prisma.community.findMany({
-            where: { path },
+            where: {
+                ...(path && { path }),
+                ...(title && { title: { contains: title } }),
+                ...(nickname && { user: { nickname: { contains: nickname } } }),
+                ...(content && {
+                    OR: [
+                        { title: { contains: content } },
+                        { detail: { contains: content } },
+                    ],
+                }),
+            },
             include: {
                 user: true,
             },

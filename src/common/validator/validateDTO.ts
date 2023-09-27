@@ -49,8 +49,7 @@ class Validate {
     }
 
     async findManyCommunity(req: Request, _: Response, next: NextFunction) {
-        const path = req.query.path as pathType;
-        path && (await this.errors(new FindManyCommunityDTO(path)));
+        await this.errors(new FindManyCommunityDTO(req.query as pathType));
 
         next();
     }
