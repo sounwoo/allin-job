@@ -16,15 +16,18 @@ import {
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 import { UserService } from '../users/users.service';
+import { ElasitcClient } from '../../database/elasticConfig';
 
 @Service()
 export class CrawlingService {
     constructor(
         private readonly prisma: CustomPrismaClient, //
-        private readonly userService: UserService, //
+        private readonly elastic: ElasitcClient,
+        private readonly userService: UserService,
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<any> {
+        console.log(this.elastic);
         const { path, page, ..._data } = data;
         const datas: { [key: string]: string } = { ..._data };
         const keywords: object[] = [];
