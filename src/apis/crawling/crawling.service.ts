@@ -16,7 +16,7 @@ import {
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 import { UserService } from '../users/users.service';
-import { ElasitcClient } from '../../database/elasticConfig';
+// import { ElasitcClient } from '../../database/elasticConfig';
 
 @Service()
 export class CrawlingService {
