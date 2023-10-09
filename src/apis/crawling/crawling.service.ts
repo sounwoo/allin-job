@@ -28,6 +28,7 @@ export class CrawlingService {
 
     async findeCrawling({ ...data }: paths): Promise<any> {
         const { path, page, classify, ..._data } = data;
+
         const datas: { [key: string]: string } = { ..._data };
         const keywords: { [key: string]: object[] } = { must: [] };
         for (const key in _data) {
