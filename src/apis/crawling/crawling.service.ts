@@ -27,7 +27,6 @@ export class CrawlingService {
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<any> {
-        console.log(this.elastic);
         const { path, page, ..._data } = data;
         const datas: { [key: string]: string } = { ..._data };
         const keywords: object[] = [];
