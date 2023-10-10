@@ -41,13 +41,12 @@ class CrawlingController {
 
     async findeCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
-        const { count, ...data } = req.query as fidneCrawlingType;
-        const result = await this.crawlingService.findeCrawling({
-            ...data,
-        });
+        const { ...data } = req.query as fidneCrawlingType;
 
         res.status(200).json({
-            data: result.length ? (count ? result.length : result) : null,
+            data: await this.crawlingService.findeCrawling({
+                ...data,
+            }),
         });
     }
 
@@ -89,7 +88,7 @@ class CrawlingController {
 
     async myKeywordCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
-        const { count, ...data } = req.query as fidneCrawlingType;
+        const { ...data } = req.query as fidneCrawlingType;
         const { id } = req.user as idType;
         const result = await this.crawlingService.myKeywordCrawling({
             ...data,
@@ -97,7 +96,7 @@ class CrawlingController {
         });
 
         res.status(200).json({
-            data: result.length ? (count ? result.length : result) : null,
+            data: result,
         });
     }
 }

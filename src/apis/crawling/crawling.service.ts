@@ -27,7 +27,7 @@ export class CrawlingService {
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<any> {
-        const { path, page, classify, ..._data } = data;
+        const { path, page, classify, count, ..._data } = data;
 
         const datas: { [key: string]: string } = { ..._data };
         const keywords: { [key: string]: object[] } = { must: [] };
@@ -77,10 +77,12 @@ export class CrawlingService {
                 },
             })
             .then((el) =>
-                el.body.hits.hits.map((el: any) => ({
-                    id: el._id,
-                    ...el._source,
-                })),
+                count
+                    ? el.body.hits.total.value
+                    : el.body.hits.hits.map((el: any) => ({
+                          id: el._id,
+                          ...el._source,
+                      })),
             );
     }
 
