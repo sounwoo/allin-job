@@ -30,44 +30,31 @@ export class CrawlingService {
         const { path, page, classify, count, ..._data } = data;
 
         const datas: { [key: string]: string } = { ..._data };
-        const keywords: { [key: string]: object[] } = { must: [] };
+        const must: object[] = [];
         for (const key in _data) {
             const value = datas[key];
             if (key === 'scale') {
                 const [start, end] = value.split(',');
                 const scaleKeyword = !end
                     ? { gte: +start }
-                    : { gte: +start || 0, lte: +end || 0 };
-
-                keywords.must.push({ range: { [key]: scaleKeyword } });
-            } else if (classify) {
-                keywords.must.push(
-                    { term: { classify } },
-                    {
-                        bool: {
-                            must: [
-                                { match: { [key]: value.replace(',', ' ') } },
-                            ],
-                        },
-                    },
-                );
+                    : { gte: +start || 0, lte: +end };
+                must.push({ range: { [key]: scaleKeyword } });
             } else {
-                keywords.must.push({
-                    bool: {
-                        must: [{ match: { [key]: value.replace(',', ' ') } }],
-                    },
+                must.push({
+                    match: { [key]: value.replace(',', ' ') },
                 });
             }
         }
+
         return this.elastic
             .search({
                 index: `${path}*`,
                 _source_excludes: ['detail'],
                 body: {
                     query: {
-                        ...(Object.keys(keywords)
+                        ...(must.length
                             ? {
-                                  bool: keywords,
+                                  bool: { must },
                               }
                             : { match_all: {} }),
                     },
@@ -130,7 +117,7 @@ export class CrawlingService {
                         _source: true,
                     },
                 },
-                { ignore: [400] },
+                { ignore: [404] },
             )
             .then((el) =>
                 el.body.error ? el.meta.context : el.body.get._source,
