@@ -59,7 +59,7 @@ export class CrawlingService {
                             : { match_all: {} }),
                     },
                     size: 12,
-                    ...(page && { from: +page * 12 }),
+                    from: (+page - 1 || 0) * 12,
                 },
             })
             .then((el) =>
