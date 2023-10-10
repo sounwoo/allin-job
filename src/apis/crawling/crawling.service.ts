@@ -36,8 +36,8 @@ export class CrawlingService {
             if (key === 'scale') {
                 const [start, end] = value.split(',');
                 const scaleKeyword = !end
-                    ? { gte: start }
-                    : { gte: start || 0, lte: end || 0 };
+                    ? { gte: +start }
+                    : { gte: +start || 0, lte: +end || 0 };
 
                 keywords.must.push({ range: { [key]: scaleKeyword } });
             } else if (classify) {
@@ -45,7 +45,7 @@ export class CrawlingService {
                     { term: { classify } },
                     {
                         bool: {
-                            should: [
+                            must: [
                                 { match: { [key]: value.replace(',', ' ') } },
                             ],
                         },
@@ -54,7 +54,7 @@ export class CrawlingService {
             } else {
                 keywords.must.push({
                     bool: {
-                        should: [{ match: { [key]: value.replace(',', ' ') } }],
+                        must: [{ match: { [key]: value.replace(',', ' ') } }],
                     },
                 });
             }
@@ -79,10 +79,12 @@ export class CrawlingService {
             .then((el) =>
                 count
                     ? el.body.hits.total.value
-                    : el.body.hits.hits.map((el: any) => ({
+                    : el.body.hits.hits.length
+                    ? el.body.hits.hits.map((el: any) => ({
                           id: el._id,
                           ...el._source,
-                      })),
+                      }))
+                    : null,
             );
     }
 
@@ -158,15 +160,18 @@ export class CrawlingService {
         data,
         path,
         month,
+        scale,
     }: {
         data: T;
         path: createLinkareerPaths;
         month: number;
+        scale?: number | undefined;
     }): Promise<boolean> {
         await this.elastic.index({
             index: path,
             body: {
                 ...data,
+                ...(scale && { scale }),
                 ...(month && { month }),
             },
         });
