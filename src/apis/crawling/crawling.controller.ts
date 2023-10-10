@@ -81,6 +81,7 @@ class CrawlingController {
         // #swagger.tags = ['Crawling']
         const { path } = req.params as Path;
         const result = await this.crawlingService.bsetData({ path });
+
         res.status(200).json({
             data: result.length ? result : null,
         });
