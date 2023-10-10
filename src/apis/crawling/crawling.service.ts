@@ -71,9 +71,8 @@ export class CrawlingService {
                               }
                             : { match_all: {} }),
                     },
-                    ...(page
-                        ? { size: 12, from: +page * 12 }
-                        : { size: 10000 }),
+                    size: 12,
+                    ...(page && { from: +page * 12 }),
                 },
             })
             .then((el) =>
