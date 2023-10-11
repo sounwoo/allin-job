@@ -143,7 +143,6 @@ model ScrapIntern {
   userId    String
 }
 
-// 대용량 데이터를 생각해서 -> 엘라스틱 서치
 // 대용량 데이터를 생각해서 -> 엘라스틱 서치 -> 이동 완료
 // model Outside {
 //   id                    String @id @unique @default(uuid())
