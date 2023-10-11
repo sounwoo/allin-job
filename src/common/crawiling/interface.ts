@@ -55,7 +55,6 @@ export type Path = {
 };
 
 export type paths = {
-    id: idType['id'];
     path: Path['path'] | 'language';
     institution: string;
     preferentialTreatment: string;
