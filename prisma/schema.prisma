@@ -103,6 +103,7 @@ model UserInterest {
   keywordId  String
 }
 
+<<<<<<< HEAD
 model ScrapCompetition {
   id            String   @id @unique @default(uuid())
   createdAt     DateTime @default(dbgenerated("NOW()")) @db.DateTime
@@ -144,6 +145,9 @@ model ScrapIntern {
 }
 
 // 대용량 데이터를 생각해서 -> 엘라스틱 서치
+=======
+// 대용량 데이터를 생각해서 -> 엘라스틱 서치 -> 이동 완료
+>>>>>>> 6ac3dff8041440ecd49a4720a17c2c638c2338e8
 // model Outside {
 //   id                    String @id @unique @default(uuid())
 //   Dday                  String
