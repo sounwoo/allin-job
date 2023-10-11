@@ -146,7 +146,7 @@ export class CrawlingService {
             index: path,
             body: {
                 ...data,
-                scale: 0,
+                scrap: 0,
                 ...(scale && { scale }),
                 ...(month && { month }),
             },
