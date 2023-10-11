@@ -17,20 +17,20 @@ interface CommonType {
 
 export interface InternType extends CommonType {
     personnel: string;
-    region: string;
+    location: string;
 }
 
 export interface OutsideType extends InternType {
     month: number;
     interests: string;
     field: string;
-    region: string;
+    location: string;
     benefits: string;
     participationPeriod: string;
 }
 
 export interface CompetitionType extends CommonType {
-    region: string;
+    location: string;
     scale: string;
     benefits: string;
     interests: string;
@@ -58,7 +58,7 @@ export type paths = {
     path: Path['path'] | 'language';
     institution: string;
     preferentialTreatment: string;
-    region: string;
+    location: string;
     field: string;
     interests: string;
     benefits: string;
