@@ -1,12 +1,4 @@
-import {
-    Community,
-    Competition,
-    ExamSchedule,
-    Intern,
-    Language,
-    Outside,
-    QNet,
-} from '@prisma/client';
+import { Community } from '@prisma/client';
 import { idType } from '../types';
 
 interface CommonType {
@@ -15,11 +7,11 @@ interface CommonType {
     view: number;
     mainImage: string;
     organization: string;
-    enterprise: string;
+    institution: string;
     homePage: string;
     detail: string;
     target: string;
-    applicationPeriod: string;
+    date: string;
     preferentialTreatment: string;
 }
 
@@ -48,10 +40,11 @@ export interface createQNet {
     data: {
         detail: string;
         scheduleInfo: string;
-        jmNm: string;
-        engJmNm: string;
-        instiNm: string;
-        implNm: string;
+        title: string;
+        enTitle: string;
+        relatedDepartment: string;
+        institution: string;
+        scrap: number;
         examSchedules: examSchedule[];
     };
     categoryObj: object;
@@ -64,7 +57,7 @@ export type Path = {
 export type paths = {
     id: idType['id'];
     path: Path['path'] | 'language';
-    enterprise: string;
+    institution: string;
     preferentialTreatment: string;
     region: string;
     field: string;
@@ -106,7 +99,7 @@ export interface languageDetail {
     turn?: string;
     Dday: string;
     resultDay: string;
-    applicationPeriod: string;
+    date: string;
 }
 
 export interface languagePath {
@@ -120,26 +113,26 @@ export type findCrawling =
     | {
           id: string;
           title: string;
-          enterprise: string;
+          institution: string;
           Dday: string;
           mainImage: string;
-          applicationPeriod: string;
+          date: string;
           view: number;
       }[]
-    | Language[]
+    | object[]
     | {
           view: number;
           jmNm: string;
           engJmNm: string | null;
           instiNm: string;
           implNm: string;
-          examSchedules: ExamSchedule[];
+          examSchedules: object[];
       }[]
     | Community[];
 
-export type findeDetail = Competition | Outside | Intern | Language | QNet;
+// export type findeDetail = Competition | Outside | Intern | Language | QNet;
 
-export type createCrawiling = Competition | Outside | Intern;
+// export type createCrawiling = Competition | Outside | Intern;
 
 export type itmeType = {
     jmCd: string;
