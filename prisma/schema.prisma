@@ -40,13 +40,13 @@ model User {
 
 model Community {
   id              String          @id @unique @default(uuid())
-  path            String          @db.VarChar(20)
+  category        String          @db.VarChar(20)
   title           String          @db.VarChar(30)
   detail          String          @db.LongText
   view            Int             @default(0)
   likeCount       Int             @default(0)
   commentCount    Int             @default(0)
-  createAt        DateTime        @default(dbgenerated("NOW()")) @db.DateTime
+  date            DateTime        @default(dbgenerated("NOW()")) @db.DateTime
   userId          String?
   user            User?           @relation(fields: [userId], references: [id])
   communitiyLikes CommunityLike[]
@@ -105,110 +105,110 @@ model UserInterest {
 }
 
 // 대용량 데이터를 생각해서 -> 엘라스틱 서치
-model Outside {
-  id                    String @id @unique @default(uuid())
-  Dday                  String
-  title                 String
-  view                  Int
-  mainImage             String @db.LongText
-  organization          String
-  enterprise            String
-  target                String
-  applicationPeriod     String
-  participationPeriod   String
-  personnel             String
-  region                String
-  preferentialTreatment String
-  homePage              String @db.LongText
-  detail                String @db.LongText
-  benefits              String
-  interests             String
-  field                 String
-  month                 Int
-}
+// model Outside {
+//   id                    String @id @unique @default(uuid())
+//   Dday                  String
+//   title                 String
+//   view                  Int
+//   mainImage             String @db.LongText
+//   organization          String
+//   enterprise            String
+//   target                String
+//   applicationPeriod     String
+//   participationPeriod   String
+//   personnel             String
+//   region                String
+//   preferentialTreatment String
+//   homePage              String @db.LongText
+//   detail                String @db.LongText
+//   benefits              String
+//   interests             String
+//   field                 String
+//   month                 Int
+// }
 
-model Intern {
-  id                    String @id @unique @default(uuid())
-  Dday                  String
-  title                 String
-  view                  Int
-  mainImage             String @db.LongText
-  organization          String
-  enterprise            String
-  applicationPeriod     String
-  preferentialTreatment String
-  personnel             String
-  target                String
-  region                String
-  homePage              String @db.LongText
-  detail                String @db.LongText
-}
+// model Intern {
+//   id                    String @id @unique @default(uuid())
+//   Dday                  String
+//   title                 String
+//   view                  Int
+//   mainImage             String @db.LongText
+//   organization          String
+//   enterprise            String
+//   applicationPeriod     String
+//   preferentialTreatment String
+//   personnel             String
+//   target                String
+//   region                String
+//   homePage              String @db.LongText
+//   detail                String @db.LongText
+// }
 
-model Competition {
-  id                String @id @unique @default(uuid())
-  Dday              String
-  title             String
-  view              Int
-  mainImage         String @db.LongText
-  organization      String
-  enterprise        String
-  target            String
-  scale             Int?
-  applicationPeriod String
-  benefits          String
-  homePage          String @db.LongText
-  interests         String
-  detail            String @db.LongText
-}
+// model Competition {
+//   id                String @id @unique @default(uuid())
+//   Dday              String
+//   title             String
+//   view              Int
+//   mainImage         String @db.LongText
+//   organization      String
+//   enterprise        String
+//   target            String
+//   scale             Int?
+//   applicationPeriod String
+//   benefits          String
+//   homePage          String @db.LongText
+//   interests         String
+//   detail            String @db.LongText
+// }
 
-model Language {
-  id                String  @id @unique @default(uuid())
-  classify          String
-  test              String
-  homePage          String
-  turn              String?
-  Dday              String
-  resultDay         String
-  applicationPeriod String
-}
+// model Language {
+//   id                String  @id @unique @default(uuid())
+//   classify          String
+//   test              String
+//   homePage          String
+//   turn              String?
+//   Dday              String
+//   resultDay         String
+//   applicationPeriod String
+// }
 
-model QNet {
-  id            String         @id @unique @default(uuid())
-  detail        String         @db.LongText
-  scheduleInfo  String         @db.LongText
-  jmNm          String
-  engJmNm       String?
-  instiNm       String
-  implNm        String
-  view          Int            @default(0)
-  examSchedules ExamSchedule[]
-  subCategoryId String
-  subCategory   SubCategory    @relation(fields: [subCategoryId], references: [id])
-}
+// model QNet {
+//   id            String         @id @unique @default(uuid())
+//   detail        String         @db.LongText
+//   scheduleInfo  String         @db.LongText
+//   jmNm          String
+//   engJmNm       String?
+//   instiNm       String
+//   implNm        String
+//   view          Int            @default(0)
+//   examSchedules ExamSchedule[]
+//   subCategoryId String
+//   subCategory   SubCategory    @relation(fields: [subCategoryId], references: [id])
+// }
 
-model MainCategory {
-  id          String        @id @unique @default(uuid())
-  keyword     String        @unique
-  subCategory SubCategory[]
-}
+// model MainCategory {
+//   id          String        @id @unique @default(uuid())
+//   keyword     String        @unique
+//   subCategory SubCategory[]
+// }
 
-model SubCategory {
-  id             String       @id @unique @default(uuid())
-  keyword        String       @unique
-  qnet           QNet[]
-  mainCategoryId String
-  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id])
-}
+// model SubCategory {
+//   id             String       @id @unique @default(uuid())
+//   keyword        String       @unique
+//   qnet           QNet[]
+//   mainCategoryId String
+//   mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id])
+// }
 
-model ExamSchedule {
-  id          String @id @unique @default(uuid())
-  turn        String
-  wtReceipt   String
-  wtDday      String
-  wtResultDay String
-  ptReceipt   String
-  ptDday      String
-  resultDay   String
-  qNetId      String
-  qNet        QNet   @relation(fields: [qNetId], references: [id])
-}
+// model ExamSchedule {
+//   id          String @id @unique @default(uuid())
+//   turn        String
+//   wtReceipt   String
+//   wtDday      String
+//   wtResultDay String
+//   ptReceipt   String
+//   ptDday      String
+//   resultDay   String
+//   qNetId      String
+//   qNet        QNet   @relation(fields: [qNetId], references: [id])
+// }
