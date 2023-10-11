@@ -17,7 +17,7 @@ export const linkareerType = (path: string, i: number) => {
                 date: '',
                 participationPeriod: '',
                 personnel: '',
-                region: '',
+                location: '',
                 preferentialTreatment: '',
                 homePage: '',
                 benefits: '',
@@ -38,7 +38,7 @@ export const linkareerType = (path: string, i: number) => {
                 personnel: '',
                 target: '',
                 homePage: '',
-                region: '',
+                location: '',
             };
             detailClass = 'jss5';
             mainImageType = 'recruit-image';

@@ -1101,11 +1101,11 @@
                         "description": "대외활동 (활동혜택 검색), 공모전(수상혜택) 복수형태는 , 로 구분"
                     },
                     {
-                        "name": "region",
+                        "name": "location",
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "format": "region",
+                            "format": "location",
                             "example": "서울,대전"
                         },
                         "description": "대외활동,인턴 (지역 검색) 복수형태는 , 로 구분"
@@ -1501,7 +1501,7 @@
                                                 "preferentialTreatment": "우대상항 : 컴퓨터 활용능력, 휴학 중/시간 투자 가능",
                                                 "personnel": "모집 인원 : 10명",
                                                 "target": "참여 대상 : 대학생",
-                                                "region": "지역 : 서울",
+                                                "location": "지역 : 서울",
                                                 "hompage": "주체 홈페이지 :awihqwifbjqjfbo",
                                                 "benefits": "활동 혜택 : 활동비,입사시 혜택",
                                                 "interests": "관심 분야 : 콘텐츠, 디자인/사진/영상",
@@ -1525,7 +1525,7 @@
                                                 "preferentialTreatment": "모집 직무 : IT/인터넷",
                                                 "personnel": "채용인원 : 10명",
                                                 "target": "채용형태 : 인턴",
-                                                "region": "지역 : 서울",
+                                                "location": "지역 : 서울",
                                                 "hompage": "채용 홈페이지 : http://~~",
                                                 "detail": "html 코드"
                                             }
@@ -1635,7 +1635,7 @@
                                                 "target": {
                                                     "type": "string"
                                                 },
-                                                "region": {
+                                                "location": {
                                                     "type": "string"
                                                 },
                                                 "hompage": {
@@ -1691,7 +1691,7 @@
                                                 "target": {
                                                     "type": "string"
                                                 },
-                                                "region": {
+                                                "location": {
                                                     "type": "string"
                                                 },
                                                 "hompage": {
