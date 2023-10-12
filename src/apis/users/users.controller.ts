@@ -7,12 +7,7 @@ import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
 import { FindOneUserByEmailDTO } from './dto/findOneUserByEmail.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
-import {
-    email,
-    findOneUserByIDType,
-    idType,
-    pathIdtype,
-} from '../../common/types';
+import { email, findOneUserByIDType } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
@@ -61,24 +56,6 @@ class UserController {
             Validate.validateToken,
             asyncHandler(this.validateToken.bind(this)),
         );
-        this.router.post(
-            '/scrapping',
-            AccessGuard.handle,
-            asyncHandler(this.scrapping.bind(this)),
-        );
-
-        this.router.patch(
-            '/updateProfile',
-            Validate.updateProfile,
-            AccessGuard.handle,
-            asyncHandler(this.updateProfile.bind(this)),
-        );
-
-        this.router.get(
-            '/getUserScrap/:path',
-            AccessGuard.handle,
-            asyncHandler(this.getUserScrap.bind(this)),
-        );
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -122,37 +99,6 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.smsService.validateToken(req.body),
-        });
-    }
-
-    async scrapping(req: Request, res: Response) {
-        // #swagger.tags = ['User']
-        const { id } = req.user as idType;
-        const { path, scrapId } = req.query as pathIdtype;
-
-        res.status(200).json({
-            data: await this.userService.scrapping({ id, path, scrapId }),
-        });
-    }
-
-    async getUserScrap(req: Request, res: Response) {
-        const { id } = req.user as idType;
-        const { path } = req.params as Path;
-        res.status(200).json({
-            data: await this.userService.getUserScrap({ id, path }),
-        });
-    }
-
-    //todo 프로필 업데이트 하기
-    async updateProfile(req: Request, res: Response) {
-        // #swagger.tags = ['User']
-        const { id } = req.user as idType;
-
-        res.status(200).json({
-            data: await this.userService.updateProfile({
-                id,
-                updateDTO: req.body,
-            }),
         });
     }
 }

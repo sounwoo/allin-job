@@ -45,6 +45,7 @@ export interface createQNet {
         relatedDepartment: string;
         institution: string;
         scrap: number;
+        view: number;
         examSchedules: examSchedule[];
     };
     categoryObj: object;

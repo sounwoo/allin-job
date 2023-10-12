@@ -74,11 +74,6 @@ export class CrawlingService {
         const userKeyword = await this.userService.findUserKeyword({
             ...data,
         });
-
-        // console.log('*****');
-        // console.log(userKeyword);
-        // console.log('*****');
-
         const obj = {
             competition: 'interests',
             outside: 'field',
@@ -99,19 +94,6 @@ export class CrawlingService {
         path,
         id,
     }: findeDetailType): Promise<any | null> {
-        // language는 상세조회가 없지 않나? 있으면 로직 추가 예정
-
-        // view 가올라가야되
-
-        // 처음 search => view => update => search
-        // ------------------
-
-        // 1 update => search를 진행시켜
-        // elastic 2번
-
-        // 2 update 하고 update가된 값을 추출하는거야
-        // elastic 1번
-
         return await this.elastic
             .update(
                 {
@@ -180,6 +162,7 @@ export class CrawlingService {
                 ...data,
                 ...categoryObj,
                 scrap: 0,
+                view: 0,
             },
         });
 
@@ -204,9 +187,7 @@ export class CrawlingService {
                 index: path,
                 _source_excludes: ['detail'],
                 body: {
-                    ...(path !== 'qnet' && {
-                        sort: { view: { order: 'desc' } },
-                    }),
+                    sort: { view: { order: 'desc' } },
                     query: {
                         match_all: {},
                     },
