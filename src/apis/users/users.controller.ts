@@ -10,6 +10,10 @@ import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
 import { email, findOneUserByIDType } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
+import AccessGuard from '../../middleware/auth.guard/access.guard';
+import { UpdateUserDTO } from './dto/update-user.dto';
+import Validate from '../../common/validator/validateDTO';
+import { Path } from '../../common/crawiling/interface';
 
 class UserController {
     router = Router();
@@ -25,26 +29,31 @@ class UserController {
     init() {
         this.router.get(
             '/findOneUserByEmail',
+            Validate.findOneUserByEmail,
             asyncHandler(this.findOneUserByEmail.bind(this)),
         );
 
         this.router.get(
             '/findOneUserByID',
+            Validate.findOneUserByID,
             asyncHandler(this.findOneUserByID.bind(this)),
         );
 
         this.router.post(
             '/createUser',
+            Validate.createUser,
             asyncHandler(this.createUser.bind(this)),
         );
 
         this.router.post(
             '/sendTokenSMS',
+            Validate.sendTokenSMS,
             asyncHandler(this.sendTokenSMS.bind(this)),
         );
 
         this.router.post(
             '/validateToken',
+            Validate.validateToken,
             asyncHandler(this.validateToken.bind(this)),
         );
     }
@@ -52,7 +61,6 @@ class UserController {
     async findOneUserByEmail(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { email } = req.query as email;
-        await validateDTO(new FindOneUserByEmailDTO({ email }));
         res.status(200).json({
             data: await this.userService.findOneUserByEmail(email),
         });
@@ -61,7 +69,6 @@ class UserController {
     async findOneUserByID(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { name, phone } = req.query as findOneUserByIDType;
-        await validateDTO(new FindOneUserByIdDTO({ name, phone }));
         res.status(200).json({
             data: await this.userService.findOneUserByID({
                 name,
@@ -72,7 +79,6 @@ class UserController {
 
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        await validateDTO(new CreateUserDTO(req.body));
 
         res.status(200).json({
             data: await this.userService.createUser({
@@ -84,7 +90,6 @@ class UserController {
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { phone } = req.body;
-        await validateDTO(new SendTokenSmsDTO({ phone }));
         res.status(200).json({
             data: await this.smsService.sendTokenSMS(phone),
         });
@@ -92,8 +97,6 @@ class UserController {
 
     async validateToken(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        await validateDTO(new ValidateTokenDTO(req.body));
-
         res.status(200).json({
             data: await this.smsService.validateToken(req.body),
         });
