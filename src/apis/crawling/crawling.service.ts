@@ -186,7 +186,9 @@ export class CrawlingService {
                 index: path,
                 _source_excludes: ['detail'],
                 body: {
-                    sort: { view: { order: 'desc' } },
+                    ...(path !== 'qnet' && {
+                        sort: { view: { order: 'desc' } },
+                    }),
                     query: {
                         match_all: {},
                     },
