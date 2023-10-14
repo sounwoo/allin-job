@@ -51,6 +51,10 @@ export class CommunityService {
             include: {
                 user: true,
             },
+            orderBy: {
+                view: 'desc',
+            },
+            take: 12,
         });
     }
 
