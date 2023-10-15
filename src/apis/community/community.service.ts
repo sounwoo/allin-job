@@ -10,7 +10,7 @@ import {
 } from './interfaces/community.interface';
 import { idType } from '../../common/types';
 import { FindManyCommunityDTO } from './dto/findMany.community';
-import { Omit } from '@prisma/client/runtime/library';
+import { CommunityFindManyType } from '../crawling/interfaces/returnType/bestData.interface';
 
 @Service()
 export class CommunityService {
@@ -36,7 +36,7 @@ export class CommunityService {
         title,
         nickName: nickname,
         content,
-    }: FindManyCommunityDTO): Promise<Omit<Community, 'detail' | 'userId'>[]> {
+    }: FindManyCommunityDTO): Promise<CommunityFindManyType[]> {
         return this.prisma.community.findMany({
             where: {
                 ...(category && { category }),

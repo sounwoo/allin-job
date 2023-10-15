@@ -68,7 +68,7 @@ class CrawlingController {
                   path as createLinkareerPaths,
               )
             : path === 'language'
-            ? await this.pathCrawling.languageData({ path, test })
+            ? await this.pathCrawling.languageData({ test })
             : await this.pathCrawling.QNetData();
 
         res.status(data.length ? 200 : 400).json({
