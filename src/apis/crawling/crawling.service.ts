@@ -11,6 +11,7 @@ import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 import { UserService } from '../users/users.service';
 import { ElasitcClient } from '../../database/elasticConfig';
+import { cludes } from '../../common/util/return_data_cludes';
 
 @Service()
 export class CrawlingService {
@@ -185,7 +186,7 @@ export class CrawlingService {
         return this.elastic
             .search({
                 index: path,
-                _source_excludes: ['detail'],
+                _source_includes: cludes(path),
                 body: {
                     sort: { view: { order: 'desc' } },
                     query: {
