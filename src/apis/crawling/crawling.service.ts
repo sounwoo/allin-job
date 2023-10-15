@@ -11,6 +11,7 @@ import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 import { UserService } from '../users/users.service';
 import { ElasitcClient } from '../../database/elasticConfig';
+import { CommunityService } from '../community/community.service';
 import { cludes } from '../../common/util/return_data_cludes';
 
 @Service()
@@ -19,6 +20,7 @@ export class CrawlingService {
         private readonly prisma: CustomPrismaClient,
         private readonly elastic: ElasitcClient,
         private readonly userService: UserService,
+        private readonly communityService: CommunityService,
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<any> {
@@ -171,17 +173,7 @@ export class CrawlingService {
     }
 
     async bsetData({ path }: Path | { path: 'community' }): Promise<any> {
-        if (path === 'community') {
-            return this.prisma.community.findMany({
-                orderBy: {
-                    view: 'desc',
-                },
-                include: {
-                    user: true,
-                },
-                take: 12,
-            });
-        }
+        if (path === 'community') return this.communityService.findeMany({});
 
         return this.elastic
             .search({

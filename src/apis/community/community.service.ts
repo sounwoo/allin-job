@@ -65,6 +65,10 @@ export class CommunityService {
                     },
                 },
             },
+            orderBy: {
+                view: 'desc',
+            },
+            take: 12,
         });
     }
 

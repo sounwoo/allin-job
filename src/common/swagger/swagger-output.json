@@ -2111,7 +2111,7 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "path": {
+                                    "category": {
                                         "type": "string",
                                         "example": "공모전/대외활동"
                                     },
@@ -2236,11 +2236,11 @@
                 "summary": "취준job담 리스트 조회",
                 "parameters": [
                     {
-                        "name": "path",
+                        "name": "category",
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "format": "path",
+                            "format": "category",
                             "example": "공모전/대외활동"
                         },
                         "description": "카테고리 선택(선택 안할시 전체데이터 조회)"
