@@ -2,28 +2,28 @@ import {
     Path,
     createLinkareerPaths,
     createQNet,
-    findCrawling,
     findeDetailType,
     languagePath,
     paths,
 } from '../../common/crawiling/interface';
-import { CustomPrismaClient } from '../../database/prismaConfig';
 import { Service } from 'typedi';
 import { UserService } from '../users/users.service';
 import { ElasitcClient } from '../../database/elasticConfig';
 import { CommunityService } from '../community/community.service';
 import { cludes } from '../../common/util/return_data_cludes';
+import { bestDataType } from './interfaces/returnType/bestData.interface';
+import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.interface';
+import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 
 @Service()
 export class CrawlingService {
     constructor(
-        private readonly prisma: CustomPrismaClient,
         private readonly elastic: ElasitcClient,
         private readonly userService: UserService,
         private readonly communityService: CommunityService,
     ) {}
 
-    async findeCrawling({ ...data }: paths): Promise<any> {
+    async findeCrawling({ ...data }: paths): Promise<findCrawling[]> {
         const { path, page, classify, count, ..._data } = data;
 
         const datas: { [key: string]: string } = { ..._data };
@@ -46,7 +46,7 @@ export class CrawlingService {
         return this.elastic
             .search({
                 index: `${path}*`,
-                _source_excludes: ['detail'],
+                _source_excludes: cludes(path),
                 body: {
                     query: {
                         ...(must.length
@@ -73,7 +73,7 @@ export class CrawlingService {
 
     async myKeywordCrawling({
         ...data
-    }: paths & { id: string }): Promise<findCrawling> {
+    }: paths & { id: string }): Promise<findCrawling[]> {
         const userKeyword = await this.userService.findUserKeyword({
             ...data,
         });
@@ -90,14 +90,14 @@ export class CrawlingService {
             ...(userKeyword.length && { [obj[data.path]]: userKeyword }),
         };
 
-        return await this.findeCrawling(params);
+        return this.findeCrawling(params);
     }
 
     async findeDetailCrawling({
         path,
         id,
-    }: findeDetailType): Promise<any | null> {
-        return await this.elastic
+    }: findeDetailType): Promise<findeDetailCrawling | null> {
+        return this.elastic
             .update(
                 {
                     index: path,
@@ -164,15 +164,15 @@ export class CrawlingService {
             body: {
                 ...data,
                 ...categoryObj,
-                scrap: 0,
-                view: 0,
             },
         });
 
         return true;
     }
 
-    async bsetData({ path }: Path | { path: 'community' }): Promise<any> {
+    async bsetData({
+        path,
+    }: Path | { path: 'community' }): Promise<bestDataType[]> {
         if (path === 'community') return this.communityService.findeMany({});
 
         return this.elastic

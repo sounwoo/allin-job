@@ -1,16 +1,15 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import { languageType, linkareerType } from './crawiling.data';
-import {
-    createLinkareerPaths,
-    createPaths,
-    examSchedule,
-    itmeType,
-} from './interface';
+import { createLinkareerPaths, createPaths, itmeType } from './interface';
 import { CrawlingService } from '../../apis/crawling/crawling.service';
 import { Service } from 'typedi';
 import { QNetObj } from './seed.q-net';
 import iconv from 'iconv-lite';
+import {
+    categortObj,
+    examSchedules,
+} from '../../apis/crawling/types/qnet.type';
 const decode = require('decode-html');
 
 @Service()
@@ -121,7 +120,7 @@ export class PathCrawling {
             });
     }
 
-    async languageData({ test, path }: createPaths) {
+    async languageData({ test }: { test: createPaths['test'] }) {
         const { testType, dataObj, url } = languageType(test);
         const result = await axios.get(url);
         const $ = cheerio.load(result.data);
@@ -153,7 +152,7 @@ export class PathCrawling {
         const category = await axios.get(
             'http://openapi.q-net.or.kr/api/service/rest/InquiryListNationalQualifcationSVC/getList?serviceKey=sWAEtBKCgnfT4ANvlYmgqRju8t9TcJHpyQvLY5zz6qu%2BRzrrMv%2FQyMHjzYUbtK%2FTJqePrdyM2nVPzTwEImSGvQ%3D%3D',
         );
-        let categoryObj = {};
+        let categoryObj: categortObj = {};
         await Promise.all(
             category.data.response.body.items.item.map(async (el: itmeType) => {
                 const {
@@ -166,11 +165,6 @@ export class PathCrawling {
                         mainCategory: mainKeyword,
                         subCategory: subKeyword,
                     };
-
-                    // return await this.crawlingServcie.createMainCategory(
-                    //     mainKeyword,
-                    //     subKeyword,
-                    // );
                 }
             }),
         );
@@ -198,7 +192,7 @@ export class PathCrawling {
                     );
                     const decodedHTML = iconv.decode(dataList.data, 'EUC-KR');
                     const $ = cheerio.load(decodedHTML);
-                    const examSchedules: examSchedule[] = [];
+                    const examSchedules: examSchedules[] = [];
 
                     $('tbody > tr').each((_, el) => {
                         const examScheduleObj = {

@@ -1,4 +1,4 @@
-import { languageDetail } from './interface';
+import { LanguageType } from '../../apis/crawling/types/language.type';
 
 export const linkareerType = (path: string, i: number) => {
     let url, dataType;
@@ -68,12 +68,13 @@ export const linkareerType = (path: string, i: number) => {
 export const languageType = (test: string) => {
     let url = 'https://www.toeicswt.co.kr/receipt/examSchList.php';
     let testType = 'tbody > tr';
-    let dataObj: languageDetail = {
-        turn: '',
-        Dday: '',
-        resultDay: '',
-        date: '',
-    };
+    const dataObj: Pick<LanguageType, 'turn' | 'Dday' | 'resultDay' | 'date'> =
+        {
+            turn: '',
+            Dday: '',
+            resultDay: '',
+            date: '',
+        };
 
     switch (test) {
         case 'toeic':
@@ -81,18 +82,18 @@ export const languageType = (test: string) => {
             break;
         case 'toeicBR':
             url = 'https://www.toeicbridge.co.kr/receipt/examSchList.php';
-            dataObj = { Dday: '', resultDay: '', date: '' };
+            delete dataObj.turn;
             break;
         case 'toeicSW':
             testType = 'tr.speakingwriting';
-            dataObj = { Dday: '', resultDay: '', date: '' };
+            delete dataObj.turn;
             break;
         case 'toeicWT':
             testType = 'tr.writing';
-            dataObj = { Dday: '', resultDay: '', date: '' };
+            delete dataObj.turn;
             break;
         case 'toeicST':
-            dataObj = { Dday: '', resultDay: '', date: '' };
+            delete dataObj.turn;
             break;
         case 'ch':
             url = 'https://www.ybmtsc.co.kr/receipt/examSchList.php';

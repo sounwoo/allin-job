@@ -1,6 +1,6 @@
 import { Path } from '../crawiling/interface';
 
-export const cludes = (path: Path['path']): string[] => {
+export const cludes = (path: Path['path'] | 'language'): string[] => {
     const common = ['title', 'view', 'scrap'];
     const qnetExcept = [...common, 'Dday', 'mainImage', 'institution', 'date'];
     const cludes = {
