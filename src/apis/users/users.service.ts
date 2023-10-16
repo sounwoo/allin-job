@@ -38,7 +38,7 @@ export class UserService {
             where: {
                 id,
             },
-            include: {
+            select: {
                 interests: {
                     include: {
                         interest: true,
