@@ -46,7 +46,7 @@ export class CrawlingService {
         return this.elastic
             .search({
                 index: `${path}*`,
-                _source_excludes: cludes(path),
+                _source_includes: cludes(path),
                 body: {
                     query: {
                         ...(must.length
