@@ -1,5 +1,6 @@
 import { Community, Provider, User } from '@prisma/client';
 import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
+import { Path } from './crawiling/interface';
 
 export type email = {
     email: CreateUserDTO['email'];
@@ -14,7 +15,7 @@ export type phoneType = {
 };
 
 export type pathIdtype = {
-    path: string;
+    path: Path['path'] | 'language';
     scrapId: string;
 };
 

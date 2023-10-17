@@ -8,6 +8,7 @@ export interface LanguageType {
     resultDay: string;
     date: string;
     detail: string;
+    scrap: number;
 }
 
 export interface LanguagefindeManyType extends Omit<LanguageType, 'detail'> {}

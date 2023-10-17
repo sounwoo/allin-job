@@ -128,6 +128,7 @@ export class CrawlingService {
                 test,
                 classify,
                 homePage,
+                scrap: 0,
                 ...dataObj,
             },
         });

@@ -31,18 +31,18 @@ export class AuthService {
 
         if (!isUser) {
             await this.redis.set(email, provider, 'EX', 3600);
-            saveCookie(res, 'email', email);
+            saveCookie(req, res, 'email', email);
             return false;
         } else {
-            this.setRefreshToken({ id: isUser.id, res });
+            this.setRefreshToken({ req, id: isUser.id, res });
             return true;
         }
     }
 
-    async login({ id, res }: IAuthLogin): Promise<string> {
+    async login({ req, id, res }: IAuthLogin): Promise<string> {
         await this.userService.isUserByID(id);
 
-        this.setRefreshToken({ id, res });
+        this.setRefreshToken({ req, id, res });
 
         return this.getAccessToken({ id });
     }
@@ -74,14 +74,14 @@ export class AuthService {
         });
     }
 
-    setRefreshToken({ id, res }: IAuthSetRefreshToken): void {
+    setRefreshToken({ req, id, res }: IAuthSetRefreshToken): void {
         const refreshToken = jwt.sign(
             { sub: id },
             process.env.JWT_REFRESH_KEY!,
             { expiresIn: '2w' },
         );
 
-        saveCookie(res, 'refreshToken', refreshToken);
+        saveCookie(req, res, 'refreshToken', refreshToken);
     }
 
     restoreAccessToken({ id }: IAuthRestoreAccessToken): string {
