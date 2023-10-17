@@ -158,11 +158,10 @@ export class UserService {
         if (!isUser) {
             throw new CustomError('id가 일치하는 유저가 없습니다', 400);
         }
-
         return isUser;
     }
 
-    async isNickname(id: string, nickname: string): Promise<void> {
+    async isNickname(nickname: string): Promise<boolean> {
         const isNickname = await this.prisma.user.findUnique({
             where: {
                 nickname,
@@ -170,6 +169,7 @@ export class UserService {
         });
         if (isNickname)
             throw new CustomError('이미 존재하는 닉네임입니다', 400);
+        else return true;
     }
 
     findOneUserByID({
