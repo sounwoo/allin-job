@@ -9,7 +9,6 @@ import AccessGuard from '../../middleware/auth.guard/access.guard';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import RefreshGuard from '../../middleware/auth.guard/refresh.guard';
-import { url } from '../../common/util/callbackUrl';
 
 class AuthController {
     router = Router();
@@ -70,7 +69,7 @@ class AuthController {
 
         await validateDTO(new LoginDTO({ id }));
         res.status(200).json({
-            data: await this.authService.login({ req, id, res }),
+            data: await this.authService.login({ id, res }),
         });
     }
 

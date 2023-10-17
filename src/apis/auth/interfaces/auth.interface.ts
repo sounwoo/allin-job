@@ -20,13 +20,9 @@ export interface IAuthGetAccessToken extends UserID {}
 
 export interface IAuthRestoreAccessToken extends UserID {}
 
-export interface IAuthSetRefreshToken extends UserIdAndContext {
-    req: Request;
-}
+export interface IAuthSetRefreshToken extends UserIdAndContext {}
 
-export interface IAuthLogin extends UserIdAndContext {
-    req: Request;
-}
+export interface IAuthLogin extends UserIdAndContext {}
 
 export interface IAuthValidateUser {
     req: Request;
