@@ -39,6 +39,12 @@ class UserController {
             asyncHandler(this.findOneUserByID.bind(this)),
         );
 
+        this.router.get(
+            '/isNickname',
+            Validate.isNickname,
+            asyncHandler(this.isNickName.bind(this)),
+        );
+
         this.router.post(
             '/createUser',
             Validate.createUser,
@@ -99,6 +105,14 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.smsService.validateToken(req.body),
+        });
+    }
+
+    async isNickName(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { nickname } = req.body;
+        res.status(200).json({
+            data: await this.userService.isNickname(nickname),
         });
     }
 }
