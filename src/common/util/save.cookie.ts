@@ -8,7 +8,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         const domain = '';
         res.setHeader(
             'Set-Cookie',
-            `${key}=${value};path=/; ${domain} SameSite=None;`,
+            `${key}=${value};path=/; ${domain} SameSite=Lax;`,
         );
     } else {
         // 로컬 환경
