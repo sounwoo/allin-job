@@ -5,10 +5,14 @@ export const saveCookie = (res: Response, key: string, value: string) => {
     if (url().origin) {
         // 배포 환경
         res.setHeader('Access-Control-Allow-Credentials', 'true');
-        const domain = '';
+        const domain = `domain=.allinjob.co.kr;`;
         res.setHeader(
             'Set-Cookie',
-            `${key}=${value};path=/; ${domain} SameSite=Lax;`,
+            `${key}=${value};path=/; ${domain} ${
+                key === 'refreshToken'
+                    ? ' SameSite=None; Secure; httpOnly'
+                    : ' SameSite=Lax; Max-Age=3600'
+            }`,
         );
     } else {
         // 로컬 환경
