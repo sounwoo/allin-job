@@ -168,7 +168,7 @@ export class UserService {
             },
         });
         if (isNickname)
-            throw new CustomError('이미 존재하는 닉네임입니다', 400);
+            throw new CustomError('이미 사용중인 닉네임입니다', 400);
         else return true;
     }
 

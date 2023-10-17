@@ -13,6 +13,7 @@ import {
     pathType,
     phoneType,
     categoryType,
+    nicknameType,
 } from '../types';
 import { ToggleLikeCommunityDTO } from '../../apis/community/dto/create.community.toggleLike';
 import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
@@ -155,7 +156,7 @@ class Validate {
     }
 
     async isNickname(req: Request, _: Response, next: NextFunction) {
-        const { nickname } = req.body;
+        const { nickname } = req.query as nicknameType;
         await this.errors(new isNicknameDTO({ nickname }));
 
         next();

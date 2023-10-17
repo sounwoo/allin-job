@@ -300,6 +300,78 @@
                 }
             }
         },
+        "/user/isNickname": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "닉네임 중복 여부 확인하기",
+                "parameters": [
+                    {
+                        "name": "nickname",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "닉네임"
+                        },
+                        "description": "닉네임"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "닉네임 사용 가능",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": true
+                                },
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "NoLogin": {
+                                        "summary": "닉네임 중복되는 경우",
+                                        "value": {
+                                            "error": "이미 사용중인 닉네임입니다"
+                                        }
+                                    },
+                                    "TypeError": {
+                                        "summary": "닉네임 형식이 잘못된 경우",
+                                        "value": {
+                                            "error": "nickname: nickname must match /^[a-zA-Z가-힣]+$/ regular expression"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/createUser": {
             "post": {
                 "tags": ["Users"],
