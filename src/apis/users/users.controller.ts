@@ -7,7 +7,7 @@ import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
 import { FindOneUserByEmailDTO } from './dto/findOneUserByEmail.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
-import { email, findOneUserByIDType } from '../../common/types';
+import { email, findOneUserByIDType, nicknameType } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
@@ -83,6 +83,14 @@ class UserController {
         });
     }
 
+    async isNickName(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { nickname } = req.query as nicknameType;
+        res.status(200).json({
+            data: await this.userService.isNickname(nickname),
+        });
+    }
+
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
 
@@ -105,14 +113,6 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.smsService.validateToken(req.body),
-        });
-    }
-
-    async isNickName(req: Request, res: Response) {
-        // #swagger.tags = ['Users']
-        const { nickname } = req.body;
-        res.status(200).json({
-            data: await this.userService.isNickname(nickname),
         });
     }
 }
