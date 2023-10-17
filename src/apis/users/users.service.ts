@@ -188,7 +188,7 @@ export class UserService {
         });
     }
 
-    async createUser({ createDTO, qqq }: IUserCreateDTO): Promise<string> {
+    async createUser({ createDTO, qqq }: IUserCreateDTO): Promise<User['id']> {
         const { interests, ...userData } = createDTO;
         const provider = await this.redis.get(userData.email);
 

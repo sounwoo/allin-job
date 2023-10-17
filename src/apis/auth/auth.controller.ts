@@ -1,4 +1,4 @@
-import {  Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import passport from 'passport';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
@@ -70,7 +70,7 @@ class AuthController {
 
         await validateDTO(new LoginDTO({ id }));
         res.status(200).json({
-            data: await this.authService.login({ id, res }),
+            data: await this.authService.login({ req, id, res }),
         });
     }
 

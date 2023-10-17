@@ -1,9 +1,34 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { url } from './callbackUrl';
 
-export const saveCookie = (res: Response, key: string, value: string) => {
+export const saveCookie = (
+    req: Request,
+    res: Response,
+    key: string,
+    value: string,
+) => {
     if (url().origin) {
         // 배포 환경
+
+        const originList = [
+            'http://localhost:5173',
+            'http://localhost:5173/',
+            'http://127.0.0.1:5173',
+            'https://allinjob.co.kr',
+        ];
+        const origin = req.headers.origin!;
+        if (originList.includes(origin)) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        }
+        res.setHeader(
+            'Access-Control-Allow-Methods', //
+            'GET, HEAD, OPTIONS, POST, PUT',
+        );
+        res.setHeader(
+            'Access-Control-Allow-Headers',
+            'Access-Control-Allow-Headers, Origin, Accept, Authorization, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+        );
+
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         const domain = `domain=127.0.0.1;`;
         res.setHeader(
