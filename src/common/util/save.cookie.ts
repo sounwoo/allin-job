@@ -30,7 +30,7 @@ export const saveCookie = (
         );
 
         res.setHeader('Access-Control-Allow-Credentials', 'true');
-        const domain = `domain=127.0.0.1;`;
+        const domain = `domain=.allinjob.co.kr;`;
         res.setHeader(
             'Set-Cookie',
             `${key}=${value};path=/; ${domain} ${
