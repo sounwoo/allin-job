@@ -57,8 +57,8 @@ class AuthController {
             });
 
             const redirectPath = validateUser
-                ? '/' // 회원가입 되어 있을때 리다이렉트 주소
-                : '/signup/info'; // 회원가입 안되어 있을때 리다이렉트 주소
+                ? 'http://localhost:5173' // 회원가입 되어 있을때 리다이렉트 주소
+                : 'http://localhost:5173/signup/info'; // 회원가입 안되어 있을때 리다이렉트 주소
 
             res.redirect(redirectPath);
         });
