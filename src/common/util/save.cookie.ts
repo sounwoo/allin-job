@@ -5,7 +5,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
     if (url().origin) {
         // 배포 환경
         res.setHeader('Access-Control-Allow-Credentials', 'true');
-        const domain = `domain=localhost;`;
+        const domain = `domain=127.0.0.1;`;
         res.setHeader(
             'Set-Cookie',
             `${key}=${value};path=/; ${domain} ${
