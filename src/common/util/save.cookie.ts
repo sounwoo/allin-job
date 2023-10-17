@@ -5,7 +5,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
     if (url().origin) {
         // 배포 환경
         res.setHeader('Access-Control-Allow-Credentials', 'true');
-        const domain = `domain=.allinjob.co.kr; domain=localhost;`;
+        const domain = `domain=allinjob.co.kr;`;
         res.setHeader(
             'Set-Cookie',
             `${key}=${value};path=/; ${domain} ${
