@@ -13,6 +13,7 @@ export const saveCookie = (
         const originList = [
             'http://localhost:5173',
             'http://localhost:5173/',
+            'http://localhost:5173/signup/info',
             'http://127.0.0.1:5173',
             'https://allinjob.co.kr',
         ];
@@ -35,8 +36,8 @@ export const saveCookie = (
             'Set-Cookie',
             `${key}=${value};path=/; ${domain} ${
                 key === 'refreshToken'
-                    ? ' SameSite=Lax; httpOnly'
-                    : ' SameSite=Lax; Max-Age=3600; httpOnly=false'
+                    ? ' SameSite=None; Secure; httpOnly'
+                    : ' SameSite=None; Secure; httpOnly; Max-Age=3600;'
             }`,
         );
     } else {
