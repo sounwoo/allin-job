@@ -16,10 +16,10 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         //     }`,
         // );
         res.cookie(key, value, {
-            // domain: '.allinjob.co.kr',
+            domain: '.allinjob.co.kr',
             path: '/',
-            sameSite: 'lax',
-            // secure: true,
+            sameSite: 'none',
+            secure: true,
             httpOnly: true,
             ...(key !== 'refreshToken' && { maxAge: 3600 }),
         });
