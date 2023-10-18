@@ -15,8 +15,10 @@ export const saveCookie = (res: Response, key: string, value: string) => {
             domain: 'allinjob.co.kr',
             path: '/',
             sameSite: 'none',
+            secure: true,
             httpOnly: true,
         });
+
     } else {
         // 로컬 환경
         const domain = `${key}=${value}; path=/;`;
