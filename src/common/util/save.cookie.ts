@@ -4,7 +4,7 @@ import { url } from './callbackUrl';
 export const saveCookie = (res: Response, key: string, value: string) => {
     if (url().origin) {
         // 배포 환경
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5713');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         // const domain = 'domain=allinjob.co.kr';
         // res.setHeader(
@@ -16,7 +16,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         //     }`,
         // );
         res.cookie(key, value, {
-            domain: '.allinjob.co.kr',
+            domain: '.localhost:5713',
             path: '/',
             sameSite: 'lax',
             secure: false,
