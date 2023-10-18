@@ -19,7 +19,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
             domain: '.allinjob.co.kr',
             path: '/',
             sameSite: 'lax',
-            secure: true,
+            // secure: true,
             httpOnly: true,
             ...(key !== 'refreshToken' && { maxAge: 3600 }),
         });
