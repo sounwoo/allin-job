@@ -6,20 +6,21 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         // 배포 환경
         res.setHeader('Access-Control-Allow-Origin', 'https://mmta.kr');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
-        res.cookie(key, value, {
-            domain: '.backendclass.store',
-            path: '/',
-            sameSite: 'none',
-            secure: true,
-            httpOnly: true,
-        });
-        // const domain = `domain=.backendclass.store`;
-        // res.setHeader(
-        //     'Set-Cookie',
-        //     `${key}=${value}; path=/; ${domain} ${
-        //         key === 'refreshToken'
-        //             ? ' SameSite=None; httpOnly'
-        //             : ' SameSite=Lax; Max-Age=3600'
+        // res.cookie(key, value, {
+        //    domain: '.backendclass.store',
+        //    path: '/',
+        //    sameSite: 'none',
+        //    secure: true,
+        //    httpOnly: true,
+        // });
+        
+        const domain = `domain=.backendclass.store`;
+        res.setHeader(
+            'Set-Cookie',
+            `${key}=${value}; path=/; ${domain} ${
+                key === 'refreshToken'
+                    ? ' SameSite=None; Secure; httpOnly'
+                    : ' SameSite=None; Secure; Max-Age=3600'
         //     }`,
         // );
         // res.setHeader(
