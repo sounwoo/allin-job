@@ -11,11 +11,12 @@ import session from 'express-session';
 import swaggerFile from './common/swagger/swagger-output.json';
 import swaggerUi from 'swagger-ui-express';
 import errorHandler from './common/error/error.handler';
+import cookieParser from 'cookie-parser';
 
 const app = express();
-
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
