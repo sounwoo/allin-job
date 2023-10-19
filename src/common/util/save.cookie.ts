@@ -14,7 +14,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         //    httpOnly: true,
         // });
         
-        const domain = `domain=.backendclass.store`;
+        const domain = `domain=.mmta.kr`;
         res.setHeader(
             'Set-Cookie',
             `${key}=${value}; path=/; ${domain} ${
