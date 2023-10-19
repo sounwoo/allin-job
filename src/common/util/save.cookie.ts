@@ -21,8 +21,8 @@ export const saveCookie = (res: Response, key: string, value: string) => {
                 key === 'refreshToken'
                     ? ' SameSite=None; Secure; httpOnly'
                     : ' SameSite=None; Secure; Max-Age=3600'
-        //     }`,
-        // );
+            }`,
+        );
         // res.setHeader(
         //     'Set-Cookie',
         //     `${key}=${value}; path=/; SameSite=None; Secure; httpOnly;`,
