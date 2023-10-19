@@ -9,6 +9,8 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         res.cookie(key, value, {
             domain: '.backendclass.store',
             path: '/',
+            sameSite: 'none',
+            secure: true,
             httpOnly: true,
         });
         // const domain = `domain=.backendclass.store`;
