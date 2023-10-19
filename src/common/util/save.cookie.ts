@@ -7,7 +7,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         res.setHeader('Access-Control-Allow-Origin', 'https://mmta.kr');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.cookie(key, value, {
-            domain: '.backendclass.store',
+            domain: 'backendclass.store',
             path: '/',
             sameSite: 'none',
             secure: true,
@@ -23,6 +23,7 @@ export const saveCookie = (res: Response, key: string, value: string) => {
         //             : ' SameSite=None; Secure; Max-Age=3600'
         //     }`,
         // );
+
         // res.setHeader(
         //     'Set-Cookie',
         //     `${key}=${value}; path=/; SameSite=None; Secure; httpOnly;`,
