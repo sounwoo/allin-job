@@ -17,7 +17,6 @@ app.use(
     cors({
         origin: 'http://localhost:5173',
         credentials: true,
-        exposedHeaders: ['set-cookie'],
     }),
 );
 
@@ -38,7 +37,11 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 0,
+            domain: '.backendclass.store',
+            path: '/',
+            sameSite: 'none',
+            secure: true,
+            httpOnly: true,
         },
     }),
 );
