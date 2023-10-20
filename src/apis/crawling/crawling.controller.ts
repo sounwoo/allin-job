@@ -37,6 +37,11 @@ class CrawlingController {
             AccessGuard.handle,
             asyncHandler(this.myKeywordCrawling.bind(this)),
         );
+        this.router.get(
+            '/ramdom',
+            // AccessGuard.handle,
+            asyncHandler(this.randomCrwling.bind(this)),
+        );
     }
 
     async findeCrawling(req: Request, res: Response) {
@@ -97,6 +102,13 @@ class CrawlingController {
 
         res.status(200).json({
             data: result,
+        });
+    }
+
+    async randomCrwling(req: Request, res: Response) {
+        // const { id } = req.user as idType;
+        res.status(200).json({
+            data: await this.crawlingService.randomCrwling(),
         });
     }
 }

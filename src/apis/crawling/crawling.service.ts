@@ -14,11 +14,13 @@ import { cludes } from '../../common/util/return_data_cludes';
 import { bestDataType } from './interfaces/returnType/bestData.interface';
 import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.interface';
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
+import RedisClient from '../../database/redisConfig';
 
 @Service()
 export class CrawlingService {
     constructor(
         private readonly elastic: ElasitcClient,
+        private readonly redis: RedisClient,
         private readonly userService: UserService,
         private readonly communityService: CommunityService,
     ) {}
@@ -193,5 +195,48 @@ export class CrawlingService {
                     ...el._source,
                 })),
             );
+    }
+    async randomCrwling(): Promise<any> {
+        const path = ['outside', 'competition', 'intern', 'qnet'];
+
+        let data = await Promise.all(
+            path.map(async (el) => {
+                const data = await this.redis.get(el);
+                return data ? { [el]: JSON.parse(data) } : null;
+            }),
+        );
+
+        if (!data[0]) {
+            data = await Promise.all(
+                path.map(async (el) => {
+                    return await this.elastic
+                        .search({
+                            index: el,
+                            body: {
+                                query: {
+                                    function_score: {
+                                        query: { match_all: {} },
+                                        random_score: {},
+                                    },
+                                },
+                            },
+                            size: 1,
+                        })
+                        .then((data) => {
+                            const temp = JSON.stringify({
+                                id: data.body.hits.hits[0]._id,
+                                ...data.body.hits.hits[0]._source,
+                            });
+                            this.redis.set(el, temp, 'EX', 60 * 60 * 12);
+                            return {
+                                id: data.body.hits.hits[0]._id,
+                                ...data.body.hits.hits[0]._source,
+                            };
+                        });
+                }),
+            );
+        }
+
+        return data;
     }
 }
