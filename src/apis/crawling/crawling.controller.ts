@@ -25,7 +25,26 @@ class CrawlingController {
     }
 
     init() {
-        this.router.get('/finde', asyncHandler(this.findeCrawling.bind(this)));
+        this.router.get(
+            '/finde/outside',
+            asyncHandler(this.findeCrawling.bind(this)),
+        );
+        this.router.get(
+            '/finde/competition',
+            asyncHandler(this.findeCrawling.bind(this)),
+        );
+        this.router.get(
+            '/finde/intern',
+            asyncHandler(this.findeCrawling.bind(this)),
+        );
+        this.router.get(
+            '/finde/language',
+            asyncHandler(this.findeCrawling.bind(this)),
+        );
+        this.router.get(
+            '/finde/qnet',
+            asyncHandler(this.findeCrawling.bind(this)),
+        );
         this.router.get(
             '/findeDetail',
             asyncHandler(this.findeDetailCrawling.bind(this)),

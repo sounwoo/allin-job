@@ -5,13 +5,13 @@
         "title": "allinjob API Docs",
         "description": "올인잡 api 문서입니다"
     },
-    "host": "allinjob.co.kr",
+    "host": "backendclass.store",
     "servers": [
         {
             "url": "http://localhost:4000"
         },
         {
-            "url": "https://allinjob.co.kr"
+            "url": "https://backendclass.store"
         }
     ],
     "basePath": "/",
@@ -283,6 +283,78 @@
                             "application/json": {
                                 "example": {
                                     "error": "일치하는 아이디가 없습니다"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/isNickname": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "닉네임 중복 여부 확인하기",
+                "parameters": [
+                    {
+                        "name": "nickname",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "닉네임"
+                        },
+                        "description": "닉네임"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "닉네임 사용 가능",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": true
+                                },
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "NoLogin": {
+                                        "summary": "닉네임 중복되는 경우",
+                                        "value": {
+                                            "error": "이미 사용중인 닉네임입니다"
+                                        }
+                                    },
+                                    "TypeError": {
+                                        "summary": "닉네임 형식이 잘못된 경우",
+                                        "value": {
+                                            "error": "nickname: nickname must match /^[a-zA-Z가-힣]+$/ regular expression"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -669,6 +741,280 @@
                 }
             }
         },
+        "/user/updateProfile": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "프로필 수정하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "profileImage": {
+                                        "type": "string",
+                                        "example": "새로운 프로필 url"
+                                    },
+                                    "nickname": {
+                                        "type": "string",
+                                        "example": "새로운 닉네임"
+                                    },
+                                    "interests": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "competition": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "기획/아이디어",
+                                                        "과학/공학"
+                                                    ]
+                                                },
+                                                "outside": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "서포터즈",
+                                                        "멘토링"
+                                                    ]
+                                                },
+                                                "intern": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "대기업",
+                                                        "중견기업"
+                                                    ]
+                                                },
+                                                "language": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "toeic",
+                                                        "toeicWT",
+                                                        "ch"
+                                                    ]
+                                                },
+                                                "qnet": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "기계",
+                                                        "정보통신"
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "competition": [
+                                                    "기획/아이디어",
+                                                    "과학/공학"
+                                                ]
+                                            },
+                                            {
+                                                "outside": [
+                                                    "서포터즈",
+                                                    "멘토링"
+                                                ]
+                                            },
+                                            {
+                                                "intern": ["대기업", "중견기업"]
+                                            },
+                                            {
+                                                "language": [
+                                                    "toeic",
+                                                    "toeicWT",
+                                                    "ch"
+                                                ]
+                                            },
+                                            {
+                                                "qnet": ["기계", "정보통신"]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "value": {
+                                        "data": {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao, naver, google",
+                                            "name": "홍길동",
+                                            "nickname": "닉네임",
+                                            "phone": "01012345678",
+                                            "profileImage": "awihqwifbjqjfbo",
+                                            "major": "컴퓨터공학",
+                                            "interests": [
+                                                {
+                                                    "id": "asdsadasdasdasdasdsef",
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "interestId": "adwwafefewfsdfdsgew",
+                                                    "keywordId": "asdwfwgregrerfsfsefe",
+                                                    "interest": {
+                                                        "id": "adwwafefewfsdfdsgew",
+                                                        "interest": "공모전, 대외활동, 자격증, 어학, 인턴"
+                                                    },
+                                                    "keyword": {
+                                                        "id": "asdwfwgregrerfsfsefe",
+                                                        "keyword": "기획/아이디어, 광고/마케팅, 사진/영상/UCC, 디자인/순수예술/공예, 네이밍/슬로건, 캐릭터/만화/게임, 건축/건설/인테리어, 과학/공학, 예체능/패션, 전시/패션, 문학/시나리오, 해외, 학술, 창업, 기타, 서포터즈, 해외탐방/무료, 해외탐방/유료, 봉사단/해외, 봉사단/국내, 마케터, 기자단, 강연, 멘토링, 경영/회계/사무, 보건/의료, 문화예술/다지안/방송, 사회복지/종교, 이용/숙박/여행/오락/스포츠, 음식서비스, 기계, 정보통신, 식품/가공, 환경/에너지, TOEIC, TOEIC.speaking and writing tests, TOEFL, TOEIC bridge, TOEIC bridge.speaking and writing tests, 대기업, 중소기업, 공공기관/공기업, 외국계기업, 중견기업, 비영리단체/협회/재단, 동아리/학생자치단체"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "major": {
+                                                    "type": "string"
+                                                },
+                                                "interests": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "interestId": {
+                                                                "type": "string"
+                                                            },
+                                                            "keywordId": {
+                                                                "type": "string"
+                                                            },
+                                                            "interest": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "interest": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "keyword": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "keyword": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "nicknameExist": {
+                                        "summary": "닉네임 중복되는 경우",
+                                        "value": {
+                                            "error": "이미 사용중인 닉네임입니다"
+                                        }
+                                    },
+                                    "TypeError": {
+                                        "summary": "타입이 일치하지 않는 경우",
+                                        "value": {
+                                            "data": {
+                                                "error": "nickname : nickname must match /^[a-zA-Z가-힣]+$/ regular expression"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/crawling/main/{path}": {
             "get": {
                 "tags": ["Crawling"],
@@ -753,7 +1099,18 @@
                                                     "view": 100,
                                                     "scrap": 0,
                                                     "relatedDepartment": "과련부처 : 통겨청",
-                                                    "institution": "시행기관 : 한국산업인력공단"
+                                                    "institution": "시행기관 : 한국산업인력공단",
+                                                    "image": "...",
+                                                    "examSchedules": {
+                                                        "id": "회차 id : adfhttwerqwrasxczx",
+                                                        "turn": "회차 : 2023년정기기사4회",
+                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                        "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                        "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                    }
                                                 }
                                             ]
                                         }
@@ -904,35 +1261,35 @@
                                                 "institution": {
                                                     "type": "string"
                                                 },
+                                                "image": {
+                                                    "type": "string"
+                                                },
                                                 "examSchedules": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
-                                                            "turn": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtReceipt": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtResultDay": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptReceipt": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "resultDay": {
-                                                                "type": "string"
-                                                            }
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "turn": {
+                                                            "type": "string"
+                                                        },
+                                                        "wtReceipt": {
+                                                            "type": "string"
+                                                        },
+                                                        "wtDday": {
+                                                            "type": "string"
+                                                        },
+                                                        "wtResultDay": {
+                                                            "type": "string"
+                                                        },
+                                                        "ptReceipt": {
+                                                            "type": "string"
+                                                        },
+                                                        "ptDday": {
+                                                            "type": "string"
+                                                        },
+                                                        "resultDay": {
+                                                            "type": "string"
                                                         }
                                                     }
                                                 }
@@ -946,14 +1303,14 @@
                                                     "id": {
                                                         "type": "string"
                                                     },
-                                                    "path": {
+                                                    "category": {
                                                         "type": "string"
                                                     },
                                                     "title": {
                                                         "type": "string"
                                                     },
-                                                    "detail": {
-                                                        "type": "string"
+                                                    "date": {
+                                                        "type": "date"
                                                     },
                                                     "view": {
                                                         "type": "number"
@@ -964,9 +1321,6 @@
                                                     "commentCount": {
                                                         "type": "number"
                                                     },
-                                                    "userId": {
-                                                        "type": "stiring"
-                                                    },
                                                     "user": {
                                                         "type": "array",
                                                         "items": {
@@ -975,25 +1329,10 @@
                                                                     "id": {
                                                                         "type": "string"
                                                                     },
-                                                                    "email": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "provider": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "name": {
-                                                                        "type": "string"
-                                                                    },
                                                                     "nickname": {
                                                                         "type": "string"
                                                                     },
-                                                                    "phone": {
-                                                                        "type": "string"
-                                                                    },
                                                                     "profileImage": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "major": {
                                                                         "type": "string"
                                                                     }
                                                                 }
@@ -1021,10 +1360,10 @@
                 }
             }
         },
-        "/crawling/finde": {
+        "/crawling/finde/outside": {
             "get": {
                 "tags": ["Crawling"],
-                "summary": "크롤링 데이터 리스트 조회하기",
+                "summary": "대외활동 데이터 리스트 조회하기",
                 "parameters": [
                     {
                         "name": "path",
@@ -1034,7 +1373,7 @@
                             "format": "path",
                             "example": "outside"
                         },
-                        "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, (언어는 여러개 조회 가능 toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
+                        "description": "대외활동(outside)"
                     },
                     {
                         "name": "count",
@@ -1044,7 +1383,7 @@
                             "format": "count",
                             "example": "true"
                         },
-                        "description": "path 경로에 따른 전체 개수 조회"
+                        "description": "outside 전체 개수 조회"
                     },
                     {
                         "name": "page",
@@ -1054,7 +1393,7 @@
                             "format": "page",
                             "example": "1"
                         },
-                        "description": "페이지 네이션 (자격증 제외)"
+                        "description": "페이지 네이션"
                     },
                     {
                         "name": "field",
@@ -1064,7 +1403,7 @@
                             "format": "filed",
                             "example": "서포터즈,기타"
                         },
-                        "description": "대외활동 (활동분야 검색) 복수형태는 , 로 구분"
+                        "description": "활동분야 검색 , 로 구분"
                     },
                     {
                         "name": "interests",
@@ -1074,7 +1413,7 @@
                             "format": "interests",
                             "example": "교육,기타"
                         },
-                        "description": "대외활동 (관심분야 검색), 공모전(공모분야) 복수형태는 , 로 구분"
+                        "description": "관심분야 검색 , 로 구분"
                     },
                     {
                         "name": "benefits",
@@ -1084,7 +1423,7 @@
                             "format": "benefits",
                             "example": "활동비,사은품 지급"
                         },
-                        "description": "대외활동 (활동혜택 검색), 공모전(수상혜택) 복수형태는 , 로 구분"
+                        "description": "활동혜택 검색"
                     },
                     {
                         "name": "location",
@@ -1094,67 +1433,7 @@
                             "format": "location",
                             "example": "서울,대전"
                         },
-                        "description": "대외활동,인턴 (지역 검색) 복수형태는 , 로 구분"
-                    },
-                    {
-                        "name": "institution",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "institution",
-                            "example": "중소기업"
-                        },
-                        "description": "인턴 (규모로 검색)"
-                    },
-                    {
-                        "name": "preferentialTreatment",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "preferentialTreatment",
-                            "example": "서비스,생산/제조"
-                        },
-                        "description": "인턴 (모집직무로 검색) 복수형태는 , 로 구분"
-                    },
-                    {
-                        "name": "scale",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "scale",
-                            "example": "100"
-                        },
-                        "description": "공모전 (시상 규모) 1억단위 10000 / 이상,이하"
-                    },
-                    {
-                        "name": "target",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "target",
-                            "example": "대학생,청소년"
-                        },
-                        "description": "공모전 (지원대상)"
-                    },
-                    {
-                        "name": "mainCategory",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "mainCategory",
-                            "example": "환경.에너지"
-                        },
-                        "description": "대분류 (q-net)"
-                    },
-                    {
-                        "name": "subCategory",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "subCategory",
-                            "example": "환경"
-                        },
-                        "description": "중분류 (q-net)"
+                        "description": "지역 검색"
                     }
                 ],
                 "responses": {
@@ -1164,7 +1443,7 @@
                             "application/json": {
                                 "examples": {
                                     "dataLength": {
-                                        "summary": "path 경로에 따른 데이터 개수",
+                                        "summary": "out 경로에 따른 데이터 개수",
                                         "value": {
                                             "data": 60
                                         }
@@ -1181,80 +1460,6 @@
                                                     "mainImage": "이미지 url",
                                                     "institution": "주최기관 : 대기업",
                                                     "date": "접수기간 : 23.9.12 ~ 23.9.18"
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    "internData": {
-                                        "summary": "인턴 데이터",
-                                        "value": {
-                                            "data": [
-                                                {
-                                                    "id": "인턴 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
-                                                    "view": 100,
-                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 대기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    "competitionData": {
-                                        "summary": "공모전 데이터",
-                                        "value": {
-                                            "data": [
-                                                {
-                                                    "id": "공모전 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
-                                                    "view": 100,
-                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 공공기관/공기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    "languageData": {
-                                        "summary": "언어별 데이터",
-                                        "value": {
-                                            "data": [
-                                                {
-                                                    "id": "언어별 id : adfhttwerqwrasxczx",
-                                                    "path": "조회 목록 : toeic,toeicBR",
-                                                    "homePage": "접수 홈페이지 : http://~~",
-                                                    "turn": "회차 : 1회차 or null",
-                                                    "Dday": "시험날짜 : 2023.11.26(일)오전9시20분",
-                                                    "resultDay": "결과 발표 날짜 : 2023.12.06(수)낮12시",
-                                                    "date": "접수 기간 : 정기접수:2023.10.09(월)오전10시~2023.11.13(월)오전10시특별추가:2023.11.15(수)오전10시~2023.11.23(목)낮12시"
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    "qnetData": {
-                                        "summary": "자격증 데이터",
-                                        "value": {
-                                            "data": [
-                                                {
-                                                    "id": "자격증 id : adfhttwerqwrasxczx",
-                                                    "title": "자격증명 : 에너지산업기사",
-                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null",
-                                                    "relatedDepartment": "과련부처 : 통겨청",
-                                                    "institution": "시행기관 : 한국산업인력공단",
-                                                    "examSchedules": [
-                                                        {
-                                                            "id": "회차 id : adfhttwerqwrasxczx",
-                                                            "turn": "회차 : 2023년정기기사4회",
-                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
-                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
-                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
-                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
-                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
-                                                        }
-                                                    ]
                                                 }
                                             ]
                                         }
@@ -1290,6 +1495,124 @@
                                                     "type": "string"
                                                 }
                                             }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawling/finde/competition": {
+            "get": {
+                "tags": ["Crawling"],
+                "summary": "공모전 데이터 리스트 조회하기",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "competition"
+                        },
+                        "description": "competition:공모전"
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "description": "competition 전체 개수 조회"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "page",
+                            "example": "1"
+                        },
+                        "description": "페이지 네이션"
+                    },
+                    {
+                        "name": "interests",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "interests",
+                            "example": "교육,기타"
+                        },
+                        "description": "공모분야 , 로 구분"
+                    },
+                    {
+                        "name": "benefits",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "benefits",
+                            "example": "활동비,사은품 지급"
+                        },
+                        "description": " 수상혜택 , 로 구분"
+                    },
+                    {
+                        "name": "scale",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "scale",
+                            "example": "100"
+                        },
+                        "description": "시상 규모 1억단위 10000 / 이상,이하"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataLength": {
+                                        "summary": "competition 경로에 따른 데이터 개수",
+                                        "value": {
+                                            "data": 60
+                                        }
+                                    },
+                                    "competitionData": {
+                                        "summary": "공모전 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "공모전 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "institution": "주체 기관 : 공공기관/공기업",
+                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "number"
                                         },
                                         {
                                             "type": "object",
@@ -1316,7 +1639,126 @@
                                                     "type": "string"
                                                 }
                                             }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawling/finde/intern": {
+            "get": {
+                "tags": ["Crawling"],
+                "summary": "인턴 데이터 리스트 조회하기",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "intern"
+                        },
+                        "description": "intern:인턴"
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "description": "intern 전체 개수 조회"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "page",
+                            "example": "1"
+                        },
+                        "description": "페이지 네이션"
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "location",
+                            "example": "서울,대전"
+                        },
+                        "description": "지역 검색 , 로 구분"
+                    },
+                    {
+                        "name": "institution",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "institution",
+                            "example": "중소기업"
+                        },
+                        "description": "규모 검색"
+                    },
+                    {
+                        "name": "preferentialTreatment",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "preferentialTreatment",
+                            "example": "서비스,생산/제조"
+                        },
+                        "description": "모집직무로 검색 , 로 구분"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataLength": {
+                                        "summary": "intern 데이터 개수",
+                                        "value": {
+                                            "data": 60
+                                        }
+                                    },
+                                    "internData": {
+                                        "summary": "인턴 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "인턴 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "institution": "주체 기관 : 대기업",
+                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "number"
                                         },
+
                                         {
                                             "type": "object",
                                             "properties": {
@@ -1342,6 +1784,116 @@
                                                     "type": "string"
                                                 }
                                             }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawling/finde/language": {
+            "get": {
+                "tags": ["Crawling"],
+                "summary": "자격증 리스트 조회하기",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "language"
+                        },
+                        "description": "language 데이터 조회"
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "description": "language 개수 조회"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "page",
+                            "example": "1"
+                        },
+                        "description": "페이지 네이션"
+                    },
+
+                    {
+                        "name": "test",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "classify",
+                            "example": "영어"
+                        },
+                        "description": "언어별 조회"
+                    },
+                    {
+                        "name": "test",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "test",
+                            "example": "toeic"
+                        },
+                        "description": "언어별 시험종목 조회 (toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataLength": {
+                                        "summary": "language데이터 개수",
+                                        "value": {
+                                            "data": 60
+                                        }
+                                    },
+
+                                    "languageData": {
+                                        "summary": "언어별 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "언어별 id : adfhttwerqwrasxczx",
+                                                    "path": "조회 목록 : toeic,toeicBR",
+                                                    "homePage": "접수 홈페이지 : http://~~",
+                                                    "turn": "회차 : 1회차 or null",
+                                                    "Dday": "시험날짜 : 2023.11.26(일)오전9시20분",
+                                                    "resultDay": "결과 발표 날짜 : 2023.12.06(수)낮12시",
+                                                    "date": "접수 기간 : 정기접수:2023.10.09(월)오전10시~2023.11.13(월)오전10시특별추가:2023.11.15(수)오전10시~2023.11.23(목)낮12시"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "number"
                                         },
                                         {
                                             "type": "object",
@@ -1368,6 +1920,112 @@
                                                     "type": "string"
                                                 }
                                             }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crawling/finde/qnet": {
+            "get": {
+                "tags": ["Crawling"],
+                "summary": "qnet 리스트 조회하기",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "qnet"
+                        },
+                        "description": " qnet:자격증"
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "description": "qnet 전체 개수 조회"
+                    },
+                    {
+                        "name": "mainCategory",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "mainCategory",
+                            "example": "환경.에너지"
+                        },
+                        "description": "대분류"
+                    },
+                    {
+                        "name": "subCategory",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "subCategory",
+                            "example": "환경"
+                        },
+                        "description": "중분류"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "dataLength": {
+                                        "summary": "qnet 데이터 개수",
+                                        "value": {
+                                            "data": 60
+                                        }
+                                    },
+                                    "qnetData": {
+                                        "summary": "자격증 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "자격증 id : adfhttwerqwrasxczx",
+                                                    "title": "자격증명 : 에너지산업기사",
+                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null",
+                                                    "relatedDepartment": "과련부처 : 통겨청",
+                                                    "institution": "시행기관 : 한국산업인력공단",
+                                                    "examSchedules": {
+                                                        "id": "회차 id : adfhttwerqwrasxczx",
+                                                        "turn": "회차 : 2023년정기기사4회",
+                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                        "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                        "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "number"
                                         },
                                         {
                                             "type": "object",
@@ -1388,34 +2046,31 @@
                                                     "type": "string"
                                                 },
                                                 "examSchedules": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
-                                                            "turn": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtReceipt": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtResultDay": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptReceipt": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "resultDay": {
-                                                                "type": "string"
-                                                            }
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "turn": {
+                                                            "type": "string"
+                                                        },
+                                                        "wtReceipt": {
+                                                            "type": "string"
+                                                        },
+                                                        "wtDday": {
+                                                            "type": "string"
+                                                        },
+                                                        "wtResultDay": {
+                                                            "type": "string"
+                                                        },
+                                                        "ptReceipt": {
+                                                            "type": "string"
+                                                        },
+                                                        "ptDday": {
+                                                            "type": "string"
+                                                        },
+                                                        "resultDay": {
+                                                            "type": "string"
                                                         }
                                                     }
                                                 }

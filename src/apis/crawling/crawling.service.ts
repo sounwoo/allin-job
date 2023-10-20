@@ -15,6 +15,7 @@ import { bestDataType } from './interfaces/returnType/bestData.interface';
 import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.interface';
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 import RedisClient from '../../database/redisConfig';
+import { examSchedulesSort } from '../../common/util/examSchedules.sort';
 
 @Service()
 export class CrawlingService {
@@ -48,7 +49,7 @@ export class CrawlingService {
         return this.elastic
             .search({
                 index: `${path}*`,
-                _source_excludes: cludes(path),
+                _source_includes: cludes(path),
                 body: {
                     query: {
                         ...(must.length
@@ -61,16 +62,21 @@ export class CrawlingService {
                     from: (+page - 1 || 0) * 12,
                 },
             })
-            .then((el) =>
-                count
-                    ? el.body.hits.total.value
-                    : el.body.hits.hits.length
-                    ? el.body.hits.hits.map((el: any) => ({
-                          id: el._id,
-                          ...el._source,
-                      }))
-                    : null,
-            );
+            .then((data) => {
+                return count
+                    ? data.body.hits.total.value
+                    : data.body.hits.hits.length
+                    ? data.body.hits.hits.map((el: any) => {
+                          return {
+                              id: el._id,
+                              ...el._source,
+                              ...(path === 'qnet' && {
+                                  ...examSchedulesSort(el),
+                              }),
+                          };
+                      })
+                    : null;
+            });
     }
 
     async myKeywordCrawling({
@@ -130,6 +136,7 @@ export class CrawlingService {
                 test,
                 classify,
                 homePage,
+                scrap: 0,
                 ...dataObj,
             },
         });
@@ -193,6 +200,9 @@ export class CrawlingService {
                 el.body.hits.hits.map((el: any) => ({
                     id: el._id,
                     ...el._source,
+                    ...(path === 'qnet' && {
+                        ...examSchedulesSort(el),
+                    }),
                 })),
             );
     }

@@ -1,4 +1,4 @@
-export interface examSchedules {
+export interface ExamSchedules {
     turn: string;
     wtReceipt: string;
     wtDday: string;
@@ -8,7 +8,7 @@ export interface examSchedules {
     resultDay: string;
 }
 
-export interface categortObj {
+export interface CategortObj {
     mainCategory?: QnetType['mainCategory'];
     subCategory?: QnetType['subCategory'];
 }
@@ -17,7 +17,7 @@ export interface QnetType {
     id: string;
     detail: string;
     scheduleInfo: string;
-    examSchedules: examSchedules[];
+    examSchedules: ExamSchedules[];
     title: string;
     enTitle: string;
     relatedDepartment: string;
@@ -32,4 +32,7 @@ export interface QnetFindeManyType
     extends Pick<
         QnetType,
         'id' | 'title' | 'relatedDepartment' | 'institution' | 'scrap' | 'view'
-    > {}
+    > {
+    examSchedules: ExamSchedules;
+    image: string;
+}

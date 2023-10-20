@@ -7,8 +7,8 @@ import { Service } from 'typedi';
 import { QNetObj } from './seed.q-net';
 import iconv from 'iconv-lite';
 import {
-    categortObj,
-    examSchedules,
+    CategortObj,
+    ExamSchedules,
 } from '../../apis/crawling/types/qnet.type';
 const decode = require('decode-html');
 
@@ -152,7 +152,7 @@ export class PathCrawling {
         const category = await axios.get(
             'http://openapi.q-net.or.kr/api/service/rest/InquiryListNationalQualifcationSVC/getList?serviceKey=sWAEtBKCgnfT4ANvlYmgqRju8t9TcJHpyQvLY5zz6qu%2BRzrrMv%2FQyMHjzYUbtK%2FTJqePrdyM2nVPzTwEImSGvQ%3D%3D',
         );
-        let categoryObj: categortObj = {};
+        let categoryObj: CategortObj = {};
         await Promise.all(
             category.data.response.body.items.item.map(async (el: itmeType) => {
                 const {
@@ -192,7 +192,7 @@ export class PathCrawling {
                     );
                     const decodedHTML = iconv.decode(dataList.data, 'EUC-KR');
                     const $ = cheerio.load(decodedHTML);
-                    const examSchedules: examSchedules[] = [];
+                    const examSchedules: ExamSchedules[] = [];
 
                     $('tbody > tr').each((_, el) => {
                         const examScheduleObj = {

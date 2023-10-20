@@ -13,6 +13,7 @@ import {
     pathType,
     phoneType,
     categoryType,
+    nicknameType,
 } from '../types';
 import { ToggleLikeCommunityDTO } from '../../apis/community/dto/create.community.toggleLike';
 import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
@@ -24,6 +25,7 @@ import { CreateUserDTO } from '../../apis/users/dto/create-user.dto';
 import { SendTokenSmsDTO } from '../util/sms/dto/sendTokenSMS.dto';
 import { ValidateTokenDTO } from '../util/sms/dto/validateToken.dto';
 import { ScrappingDTO } from '../../apis/users/dto/scrapping.dto';
+import { isNicknameDTO } from '../../apis/users/dto/isNickname.dto';
 
 class Validate {
     constructor() {
@@ -50,6 +52,7 @@ class Validate {
         this.sendTokenSMS = asyncHandler(this.sendTokenSMS.bind(this));
         this.validateToken = asyncHandler(this.validateToken.bind(this));
         this.updateProfile = asyncHandler(this.updateProfile.bind(this));
+        this.isNickname = asyncHandler(this.isNickname.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -148,6 +151,13 @@ class Validate {
 
     async validateToken(req: Request, _: Response, next: NextFunction) {
         await this.errors(new ValidateTokenDTO(req.body));
+
+        next();
+    }
+
+    async isNickname(req: Request, _: Response, next: NextFunction) {
+        const { nickname } = req.query as nicknameType;
+        await this.errors(new isNicknameDTO({ nickname }));
 
         next();
     }

@@ -1,4 +1,4 @@
-import {  Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import passport from 'passport';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
@@ -9,7 +9,6 @@ import AccessGuard from '../../middleware/auth.guard/access.guard';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import RefreshGuard from '../../middleware/auth.guard/refresh.guard';
-import { url } from '../../common/util/callbackUrl';
 
 class AuthController {
     router = Router();
@@ -57,8 +56,8 @@ class AuthController {
             });
 
             const redirectPath = validateUser
-                ? '/' // 회원가입 되어 있을때 리다이렉트 주소
-                : '/signup/info'; // 회원가입 안되어 있을때 리다이렉트 주소
+                ? 'http://localhost:5173' // 회원가입 되어 있을때 리다이렉트 주소
+                : 'http://localhost:5173/signup/info'; // 회원가입 안되어 있을때 리다이렉트 주소
 
             res.redirect(redirectPath);
         });
