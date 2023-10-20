@@ -741,6 +741,280 @@
                 }
             }
         },
+        "/user/updateProfile": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "프로필 수정하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "profileImage": {
+                                        "type": "string",
+                                        "example": "새로운 프로필 url"
+                                    },
+                                    "nickname": {
+                                        "type": "string",
+                                        "example": "새로운 닉네임"
+                                    },
+                                    "interests": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "competition": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "기획/아이디어",
+                                                        "과학/공학"
+                                                    ]
+                                                },
+                                                "outside": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "서포터즈",
+                                                        "멘토링"
+                                                    ]
+                                                },
+                                                "intern": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "대기업",
+                                                        "중견기업"
+                                                    ]
+                                                },
+                                                "language": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "toeic",
+                                                        "toeicWT",
+                                                        "ch"
+                                                    ]
+                                                },
+                                                "qnet": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "기계",
+                                                        "정보통신"
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "competition": [
+                                                    "기획/아이디어",
+                                                    "과학/공학"
+                                                ]
+                                            },
+                                            {
+                                                "outside": [
+                                                    "서포터즈",
+                                                    "멘토링"
+                                                ]
+                                            },
+                                            {
+                                                "intern": ["대기업", "중견기업"]
+                                            },
+                                            {
+                                                "language": [
+                                                    "toeic",
+                                                    "toeicWT",
+                                                    "ch"
+                                                ]
+                                            },
+                                            {
+                                                "qnet": ["기계", "정보통신"]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "value": {
+                                        "data": {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "email": "abc@abc.com",
+                                            "provider": "kakao, naver, google",
+                                            "name": "홍길동",
+                                            "nickname": "닉네임",
+                                            "phone": "01012345678",
+                                            "profileImage": "awihqwifbjqjfbo",
+                                            "major": "컴퓨터공학",
+                                            "interests": [
+                                                {
+                                                    "id": "asdsadasdasdasdasdsef",
+                                                    "userId": "adfhttwerqwrasxczx",
+                                                    "interestId": "adwwafefewfsdfdsgew",
+                                                    "keywordId": "asdwfwgregrerfsfsefe",
+                                                    "interest": {
+                                                        "id": "adwwafefewfsdfdsgew",
+                                                        "interest": "공모전, 대외활동, 자격증, 어학, 인턴"
+                                                    },
+                                                    "keyword": {
+                                                        "id": "asdwfwgregrerfsfsefe",
+                                                        "keyword": "기획/아이디어, 광고/마케팅, 사진/영상/UCC, 디자인/순수예술/공예, 네이밍/슬로건, 캐릭터/만화/게임, 건축/건설/인테리어, 과학/공학, 예체능/패션, 전시/패션, 문학/시나리오, 해외, 학술, 창업, 기타, 서포터즈, 해외탐방/무료, 해외탐방/유료, 봉사단/해외, 봉사단/국내, 마케터, 기자단, 강연, 멘토링, 경영/회계/사무, 보건/의료, 문화예술/다지안/방송, 사회복지/종교, 이용/숙박/여행/오락/스포츠, 음식서비스, 기계, 정보통신, 식품/가공, 환경/에너지, TOEIC, TOEIC.speaking and writing tests, TOEFL, TOEIC bridge, TOEIC bridge.speaking and writing tests, 대기업, 중소기업, 공공기관/공기업, 외국계기업, 중견기업, 비영리단체/협회/재단, 동아리/학생자치단체"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "major": {
+                                                    "type": "string"
+                                                },
+                                                "interests": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "userId": {
+                                                                "type": "string"
+                                                            },
+                                                            "interestId": {
+                                                                "type": "string"
+                                                            },
+                                                            "keywordId": {
+                                                                "type": "string"
+                                                            },
+                                                            "interest": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "interest": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "keyword": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "keyword": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "nicknameExist": {
+                                        "summary": "닉네임 중복되는 경우",
+                                        "value": {
+                                            "error": "이미 사용중인 닉네임입니다"
+                                        }
+                                    },
+                                    "TypeError": {
+                                        "summary": "타입이 일치하지 않는 경우",
+                                        "value": {
+                                            "data": {
+                                                "error": "nickname : nickname must match /^[a-zA-Z가-힣]+$/ regular expression"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/crawling/main/{path}": {
             "get": {
                 "tags": ["Crawling"],
