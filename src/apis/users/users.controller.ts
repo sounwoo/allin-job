@@ -82,6 +82,14 @@ class UserController {
         });
     }
 
+    async isNickName(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { nickname } = req.query as nicknameType;
+        res.status(200).json({
+            data: await this.userService.isNickname(nickname),
+        });
+    }
+
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
 

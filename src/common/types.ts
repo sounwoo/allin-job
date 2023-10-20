@@ -36,6 +36,10 @@ export type findOneUserByIDType = {
     phone: CreateUserDTO['phone'];
 };
 
+export type nicknameType = {
+    nickname: CreateUserDTO['nickname'];
+};
+
 export type authorization = {
     authorization: string;
 };
