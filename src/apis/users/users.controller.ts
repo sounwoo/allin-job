@@ -1,19 +1,11 @@
-import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './users.service';
 import { Request, Response, Router } from 'express';
 import { SmsService } from '../../common/util/sms/sms.service';
-import { SendTokenSmsDTO } from '../../common/util/sms/dto/sendTokenSMS.dto';
-import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
-import { FindOneUserByEmailDTO } from './dto/findOneUserByEmail.dto';
-import { validateDTO } from '../../common/validator/validateDTO';
-import { FindOneUserByIdDTO } from './dto/findOneUserByID.dto';
-import { email, findOneUserByIDType, nicknameType } from '../../common/types';
+import { email, findOneUserByIDType, idType } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
-import { UpdateUserDTO } from './dto/update-user.dto';
 import Validate from '../../common/validator/validateDTO';
-import { Path } from '../../common/crawiling/interface';
 
 class UserController {
     router = Router();
@@ -61,6 +53,13 @@ class UserController {
             '/validateToken',
             Validate.validateToken,
             asyncHandler(this.validateToken.bind(this)),
+        );
+
+        this.router.patch(
+            '/updateProfile',
+            Validate.updateProfile,
+            AccessGuard.handle,
+            asyncHandler(this.updateProfile.bind(this)),
         );
     }
 
@@ -113,6 +112,26 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.smsService.validateToken(req.body),
+        });
+    }
+
+    async isNickName(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { nickname } = req.body;
+        res.status(200).json({
+            data: await this.userService.isNickname(nickname),
+        });
+    }
+
+    async updateProfile(req: Request, res: Response) {
+        // #swagger.tags = ['User']
+        const { id } = req.user as idType;
+
+        res.status(200).json({
+            data: await this.userService.updateProfile({
+                id,
+                updateDTO: req.body,
+            }),
         });
     }
 }
