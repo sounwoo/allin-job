@@ -1,11 +1,4 @@
-import {
-    Provider,
-    User,
-    UserInterest,
-    PrismaClient,
-    Prisma,
-} from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
+import { Provider, User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
     IUserCreateDTO,
@@ -16,10 +9,8 @@ import RedisClient from '../../database/redisConfig';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
 import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
-import { ScrappingDTO } from './dto/scrapping.dto';
-import { UpdateUserDTO } from './dto/update-user.dto';
-import { Path } from '../../common/crawiling/interface';
 import { ElasitcClient } from '../../database/elasticConfig';
+import { SaveInterestKeywordDTO } from './dto/saveInterestKeyword.dto';
 
 @Service()
 export class UserService {
@@ -86,19 +77,7 @@ export class UserService {
         return keywords.filter((el) => el).join(' ');
     }
 
-    saveInterestKeyword(
-        prisma: Omit<
-            PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-            | '$connect'
-            | '$disconnect'
-            | '$on'
-            | '$transaction'
-            | '$use'
-            | '$extends'
-        >,
-        interests: object[],
-        id: string,
-    ) {
+    saveInterestKeyword({ prisma, interests, id }: SaveInterestKeywordDTO) {
         return Promise.all(
             interests.map(async (el) => {
                 const [interest, keywords] = Object.entries(el)[0];
@@ -203,9 +182,52 @@ export class UserService {
                 },
             });
 
-            await this.saveInterestKeyword(prisma, interests, user.id);
+            await this.saveInterestKeyword({ prisma, interests, id: user.id });
             this.redis.del(userData.email);
             return user.id;
+        });
+    }
+
+    async updateProfile({
+        id,
+        updateDTO,
+    }: {
+        id: string;
+        updateDTO: IUserUpdateDTO;
+    }): Promise<User> {
+        const { interests, ...data } = updateDTO;
+
+        const chkUser = await this.isUserByID(id);
+
+        data.nickname && (await this.isNickname(data.nickname));
+
+        if (interests) {
+            await this.prisma.userInterest.deleteMany({
+                where: { userId: id },
+            });
+
+            await this.prisma
+                .$transaction(async (prisma) => {
+                    await this.saveInterestKeyword({
+                        prisma,
+                        interests,
+                        id: chkUser.id,
+                    });
+                })
+                .then(async () => await this.isUserByID(id));
+        }
+
+        return await this.prisma.user.update({
+            where: { id },
+            data,
+            include: {
+                interests: {
+                    include: {
+                        interest: true,
+                        keyword: true,
+                    },
+                },
+            },
         });
     }
 }
