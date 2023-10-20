@@ -1,7 +1,12 @@
 import { UserService } from './users.service';
 import { Request, Response, Router } from 'express';
 import { SmsService } from '../../common/util/sms/sms.service';
-import { email, findOneUserByIDType, idType } from '../../common/types';
+import {
+    email,
+    findOneUserByIDType,
+    idType,
+    nicknameType,
+} from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
@@ -112,14 +117,6 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.smsService.validateToken(req.body),
-        });
-    }
-
-    async isNickName(req: Request, res: Response) {
-        // #swagger.tags = ['Users']
-        const { nickname } = req.body;
-        res.status(200).json({
-            data: await this.userService.isNickname(nickname),
         });
     }
 
