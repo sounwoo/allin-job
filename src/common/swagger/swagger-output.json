@@ -5,13 +5,13 @@
         "title": "allinjob API Docs",
         "description": "올인잡 api 문서입니다"
     },
-    "host": "backendclass.store",
+    "host": "https://allinjob.co.kr",
     "servers": [
         {
             "url": "http://localhost:4000"
         },
         {
-            "url": "https://backendclass.store"
+            "url": "https://allinjob.co.kr"
         }
     ],
     "basePath": "/",

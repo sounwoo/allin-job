@@ -7,6 +7,7 @@ export const cludes = (path: Path['path'] | 'language'): string[] => {
         ousideOrCompetition: qnetExcept,
         intern: [...qnetExcept, 'location'],
         qnet: [...common, 'relatedDepartment', 'institution', 'examSchedules'],
+        language: ['test', 'Dday', 'date'],
     };
 
     return cludes[path as 'intern' | 'qnet'] || cludes['ousideOrCompetition'];
