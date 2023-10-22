@@ -8,7 +8,7 @@ const options = {
     },
     servers: [
         { url: 'http://localhost:4000' },
-        { url: 'https://backendclass.store' },
+        { url: 'https://allinjob.co.kr' },
     ],
     schemes: ['http', 'https'],
     tags: [
