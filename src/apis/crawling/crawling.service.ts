@@ -16,6 +16,11 @@ import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
+import {
+    languageExamDate,
+    languageName,
+    languageOpenDate,
+} from '../../common/util/languageData';
 
 @Service()
 export class CrawlingService {
@@ -67,9 +72,15 @@ export class CrawlingService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
+                          const { test, Dday, date, ...rest } = el._source;
                           return {
                               id: el._id,
-                              ...el._source,
+                              ...(path === 'language' && {
+                                  ...languageName(test),
+                                  ...languageExamDate(Dday),
+                                  ...languageOpenDate(date),
+                              }),
+                              ...rest,
                               ...(path === 'qnet' && {
                                   ...examSchedulesSort(el),
                               }),
