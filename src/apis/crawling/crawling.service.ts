@@ -72,15 +72,17 @@ export class CrawlingService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
-                          const { test, Dday, date, ...rest } = el._source;
                           return {
                               id: el._id,
                               ...(path === 'language' && {
-                                  ...languageName(test),
-                                  ...languageExamDate(Dday),
-                                  ...languageOpenDate(date),
+                                  ...languageName(el._source.test),
+                                  ...languageExamDate(el._source.Dday),
+                                  ...languageOpenDate(el._source.date),
+                                  homePage: el._source.homePage,
                               }),
-                              ...rest,
+                              ...(path !== 'language' && {
+                                  ...el._source,
+                              }),
                               ...(path === 'qnet' && {
                                   ...examSchedulesSort(el),
                               }),

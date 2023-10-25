@@ -1457,6 +1457,7 @@
                                                     "Dday": "남은 일수 : D-10",
                                                     "title": "제목 : 모집",
                                                     "view": 100,
+                                                    "scrap": 0,
                                                     "mainImage": "이미지 url",
                                                     "institution": "주최기관 : 대기업",
                                                     "date": "접수기간 : 23.9.12 ~ 23.9.18"
@@ -1483,6 +1484,9 @@
                                                     "type": "string"
                                                 },
                                                 "view": {
+                                                    "type": "number"
+                                                },
+                                                "scrap": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
@@ -1601,6 +1605,7 @@
                                                     "Dday": "남은 일수 : D-10",
                                                     "title": "제목",
                                                     "view": 100,
+                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
                                                     "institution": "주체 기관 : 공공기관/공기업",
                                                     "date": "접수 기간 : 23.8.28 ~ 23.9.11"
@@ -1627,6 +1632,9 @@
                                                     "type": "string"
                                                 },
                                                 "view": {
+                                                    "type": "number"
+                                                },
+                                                "scrap": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
@@ -1743,11 +1751,13 @@
                                                 {
                                                     "id": "인턴 id : adfhttwerqwrasxczx",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
+                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                    "institution": "주체 기관 : 대기업",
                                                     "view": 100,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 대기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                    "organization": "조직 : (주)~~",
+                                                    "location": "서울 강남구",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -1768,7 +1778,10 @@
                                                 "Dday": {
                                                     "type": "string"
                                                 },
-                                                "title": {
+                                                "date": {
+                                                    "type": "string"
+                                                },
+                                                "institution": {
                                                     "type": "string"
                                                 },
                                                 "view": {
@@ -1777,10 +1790,13 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "organization": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1838,16 +1854,15 @@
                         },
                         "description": "페이지 네이션"
                     },
-
                     {
-                        "name": "test",
+                        "name": "classify",
                         "in": "query",
                         "schema": {
                             "type": "string",
                             "format": "classify",
                             "example": "영어"
                         },
-                        "description": "언어별 조회"
+                        "description": "언어별 조회 (영어, 중국어, 일본어)"
                     },
                     {
                         "name": "test",
@@ -1857,7 +1872,7 @@
                             "format": "test",
                             "example": "toeic"
                         },
-                        "description": "언어별 시험종목 조회 (toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
+                        "description": "언어별 시험종목 조회 (toeic,toeicBR,toeicSW,toeicWT,ch,jp,jpSP)"
                     }
                 ],
                 "responses": {
@@ -1879,12 +1894,11 @@
                                             "data": [
                                                 {
                                                     "id": "언어별 id : adfhttwerqwrasxczx",
-                                                    "path": "조회 목록 : toeic,toeicBR",
-                                                    "homePage": "접수 홈페이지 : http://~~",
-                                                    "turn": "회차 : 1회차 or null",
-                                                    "Dday": "시험날짜 : 2023.11.26(일)오전9시20분",
-                                                    "resultDay": "결과 발표 날짜 : 2023.12.06(수)낮12시",
-                                                    "date": "접수 기간 : 정기접수:2023.10.09(월)오전10시~2023.11.13(월)오전10시특별추가:2023.11.15(수)오전10시~2023.11.23(목)낮12시"
+                                                    "test": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
+                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
+                                                    "openDate": "접수 시작 날짜 : 2023-10-02 10:00",
+                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
+                                                    "homePage": "접수 홈페이지 : http://~~"
                                                 }
                                             ]
                                         }
