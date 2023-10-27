@@ -26,6 +26,7 @@ export interface QnetType {
     view: number;
     mainCategory: string;
     subCategory: string;
+    image: string;
 }
 
 export interface QnetFindeManyType
@@ -33,6 +34,5 @@ export interface QnetFindeManyType
         QnetType,
         'id' | 'title' | 'relatedDepartment' | 'institution' | 'scrap' | 'view'
     > {
-    examSchedules: ExamSchedules;
-    image: string;
+    examSchedules: ExamSchedules[];
 }
