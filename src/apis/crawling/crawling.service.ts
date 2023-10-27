@@ -132,9 +132,14 @@ export class CrawlingService {
                 },
                 { ignore: [404] },
             )
-            .then((el) =>
-                el.body.error ? el.meta.context : el.body.get._source,
-            );
+            .then((el) => {
+                return {
+                    ...(path === 'qnet' && {
+                        mainImage: process.env.QNET_IMAGE,
+                    }),
+                    ...(el.body.error ? el.meta.context : el.body.get._source),
+                };
+            });
     }
 
     async createLanguageData({

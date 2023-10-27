@@ -4,8 +4,9 @@ export const examSchedulesSort = (data: any) => {
     const examSchedules = data._source.examSchedules.filter((el: any) => {
         return utcNow < new Date(el.resultDay).getTime();
     });
+
     return {
-        image: process.env.QNET_IMAGE,
-        examSchedules: examSchedules.length ? examSchedules[0] : null,
+        mainImage: process.env.QNET_IMAGE,
+        examSchedules: examSchedules.length ? [examSchedules[0]] : null,
     };
 };

@@ -1268,78 +1268,74 @@
                                                 "examSchedules": {
                                                     "type": "array",
                                                     "items": {
-                                                        "type": "object"
-                                                    },
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "string"
-                                                        },
-                                                        "turn": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtReceipt": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtDday": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtResultDay": {
-                                                            "type": "string"
-                                                        },
-                                                        "ptReceipt": {
-                                                            "type": "string"
-                                                        },
-                                                        "ptDday": {
-                                                            "type": "string"
-                                                        },
-                                                        "resultDay": {
-                                                            "type": "string"
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "turn": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtResultDay": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "resultDay": {
+                                                                "type": "string"
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         },
                                         {
-                                            "type": "array",
-                                            "itmes": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string"
-                                                    },
-                                                    "category": {
-                                                        "type": "string"
-                                                    },
-                                                    "title": {
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "type": "date"
-                                                    },
-                                                    "view": {
-                                                        "type": "number"
-                                                    },
-                                                    "likeCount": {
-                                                        "type": "number"
-                                                    },
-                                                    "commentCount": {
-                                                        "type": "number"
-                                                    },
-                                                    "user": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "user": {
-                                                                    "id": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "nickname": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "profileImage": {
-                                                                        "type": "string"
-                                                                    }
-                                                                }
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "date"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "likeCount": {
+                                                    "type": "number"
+                                                },
+                                                "commentCount": {
+                                                    "type": "number"
+                                                },
+                                                "user": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "nickname": {
+                                                                "type": "string"
+                                                            },
+                                                            "profileImage": {
+                                                                "type": "string"
                                                             }
                                                         }
                                                     }
