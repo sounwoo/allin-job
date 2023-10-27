@@ -171,6 +171,10 @@ export class UserService {
         const { interests, ...userData } = createDTO;
         const provider = await this.redis.get(userData.email);
 
+        console.log("*********");
+        console.log(provider);
+        console.log("*********");
+
         if (!provider)
             throw new CustomError('로그인한 이메일과 일치하지 않습니다.', 400);
 
