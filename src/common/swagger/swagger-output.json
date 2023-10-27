@@ -1100,17 +1100,18 @@
                                                     "scrap": 0,
                                                     "relatedDepartment": "과련부처 : 통겨청",
                                                     "institution": "시행기관 : 한국산업인력공단",
-                                                    "image": "...",
-                                                    "examSchedules": {
-                                                        "id": "회차 id : adfhttwerqwrasxczx",
-                                                        "turn": "회차 : 2023년정기기사4회",
-                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
-                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
-                                                        "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
-                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
-                                                        "resultDay": "최종합격자 발표일 : 2023.11.15"
-                                                    }
+                                                    "mainImage": "...",
+                                                    "examSchedules": [
+                                                        {
+                                                            "turn": "회차 : 2023년정기기사4회",
+                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                        }
+                                                    ]
                                                 }
                                             ]
                                         }
@@ -1265,77 +1266,76 @@
                                                     "type": "string"
                                                 },
                                                 "examSchedules": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "string"
-                                                        },
-                                                        "turn": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtReceipt": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtDday": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtResultDay": {
-                                                            "type": "string"
-                                                        },
-                                                        "ptReceipt": {
-                                                            "type": "string"
-                                                        },
-                                                        "ptDday": {
-                                                            "type": "string"
-                                                        },
-                                                        "resultDay": {
-                                                            "type": "string"
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "turn": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtResultDay": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "resultDay": {
+                                                                "type": "string"
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         },
                                         {
-                                            "type": "array",
-                                            "itmes": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string"
-                                                    },
-                                                    "category": {
-                                                        "type": "string"
-                                                    },
-                                                    "title": {
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "type": "date"
-                                                    },
-                                                    "view": {
-                                                        "type": "number"
-                                                    },
-                                                    "likeCount": {
-                                                        "type": "number"
-                                                    },
-                                                    "commentCount": {
-                                                        "type": "number"
-                                                    },
-                                                    "user": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "user": {
-                                                                    "id": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "nickname": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "profileImage": {
-                                                                        "type": "string"
-                                                                    }
-                                                                }
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "date"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "likeCount": {
+                                                    "type": "number"
+                                                },
+                                                "commentCount": {
+                                                    "type": "number"
+                                                },
+                                                "user": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "nickname": {
+                                                                "type": "string"
+                                                            },
+                                                            "profileImage": {
+                                                                "type": "string"
                                                             }
                                                         }
                                                     }
@@ -2232,6 +2232,7 @@
                                                 "engTitle": "자격증 영어명 : Engineer Energy Management or null",
                                                 "relatedDepartment": "과련부처 : 통겨청",
                                                 "institution": "시행기관 : 한국산업인력공단",
+                                                "mainImage": "...",
                                                 "examSchedules": [
                                                     {
                                                         "id": "회차 id : adfhttwerqwrasxczx",
@@ -2452,6 +2453,9 @@
                                                     "type": "string"
                                                 },
                                                 "institution": {
+                                                    "type": "string"
+                                                },
+                                                "mainImage": {
                                                     "type": "string"
                                                 },
                                                 "examSchedules": {
