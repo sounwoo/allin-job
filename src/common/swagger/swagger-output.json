@@ -2516,6 +2516,108 @@
                 "description": "소셜 로그인 ( google 또는 kakao)"
             }
         },
+        "/login/socialLogin": {
+            "get": {
+                "tags": ["Auth"],
+                "summary": "소셜로그인하기",
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "google"
+                        },
+                        "description": "provider (kakao, google)"
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "asdwwfwqf12fwqfqwf2112"
+                        },
+                        "description": "accessToken"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "member": {
+                                        "summary": "회원인 경우",
+                                        "value": {
+                                            "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                        }
+                                    },
+                                    "non-member": {
+                                        "summary": "비회원인 경우",
+                                        "value": {
+                                            "data": false
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "TypeError": {
+                                        "summary": "타입 에러인 경우",
+                                        "value": {
+                                            "error": {
+                                                "provider": "provider must be a string",
+                                                "token": "token must be a string"
+                                            }
+                                        }
+                                    },
+                                    "invalidToken": {
+                                        "summary": "accessToken이 유효하지 않은 경우",
+                                        "value": {
+                                            "error": "엑세스 토큰이 유효하지 않습니다"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "tags": ["Auth"],

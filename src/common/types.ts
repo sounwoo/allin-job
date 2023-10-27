@@ -6,8 +6,13 @@ export type email = {
     email: CreateUserDTO['email'];
 };
 
+export type providerTokenType = {
+    provider: string;
+    token: string;
+};
+
 export type idType = {
-    id: string;
+    id: User['id'];
 };
 
 export type phoneType = {

@@ -28,3 +28,9 @@ export interface IAuthValidateUser {
     req: Request;
     res: Response;
 }
+
+export interface ISocialLogin {
+    provider: string;
+    token: string;
+    res: Response;
+}

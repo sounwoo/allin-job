@@ -4,11 +4,12 @@ import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { validateDTO } from '../../common/validator/validateDTO';
 import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
-import { idType } from '../../common/types';
+import { idType, providerTokenType } from '../../common/types';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import RefreshGuard from '../../middleware/auth.guard/refresh.guard';
+import Validate from '../../common/validator/validateDTO';
 
 class AuthController {
     router = Router();
@@ -39,6 +40,20 @@ class AuthController {
             RefreshGuard.handle,
             asyncHandler(this.restoreAccessToken.bind(this)),
         );
+
+        this.router.get(
+            '/socialLogin',
+            Validate.socialLogin,
+            asyncHandler(this.socialLogin.bind(this)),
+        );
+    }
+
+    async socialLogin(req: Request, res: Response) {
+        const { provider, token } = req.query as providerTokenType;
+
+        res.status(200).json({
+            data: await this.authService.socialLogin({ provider, token, res }),
+        });
     }
 
     async socialCallback(req: Request, res: Response) {
