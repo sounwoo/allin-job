@@ -96,6 +96,8 @@ export class CrawlingService {
         const userKeyword = await this.userService.findUserKeyword({
             ...data,
         });
+        if (!userKeyword) return [];
+
         const obj = {
             competition: 'interests',
             outside: 'field',

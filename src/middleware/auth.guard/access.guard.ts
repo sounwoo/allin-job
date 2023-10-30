@@ -16,6 +16,9 @@ class AccessGuard {
     async handle(req: Request, _: Response, next: NextFunction) {
         const { authorization } = req.headers as authorization;
 
+        if (!authorization)
+            throw new CustomError('엑세스 토큰이 존재하지 않습니다.', 401);
+
         const [tokenFormat, accessToken] =
             authorization && authorization.split(' ');
 
