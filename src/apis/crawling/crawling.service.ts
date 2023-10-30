@@ -16,11 +16,7 @@ import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
-import {
-    languageExamDate,
-    languageName,
-    languageOpenDate,
-} from '../../common/util/languageData';
+import { languageData } from '../../common/util/languageData';
 
 @Service()
 export class CrawlingService {
@@ -75,9 +71,11 @@ export class CrawlingService {
                           return {
                               id: el._id,
                               ...(path === 'language' && {
-                                  ...languageName(el._source.test),
-                                  ...languageExamDate(el._source.Dday),
-                                  ...languageOpenDate(el._source.date),
+                                  ...languageData(
+                                      el._source.test,
+                                      el._source.Dday,
+                                      el._source.date,
+                                  ),
                                   homePage: el._source.homePage,
                               }),
                               ...(path !== 'language' && {
