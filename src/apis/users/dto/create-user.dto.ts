@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { IsEmail, IsString, Length, Matches } from 'class-validator';
 
 export interface Interests {
@@ -7,6 +8,9 @@ export interface Interests {
 export class CreateUserDTO {
     @IsEmail()
     email: string;
+
+    @IsString()
+    provider: User['provider'];
 
     @IsString()
     @Length(2, 5)
@@ -31,6 +35,7 @@ export class CreateUserDTO {
 
     constructor(data: CreateUserDTO) {
         this.email = data.email;
+        this.provider = data.provider;
         this.name = data.name;
         this.nickname = data.nickname;
         this.phone = data.phone;

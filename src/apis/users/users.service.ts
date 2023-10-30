@@ -169,16 +169,13 @@ export class UserService {
 
     async createUser({ createDTO, qqq }: IUserCreateDTO): Promise<User['id']> {
         const { interests, ...userData } = createDTO;
-        const provider = await this.redis.get(userData.email);
 
-        if (!provider)
-            throw new CustomError('로그인한 이메일과 일치하지 않습니다.', 400);
+        await this.isNickname(userData.nickname);
 
         return await this.prisma.$transaction(async (prisma) => {
             const user = await prisma.user.create({
                 data: {
                     ...userData,
-                    provider: provider as Provider,
                 },
             });
 
