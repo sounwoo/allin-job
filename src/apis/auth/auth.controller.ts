@@ -41,7 +41,7 @@ class AuthController {
             asyncHandler(this.restoreAccessToken.bind(this)),
         );
 
-        this.router.get(
+        this.router.post(
             '/socialLogin',
             Validate.socialLogin,
             asyncHandler(this.socialLogin.bind(this)),
@@ -49,7 +49,7 @@ class AuthController {
     }
 
     async socialLogin(req: Request, res: Response) {
-        const { provider, token } = req.query as providerTokenType;
+        const { provider, token } = req.body as providerTokenType;
 
         res.status(200).json({
             data: await this.authService.socialLogin({ provider, token, res }),

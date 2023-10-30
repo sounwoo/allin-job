@@ -32,10 +32,8 @@ export class AuthService {
 
         const isUser = await this.userService.findOneUserByEmail(email);
 
-        if (!isUser) {
-            await this.redis.set(email, provider, 'EX', 3600);
-            return email;
-        } else {
+        if (!isUser) return email;
+        else {
             this.setRefreshToken({ id: isUser.id, res });
             return this.getAccessToken({ id: isUser.id });
         }

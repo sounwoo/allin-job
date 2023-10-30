@@ -387,6 +387,10 @@
                                         "type": "string",
                                         "example": "abc@abc.com"
                                     },
+                                    "provider": {
+                                        "type": "string",
+                                        "example": "google"
+                                    },
                                     "name": {
                                         "type": "string",
                                         "example": "홍길동"
@@ -522,7 +526,7 @@
                                     "TypeError": {
                                         "summary": "타입이 일치하지 않는 경우",
                                         "value": {
-                                            "data": {
+                                            "error": {
                                                 "email": "email must be an email",
                                                 "provider": "provider must be a string",
                                                 "name": "name must be a string",
@@ -538,7 +542,13 @@
                                     "NoLogin": {
                                         "summary": "소셜로그인한 이메일과 일치하지 않는 경우",
                                         "value": {
-                                            "data": "로그인한 이메일과 일치하지 않습니다."
+                                            "error": "로그인한 이메일과 일치하지 않습니다."
+                                        }
+                                    },
+                                    "EmailError": {
+                                        "summary": "이메일이 중복된 경우",
+                                        "value": {
+                                            "error": "이미 사용중인 닉네임입니다"
                                         }
                                     }
                                 },
@@ -2521,29 +2531,29 @@
             }
         },
         "/login/socialLogin": {
-            "get": {
+            "post": {
                 "tags": ["Auth"],
                 "summary": "소셜로그인하기",
-                "parameters": [
-                    {
-                        "name": "provider",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "example": "google"
-                        },
-                        "description": "provider (kakao, google)"
-                    },
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "example": "asdwwfwqf12fwqfqwf2112"
-                        },
-                        "description": "accessToken"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "provider": {
+                                        "type": "string",
+                                        "example": "google"
+                                    },
+                                    "token": {
+                                        "type": "string",
+                                        "example": "askjfb1f12jjodsnbovjoqe2e"
+                                    }
+                                }
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "content": {
@@ -2558,7 +2568,7 @@
                                     "non-member": {
                                         "summary": "비회원인 경우",
                                         "value": {
-                                            "data": false
+                                            "data": "abc@abc.com"
                                         }
                                     }
                                 },
@@ -2568,7 +2578,7 @@
                                             "type": "string"
                                         },
                                         {
-                                            "type": "boolean"
+                                            "type": "string"
                                         }
                                     ]
                                 }

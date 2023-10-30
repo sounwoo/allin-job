@@ -164,7 +164,7 @@ class Validate {
     }
 
     async socialLogin(req: Request, _: Response, next: NextFunction) {
-        const { provider, token } = req.query as providerTokenType;
+        const { provider, token } = req.body as providerTokenType;
         await this.errors(new SocialLoginDTO({ provider, token }));
 
         next();
