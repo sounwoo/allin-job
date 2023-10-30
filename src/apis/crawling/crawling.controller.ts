@@ -52,7 +52,27 @@ class CrawlingController {
         this.router.get('/data', asyncHandler(this.crawling.bind(this)));
         this.router.get('/main/:path', asyncHandler(this.bestData.bind(this)));
         this.router.get(
-            '/myKeywordCrawling',
+            '/myKeywordCrawling/competition',
+            AccessGuard.handle,
+            asyncHandler(this.myKeywordCrawling.bind(this)),
+        );
+        this.router.get(
+            '/myKeywordCrawling/outside',
+            AccessGuard.handle,
+            asyncHandler(this.myKeywordCrawling.bind(this)),
+        );
+        this.router.get(
+            '/myKeywordCrawling/intern',
+            AccessGuard.handle,
+            asyncHandler(this.myKeywordCrawling.bind(this)),
+        );
+        this.router.get(
+            '/myKeywordCrawling/language',
+            AccessGuard.handle,
+            asyncHandler(this.myKeywordCrawling.bind(this)),
+        );
+        this.router.get(
+            '/myKeywordCrawling/qnet',
             AccessGuard.handle,
             asyncHandler(this.myKeywordCrawling.bind(this)),
         );
