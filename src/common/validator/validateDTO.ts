@@ -13,6 +13,8 @@ import {
     categoryType,
     nicknameType,
     providerTokenType,
+    pathIdtype,
+    pathPageCountType,
 } from '../types';
 import { ToggleLikeCommunityDTO } from '../../apis/community/dto/create.community.toggleLike';
 import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
@@ -26,6 +28,7 @@ import { ValidateTokenDTO } from '../util/sms/dto/validateToken.dto';
 import { ScrappingDTO } from '../../apis/users/dto/scrapping.dto';
 import { isNicknameDTO } from '../../apis/users/dto/isNickname.dto';
 import { SocialLoginDTO } from '../../apis/auth/dto/socialLogin.dto';
+import { GetUserScrapDTO } from '../../apis/users/dto/getUserScrap.dto';
 
 class Validate {
     constructor() {
@@ -54,6 +57,8 @@ class Validate {
         this.updateProfile = asyncHandler(this.updateProfile.bind(this));
         this.isNickname = asyncHandler(this.isNickname.bind(this));
         this.socialLogin = asyncHandler(this.socialLogin.bind(this));
+        this.scrapping = asyncHandler(this.scrapping.bind(this));
+        this.getUserScrap = asyncHandler(this.getUserScrap.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -166,6 +171,20 @@ class Validate {
     async socialLogin(req: Request, _: Response, next: NextFunction) {
         const { provider, token } = req.body as providerTokenType;
         await this.errors(new SocialLoginDTO({ provider, token }));
+
+        next();
+    }
+
+    async scrapping(req: Request, _: Response, next: NextFunction) {
+        const { path, scrapId } = req.body as pathIdtype;
+        await this.errors(new ScrappingDTO({ path, scrapId }));
+
+        next();
+    }
+
+    async getUserScrap(req: Request, _: Response, next: NextFunction) {
+        const { ...data } = req.query as pathPageCountType;
+        await this.errors(new GetUserScrapDTO({ ...data }));
 
         next();
     }

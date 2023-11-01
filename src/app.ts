@@ -13,6 +13,7 @@ import swaggerUi from 'swagger-ui-express';
 import errorHandler from './common/error/error.handler';
 
 const app = express();
+
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 app.use(express.urlencoded({ extended: true }));

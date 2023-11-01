@@ -31,14 +31,7 @@ export const scrapData = (path: Path['path'] | 'language') => {
         language: {
             id: 'languageId',
             column: 'scrapLanguage',
-            info: [
-                // (mainImage)
-                'test',
-                'turn',
-                'Dday',
-                'date',
-                'scrap',
-            ],
+            info: ['mainImage', 'test', 'turn', 'Dday', 'date', 'scrap'],
         },
         qnet: {
             id: 'qNetId',

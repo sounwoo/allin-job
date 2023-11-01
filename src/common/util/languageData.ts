@@ -7,6 +7,7 @@ export const languageData = (test: testType, Dday: string, date: string) => {
         toeicBR: 'TOEIC (Bridge)',
         toeicSW: 'TOEIC (Speaking, Writing)',
         toeicWT: 'TOEIC (Writing)',
+        toeicST: 'TOEIC (Speaking)',
         ch: 'TSC 중국어 말하기 시험',
         jp: 'JPT',
         jpSP: 'SJPT 일본어 말하기 시험',

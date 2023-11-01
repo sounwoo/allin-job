@@ -1,4 +1,4 @@
-import { Provider, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
     IUserCreateDTO,
@@ -11,6 +11,13 @@ import { Service } from 'typedi';
 import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
 import { ElasitcClient } from '../../database/elasticConfig';
 import { SaveInterestKeywordDTO } from './dto/saveInterestKeyword.dto';
+import { ScrappingDTO } from './dto/scrapping.dto';
+import { scrapData } from '../../common/util/scrap_data';
+import { splitDate } from '../../common/util/splitDate';
+import { GetUserScrapDTO } from './dto/getUserScrap.dto';
+import { ScrapType } from './types/scrap.type';
+import { idType } from '../../common/types';
+import { languageData } from '../../common/util/languageData';
 
 @Service()
 export class UserService {
@@ -167,7 +174,7 @@ export class UserService {
         });
     }
 
-    async createUser({ createDTO, qqq }: IUserCreateDTO): Promise<User['id']> {
+    async createUser({ createDTO }: IUserCreateDTO): Promise<User['id']> {
         const { interests, ...userData } = createDTO;
 
         await this.isNickname(userData.nickname);
@@ -226,5 +233,137 @@ export class UserService {
                 },
             },
         });
+    }
+
+    async scrapping({
+        id,
+        path,
+        scrapId,
+    }: idType & ScrappingDTO): Promise<boolean> {
+        await this.isUserByID(id);
+
+        const chkScrap = await this.prisma.user.findFirst({
+            include: {
+                [scrapData(path).column]: {
+                    where: {
+                        AND: [{ userId: id, [scrapData(path).id]: scrapId }],
+                    },
+                },
+            },
+        });
+
+        const plusMinus = (await chkScrap?.[scrapData(path).column].length)
+            ? 'ctx._source.scrap--'
+            : 'ctx._source.scrap++';
+
+        await this.elastic
+            .update(
+                {
+                    index: path,
+                    id: scrapId,
+                    body: {
+                        script: {
+                            source: plusMinus,
+                        },
+                        _source: true,
+                    },
+                },
+                { ignore: [404] },
+            )
+            .then((el) =>
+                el.body.error ? el.meta.context : el.body.get._source,
+            );
+
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                [scrapData(path).column]: chkScrap?.[scrapData(path).column]
+                    .length
+                    ? {
+                          deleteMany: { [scrapData(path).id]: scrapId },
+                      }
+                    : { create: { [scrapData(path).id]: scrapId } },
+            },
+            include: {
+                [scrapData(path).column]: true,
+            },
+        });
+
+        return !(await chkScrap?.[scrapData(path).column].length);
+    }
+
+    async getUserScrap({
+        id,
+        ...data
+    }: GetUserScrapDTO & { id: string }): Promise<ScrapType> {
+        const { path, count, page } = data;
+        await this.isUserByID(id);
+
+        const _id = await this.prisma.user
+            .findUnique({
+                where: { id },
+                include: {
+                    [scrapData(path).column]: true,
+                },
+            })
+            .then((data) =>
+                data![scrapData(path).column].map(
+                    (el: any) => el[scrapData(path).id],
+                ),
+            );
+
+        return await this.elastic
+            .search({
+                index: path,
+                _source_includes: scrapData(path).info,
+                body: {
+                    query: {
+                        terms: {
+                            _id,
+                        },
+                    },
+                    size: page && 4,
+                    from: page && (+page - 1 || 0) * 4,
+                },
+            })
+            .then((data) => {
+                return count
+                    ? data.body.hits.total.value
+                    : data.body.hits.hits.length
+                    ? data.body.hits.hits.map((el: any) => {
+                          languageData;
+                          let date;
+                          if (path === 'language') {
+                              return {
+                                  examDate: languageData(
+                                      el._source.test,
+                                      el._source.Dday,
+                                      el._source.date,
+                                  ).examDate,
+                                  closeDate: languageData(
+                                      el._source.test,
+                                      el._source.Dday,
+                                      el._source.date,
+                                  ).closeDate,
+                                  id: el._id,
+                                  ...el._source,
+                              };
+                          }
+                          if (path === 'qnet') {
+                              const schedule = el._source.examSchedules[0];
+                              date =
+                                  splitDate(schedule.wtReceipt) ??
+                                  splitDate(schedule.ptReceipt);
+                              delete el._source.examSchedules;
+                          } else
+                              date = splitDate(el._source.date).split('(')[0];
+                          return {
+                              id: el._id,
+                              ...el._source,
+                              date,
+                          };
+                      })
+                    : null;
+            });
     }
 }

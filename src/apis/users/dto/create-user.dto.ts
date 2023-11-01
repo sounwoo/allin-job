@@ -7,7 +7,7 @@ export interface Interests {
 
 export class CreateUserDTO {
     @IsEmail()
-    email: string;
+    email: User['email'];
 
     @IsString()
     provider: User['provider'];
@@ -15,21 +15,21 @@ export class CreateUserDTO {
     @IsString()
     @Length(2, 5)
     @Matches(/^[a-zA-Z가-힣]+$/)
-    name: string;
+    name: User['name'];
 
     @Length(2, 10)
     @Matches(/^[a-zA-Z가-힣]+$/)
-    nickname: string;
+    nickname: User['nickname'];
 
     @IsString()
     @Matches(/^010[0-9]{8}$/)
-    phone: string;
+    phone: User['phone'];
 
     @IsString()
-    profileImage: string;
+    profileImage: User['profileImage'];
 
     @IsString()
-    major: string;
+    major: User['major'];
 
     interests: Interests[];
 
