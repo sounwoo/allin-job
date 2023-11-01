@@ -13,22 +13,7 @@ import swaggerUi from 'swagger-ui-express';
 import errorHandler from './common/error/error.handler';
 
 const app = express();
-const corsOptions = {
-    origin: function (origin: any, callback: any) {
-        if (
-            origin === 'http://localhost:5173' ||
-            origin === 'https://quiet-chebakia-eb017d.netlify.app'
-        ) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
-};
-
-app.use(cors(corsOptions));
-
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
