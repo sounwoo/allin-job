@@ -1,16 +1,21 @@
-import { IsString } from 'class-validator';
-import { User } from '@prisma/client';
+import { IsOptional, IsString } from 'class-validator';
 import { Path } from '../../../common/crawiling/interface';
 
 export class GetUserScrapDTO {
     @IsString()
-    id: User['id'];
-
-    @IsString()
     path: Path['path'] | 'language';
 
+    @IsOptional()
+    @IsString()
+    count?: string;
+
+    @IsOptional()
+    @IsString()
+    page?: string;
+
     constructor(data: GetUserScrapDTO) {
-        this.id = data.id;
         this.path = data.path;
+        this.count = data.count;
+        this.page = data.page;
     }
 }

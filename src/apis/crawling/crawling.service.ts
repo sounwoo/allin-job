@@ -145,6 +145,7 @@ export class CrawlingService {
     async createLanguageData({
         classify,
         test,
+        mainImage,
         homePage,
         dataObj,
     }: languagePath): Promise<boolean> {
@@ -153,6 +154,7 @@ export class CrawlingService {
             body: {
                 test,
                 classify,
+                mainImage,
                 homePage,
                 scrap: 0,
                 ...dataObj,

@@ -136,11 +136,32 @@ export class PathCrawling {
                     }
                 });
             let classify: string = '영어';
-            if (test.includes('ch')) classify = '중국어';
-            else if (test.includes('jp')) classify = '일본어';
+            let mainImage = '';
+
+            if (test.includes('ch')) {
+                classify = '중국어';
+                mainImage = process.env.CH_IMAGE as string;
+            } else if (test.includes('jp')) {
+                classify = '일본어';
+                mainImage =
+                    test === 'jp'
+                        ? (process.env.JP_IMAGE as string)
+                        : (process.env.JPSP_IMAGE as string);
+            } else {
+                mainImage =
+                    test === 'toeic'
+                        ? (process.env.TOEIC_IMAGE as string)
+                        : test === 'toeicBR'
+                        ? (process.env.TOEICBR_IMAGE as string)
+                        : test === 'toeicSW' || test === 'toeicST'
+                        ? (process.env.TOEICSW_IMAGE as string)
+                        : (process.env.TOEICST_IMAGE as string);
+            }
+
             this.crawlingServcie.createLanguageData({
                 test,
                 classify,
+                mainImage,
                 homePage: url,
                 dataObj,
             });

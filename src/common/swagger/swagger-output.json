@@ -1028,6 +1028,471 @@
                 }
             }
         },
+        "/user/scrapping": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "스크랩하기",
+                "description": "path: competition, outside, intern, qnet, language",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "type": "string",
+                                        "example": "competition"
+                                    },
+                                    "scrapId": {
+                                        "type": "string",
+                                        "example": "jaFzhIsBq7up_0AI5Ttwd2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "스크랩하기",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "스크랩하기": {
+                                        "value": {
+                                            "data": true
+                                        }
+                                    },
+                                    "스크랩 취소하기": {
+                                        "value": {
+                                            "data": false
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": {
+                                        "path": "path must be a string",
+                                        "scrapId": "scrapId must be a string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getUserScrap/": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "나의 스크랩 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "path",
+                            "example": "outside"
+                        },
+                        "description": "데이터 조회 outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, language: 언어시험"
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "description": "데이터 개수 조회"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "page",
+                            "example": "1"
+                        },
+                        "description": "페이지 네이션"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "outsideData": {
+                                        "summary": "대외활동 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "대외활동 id : asdasda",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집",
+                                                    "view": 100,
+                                                    "scrap": 0,
+                                                    "mainImage": "이미지 url",
+                                                    "institution": "주최기관 : 대기업",
+                                                    "date": "접수기간 : 23.9.12 ~ 23.9.18"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "internData": {
+                                        "summary": "인턴 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "인턴 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "scrap": 0,
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "institution": "주체 기관 : 대기업",
+                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                    "location": "지역 :서울"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "competitionData": {
+                                        "summary": "공모전 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "공모전 id : adfhttwerqwrasxczx",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목",
+                                                    "view": 100,
+                                                    "scrap": 0,
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "institution": "주체 기관 : 공공기관/공기업",
+                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "qnetData": {
+                                        "summary": "자격증 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "자격증 id : adfhttwerqwrasxczx",
+                                                    "title": "자격증명 : 에너지산업기사",
+                                                    "view": 100,
+                                                    "scrap": 0,
+                                                    "relatedDepartment": "과련부처 : 통겨청",
+                                                    "institution": "시행기관 : 한국산업인력공단",
+                                                    "mainImage": "...",
+                                                    "examSchedules": [
+                                                        {
+                                                            "turn": "회차 : 2023년정기기사4회",
+                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
+                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
+                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "communituData": {
+                                        "summary": "취중job담 데이터",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": "커뮤니티 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                    "category": "경로 : 공모전/대외활동",
+                                                    "title": "제목 : 공모전 활동",
+                                                    "date": "등록 시간 : 2023-09-16",
+                                                    "view": 0,
+                                                    "likeCount": 0,
+                                                    "commentCount": 0,
+                                                    "user": {
+                                                        "id": "e03c1b88-0b4f-46fb-90a8-ccb349c044d7",
+                                                        "nickname": "닉네임",
+                                                        "profileImage": "profile url"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "institution": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "institution": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "institution": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "hompage": {
+                                                    "type": "string"
+                                                },
+                                                "turn": {
+                                                    "type": "string | null"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "resultDay": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "engTitle": {
+                                                    "type": "string | null"
+                                                },
+                                                "relatedDepartment": {
+                                                    "type": "string"
+                                                },
+                                                "institution": {
+                                                    "type": "string"
+                                                },
+                                                "image": {
+                                                    "type": "string"
+                                                },
+                                                "examSchedules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "turn": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "wtResultDay": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptReceipt": {
+                                                                "type": "string"
+                                                            },
+                                                            "ptDday": {
+                                                                "type": "string"
+                                                            },
+                                                            "resultDay": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "date"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "likeCount": {
+                                                    "type": "number"
+                                                },
+                                                "commentCount": {
+                                                    "type": "number"
+                                                },
+                                                "user": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "nickname": {
+                                                                "type": "string"
+                                                            },
+                                                            "profileImage": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/crawling/main/{path}": {
             "get": {
                 "tags": ["Crawling"],
@@ -1885,7 +2350,7 @@
                             "format": "test",
                             "example": "toeic"
                         },
-                        "description": "언어별 시험종목 조회 (toeic,toeicBR,toeicSW,toeicWT,ch,jp,jpSP)"
+                        "description": "언어별 시험종목 조회 (toeic, toeicBR, toeicSW, toeicST, toeicWT, ch, jp, jpSP)"
                     }
                 ],
                 "responses": {

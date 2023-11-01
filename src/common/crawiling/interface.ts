@@ -55,6 +55,7 @@ export type testType =
     | 'toeicBR'
     | 'toeicSW'
     | 'toeicWT'
+    | 'toeicST'
     | 'ch'
     | 'jp'
     | 'jpSP';
@@ -65,7 +66,7 @@ export type createPaths = {
 };
 
 export interface languagePath
-    extends Pick<LanguageType, 'test' | 'classify' | 'homePage'> {
+    extends Pick<LanguageType, 'test' | 'classify' | 'homePage' | 'mainImage'> {
     dataObj: Pick<LanguageType, 'turn' | 'Dday' | 'resultDay' | 'date'>;
 }
 

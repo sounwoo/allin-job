@@ -2,6 +2,7 @@ export interface LanguageType {
     id: string;
     test: string;
     classify: string;
+    mainImage: string;
     homePage: string;
     turn?: string | undefined;
     Dday: string;

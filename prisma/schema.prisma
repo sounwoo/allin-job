@@ -12,7 +12,6 @@ datasource db {
 
 enum Provider {
   kakao
-  naver
   google
 }
 
@@ -23,19 +22,24 @@ enum Classify {
 }
 
 model User {
-  id            String          @id @unique @default(uuid())
-  email         String          @unique
-  provider      Provider
-  name          String          @db.VarChar(5)
-  nickname      String          @unique @db.VarChar(10)
-  phone         String          @db.VarChar(13)
-  profileImage  String
-  major         String
-  interests     UserInterest[]
-  communities   Community[]
-  comments      Comment[]
-  communityLike CommunityLike[]
-  commentLike   CommentLike[]
+  id               String             @id @unique @default(uuid())
+  email            String             @unique
+  provider         Provider
+  name             String             @db.VarChar(5)
+  nickname         String             @unique @db.VarChar(10)
+  phone            String             @db.VarChar(13)
+  profileImage     String
+  major            String
+  interests        UserInterest[]
+  communities      Community[]
+  comments         Comment[]
+  communityLike    CommunityLike[]
+  commentLike      CommentLike[]
+  scrapCompetition ScrapCompetition[]
+  scrapOutside     ScrapOutside[]
+  scrapLanguage    ScrapLanguage[]
+  scrapQNet        ScrapQNet[]
+  scrapIntern      ScrapIntern[]
 }
 
 model Community {
@@ -102,6 +106,46 @@ model UserInterest {
   interestId String
   keyword    Keyword  @relation(fields: [keywordId], references: [id])
   keywordId  String
+}
+
+model ScrapCompetition {
+  id            String   @id @unique @default(uuid())
+  createdAt     DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  competitionId String
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+}
+
+model ScrapOutside {
+  id        String   @id @unique @default(uuid())
+  createdAt DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  outsideId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model ScrapLanguage {
+  id         String   @id @unique @default(uuid())
+  createdAt  DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  languageId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+}
+
+model ScrapQNet {
+  id        String   @id @unique @default(uuid())
+  createdAt DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  qNetId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model ScrapIntern {
+  id        String   @id @unique @default(uuid())
+  createdAt DateTime @default(dbgenerated("NOW()")) @db.DateTime
+  internId  String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 // 대용량 데이터를 생각해서 -> 엘라스틱 서치 -> 이동 완료

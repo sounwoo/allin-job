@@ -15,6 +15,12 @@ export type idType = {
     id: User['id'];
 };
 
+export type pathPageCountType = {
+    path: Path['path'] | 'language';
+    count?: string;
+    page?: string;
+};
+
 export type phoneType = {
     phone: CreateUserDTO['phone'];
 };

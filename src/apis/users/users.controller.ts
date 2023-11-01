@@ -6,6 +6,8 @@ import {
     findOneUserByIDType,
     idType,
     nicknameType,
+    pathIdtype,
+    pathPageCountType,
 } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
@@ -66,6 +68,20 @@ class UserController {
             AccessGuard.handle,
             asyncHandler(this.updateProfile.bind(this)),
         );
+
+        this.router.post(
+            '/scrapping',
+            Validate.scrapping,
+            AccessGuard.handle,
+            asyncHandler(this.scrapping.bind(this)),
+        );
+
+        this.router.get(
+            '/getUserScrap',
+            Validate.getUserScrap,
+            AccessGuard.handle,
+            asyncHandler(this.getUserScrap.bind(this)),
+        );
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -97,7 +113,6 @@ class UserController {
 
     async createUser(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-
         res.status(200).json({
             data: await this.userService.createUser({
                 createDTO: req.body,
@@ -128,6 +143,28 @@ class UserController {
             data: await this.userService.updateProfile({
                 id,
                 updateDTO: req.body,
+            }),
+        });
+    }
+
+    async scrapping(req: Request, res: Response) {
+        // #swagger.tags = ['User']
+        const { id } = req.user as idType;
+        const { path, scrapId } = req.body as pathIdtype;
+
+        res.status(200).json({
+            data: await this.userService.scrapping({ id, path, scrapId }),
+        });
+    }
+
+    async getUserScrap(req: Request, res: Response) {
+        // #swagger.tags = ['User']
+        const { id } = req.user as idType;
+        const { ...data } = req.query as pathPageCountType;
+        res.status(200).json({
+            data: await this.userService.getUserScrap({
+                id,
+                ...data,
             }),
         });
     }
