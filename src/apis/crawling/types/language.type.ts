@@ -4,11 +4,9 @@ export interface LanguageType {
     classify: string;
     mainImage: string;
     homePage: string;
-    turn?: string | undefined;
-    Dday: string;
-    resultDay: string;
-    date: string;
-    detail: string;
+    examDate: string;
+    openDate: string;
+    closeDate: string;
     scrap: number;
 }
 

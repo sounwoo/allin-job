@@ -17,7 +17,7 @@ import { splitDate } from '../../common/util/splitDate';
 import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
-import { languageData } from '../../common/util/languageData';
+import { languageTitle } from '../../common/util/languageData';
 
 @Service()
 export class UserService {
@@ -331,22 +331,13 @@ export class UserService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
-                          languageData;
                           let date;
                           if (path === 'language') {
+                              const { classify, test, ...data } = el._source;
                               return {
-                                  examDate: languageData(
-                                      el._source.test,
-                                      el._source.Dday,
-                                      el._source.date,
-                                  ).examDate,
-                                  closeDate: languageData(
-                                      el._source.test,
-                                      el._source.Dday,
-                                      el._source.date,
-                                  ).closeDate,
                                   id: el._id,
-                                  ...el._source,
+                                  data,
+                                  title: languageTitle(test),
                               };
                           }
                           if (path === 'qnet') {

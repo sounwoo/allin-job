@@ -1,4 +1,5 @@
 export const formDate = (date: string): string => {
+    console.log(date);
     const timeStr = date.split(')')[1];
     const dateStr = date.split(')')[0].split('(')[0];
 

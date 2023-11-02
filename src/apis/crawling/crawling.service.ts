@@ -16,7 +16,7 @@ import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
-import { languageData } from '../../common/util/languageData';
+import { languageData, languageTitle } from '../../common/util/languageData';
 
 @Service()
 export class CrawlingService {
@@ -28,7 +28,7 @@ export class CrawlingService {
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<findCrawling[]> {
-        const { path, page, classify, count, ..._data } = data;
+        const { path, page, count, ..._data } = data;
 
         const datas: { [key: string]: string } = { ..._data };
         const must: object[] = [];
@@ -46,7 +46,7 @@ export class CrawlingService {
                 });
             }
         }
-
+        console.log(must);
         return this.elastic
             .search({
                 index: `${path}*`,
@@ -68,25 +68,21 @@ export class CrawlingService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
+                          const test = el._source.test;
+                          delete el._source.test;
+                          console.log(el);
                           return {
                               id: el._id,
+                              ...el._source,
                               ...(path === 'language' && {
-                                  ...languageData(
-                                      el._source.test,
-                                      el._source.Dday,
-                                      el._source.date,
-                                  ),
-                                  homePage: el._source.homePage,
-                              }),
-                              ...(path !== 'language' && {
-                                  ...el._source,
+                                  title: languageTitle(test),
                               }),
                               ...(path === 'qnet' && {
                                   ...examSchedulesSort(el),
                               }),
                           };
                       })
-                    : null;
+                    : [];
             });
     }
 
@@ -142,23 +138,10 @@ export class CrawlingService {
             });
     }
 
-    async createLanguageData({
-        classify,
-        test,
-        mainImage,
-        homePage,
-        dataObj,
-    }: languagePath): Promise<boolean> {
+    async createLanguageData({ ...data }: languagePath): Promise<boolean> {
         await this.elastic.index({
             index: 'language',
-            body: {
-                test,
-                classify,
-                mainImage,
-                homePage,
-                scrap: 0,
-                ...dataObj,
-            },
+            body: { ...data },
         });
         return true;
     }
@@ -187,13 +170,13 @@ export class CrawlingService {
         return true;
     }
 
-    async createQNetData({ data, categoryObj }: createQNet): Promise<boolean> {
+    async createQNetData({
+        categoryObj,
+        ...data
+    }: createQNet): Promise<boolean> {
         await this.elastic.index({
             index: 'qnet',
-            body: {
-                ...data,
-                ...categoryObj,
-            },
+            body: { ...categoryObj, ...data },
         });
 
         return true;

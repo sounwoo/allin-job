@@ -16,8 +16,11 @@ export const cludes = (path: Path['path'] | 'language'): string[] => {
             'title',
         ],
         qnet: ['title', 'relatedDepartment', 'institution', 'examSchedules'],
-        language: ['test', 'Dday', 'date', 'homePage'],
+        language: ['test', 'examDate', 'closeDate'],
     };
 
-    return cludes[path as 'intern' | 'qnet'] || cludes['ousideOrCompetition'];
+    return (
+        cludes[path as 'intern' | 'qnet' | 'language'] ||
+        cludes['ousideOrCompetition']
+    );
 };

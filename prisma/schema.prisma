@@ -48,8 +48,8 @@ model Community {
   title           String          @db.VarChar(30)
   detail          String          @db.LongText
   view            Int             @default(0)
-  likeCount       Int             @default(0)
-  commentCount    Int             @default(0)
+  like            Int             @default(0)
+  comment         Int             @default(0)
   date            DateTime        @default(dbgenerated("NOW()")) @db.DateTime
   userId          String?
   user            User?           @relation(fields: [userId], references: [id])
@@ -60,7 +60,7 @@ model Community {
 model Comment {
   id          String        @id @unique @default(uuid())
   comment     String        @db.VarChar(100)
-  createAt    DateTime      @default(dbgenerated("NOW()")) @db.DateTime
+  date        DateTime      @default(dbgenerated("NOW()")) @db.DateTime
   userId      String?
   user        User?         @relation(fields: [userId], references: [id])
   communityId String?

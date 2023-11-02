@@ -55,8 +55,8 @@ export class CommunityService {
                 title: true,
                 date: true,
                 view: true,
-                likeCount: true,
-                commentCount: true,
+                like: true,
+                comment: true,
                 user: {
                     select: {
                         id: true,
@@ -81,13 +81,18 @@ export class CommunityService {
             include: {
                 user: true,
                 comments: {
-                    include: {
-                        user: true,
+                    select: {
+                        id: true,
+                        date: true,
+                        userId: true,
+                        comment: true,
                     },
                 },
+
                 communitiyLikes: {
-                    include: {
-                        user: true,
+                    select: {
+                        id: true,
+                        userId: true,
                     },
                 },
             },
@@ -107,9 +112,7 @@ export class CommunityService {
             .update({
                 where: { id: communityId },
                 data: {
-                    likeCount: likeCommunity
-                        ? { decrement: 1 }
-                        : { increment: 1 },
+                    like: likeCommunity ? { decrement: 1 } : { increment: 1 },
                     communitiyLikes: likeCommunity
                         ? { delete: { id: likeCommunity.id } }
                         : { create: { userId } },
@@ -136,7 +139,7 @@ export class CommunityService {
             .update({
                 where: { id: communityId },
                 data: {
-                    commentCount: { increment: 1 },
+                    comment: { increment: 1 },
                     comments: {
                         create: {
                             comment,
@@ -150,7 +153,7 @@ export class CommunityService {
                             user: true,
                         },
                         orderBy: {
-                            createAt: 'desc',
+                            date: 'desc',
                         },
                     },
                 },

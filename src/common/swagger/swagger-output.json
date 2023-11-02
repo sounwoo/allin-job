@@ -1844,16 +1844,6 @@
                 "summary": "대외활동 데이터 리스트 조회하기",
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "outside"
-                        },
-                        "description": "대외활동(outside)"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -2002,16 +1992,6 @@
                 "summary": "공모전 데이터 리스트 조회하기",
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "competition"
-                        },
-                        "description": "competition:공모전"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -2149,16 +2129,6 @@
                 "tags": ["Crawling"],
                 "summary": "인턴 데이터 리스트 조회하기",
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "intern"
-                        },
-                        "description": "intern:인턴"
-                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -2303,16 +2273,6 @@
                 "summary": "자격증 리스트 조회하기",
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "language"
-                        },
-                        "description": "language 데이터 조회"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -2436,16 +2396,6 @@
                 "tags": ["Crawling"],
                 "summary": "qnet 리스트 조회하기",
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "qnet"
-                        },
-                        "description": " qnet:자격증"
-                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -4264,7 +4214,7 @@
                                     },
                                     "noData": {
                                         "value": {
-                                            "data": "null"
+                                            "data": []
                                         }
                                     }
                                 },
@@ -4328,7 +4278,7 @@
                                             }
                                         },
                                         {
-                                            "type": "null"
+                                            "tpye": "array"
                                         }
                                     ]
                                 }
@@ -4396,7 +4346,7 @@
                                                     {
                                                         "id": "comments id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
                                                         "comment": "댓글 내용: 굳",
-                                                        "createAt": "댓글 생성 시간 : 2023-09-16",
+                                                        "date": "댓글 생성 시간 : 2023-09-16",
                                                         "userId": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc"
                                                     }
                                                 ],

@@ -6,17 +6,15 @@ import {
 import { LanguageType } from '../../apis/crawling/types/language.type';
 
 export interface createQNet {
-    data: {
-        detail: QnetType['detail'];
-        scheduleInfo: QnetType['scheduleInfo'];
-        title: QnetType['title'];
-        enTitle: QnetType['enTitle'];
-        relatedDepartment: QnetType['relatedDepartment'];
-        institution: QnetType['institution'];
-        scrap: QnetType['scrap'];
-        view: QnetType['view'];
-        examSchedules: ExamSchedules[];
-    };
+    detail: QnetType['detail'];
+    scheduleInfo: QnetType['scheduleInfo'];
+    title: QnetType['title'];
+    enTitle: QnetType['enTitle'];
+    relatedDepartment: QnetType['relatedDepartment'];
+    institution: QnetType['institution'];
+    scrap: QnetType['scrap'];
+    view: QnetType['view'];
+    examSchedules: ExamSchedules[];
     categoryObj: CategortObj;
 }
 
@@ -66,9 +64,17 @@ export type createPaths = {
 };
 
 export interface languagePath
-    extends Pick<LanguageType, 'test' | 'classify' | 'homePage' | 'mainImage'> {
-    dataObj: Pick<LanguageType, 'turn' | 'Dday' | 'resultDay' | 'date'>;
-}
+    extends Pick<
+        LanguageType,
+        | 'test'
+        | 'classify'
+        | 'homePage'
+        | 'mainImage'
+        | 'examDate'
+        | 'openDate'
+        | 'closeDate'
+        | 'scrap'
+    > {}
 
 export type itmeType = {
     jmCd: string;

@@ -1,8 +1,8 @@
 import { testType } from '../crawiling/interface';
 import { formDate } from './formDate';
 
-export const languageData = (test: testType, Dday: string, date: string) => {
-    const data = {
+export const languageTitle = (test: testType): string => {
+    const obj = {
         toeic: 'TOEIC',
         toeicBR: 'TOEIC (Bridge)',
         toeicSW: 'TOEIC (Speaking, Writing)',
@@ -12,7 +12,10 @@ export const languageData = (test: testType, Dday: string, date: string) => {
         jp: 'JPT',
         jpSP: 'SJPT 일본어 말하기 시험',
     };
+    return obj[test];
+};
 
+export const languageData = (Dday: string, date: string) => {
     const examDate = formDate(Dday);
 
     const openDate = formDate(
@@ -20,5 +23,5 @@ export const languageData = (test: testType, Dday: string, date: string) => {
     );
     const closeDate = formDate(date.split('특별추가')[0].split('~')[1]);
 
-    return { test: data[test], examDate, openDate, closeDate };
+    return { examDate, openDate, closeDate };
 };
