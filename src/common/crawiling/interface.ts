@@ -42,7 +42,7 @@ export type paths = {
 export type fidneCrawlingType = paths & { count: string };
 
 export type findeDetailType = {
-    path: Path['path'];
+    path: Path['path'] | 'language';
     id: string;
 };
 

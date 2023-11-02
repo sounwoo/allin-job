@@ -46,7 +46,7 @@ export class CrawlingService {
                 });
             }
         }
-        console.log(must);
+
         return this.elastic
             .search({
                 index: `${path}*`,
@@ -70,7 +70,7 @@ export class CrawlingService {
                     ? data.body.hits.hits.map((el: any) => {
                           const test = el._source.test;
                           delete el._source.test;
-                          console.log(el);
+
                           return {
                               id: el._id,
                               ...el._source,
@@ -114,6 +114,11 @@ export class CrawlingService {
         path,
         id,
     }: findeDetailType): Promise<findeDetailCrawling | null> {
+        if (path === 'language')
+            return this.elastic
+                .get({ index: path, id })
+                .then((el) => el.body._source);
+
         return this.elastic
             .update(
                 {
