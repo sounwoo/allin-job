@@ -1237,10 +1237,10 @@
                                                     "examSchedules": [
                                                         {
                                                             "turn": "회차 : 2023년정기기사4회",
-                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
                                                             "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                             "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
                                                             "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                             "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                         }
@@ -1409,7 +1409,7 @@
                                                             "turn": {
                                                                 "type": "string"
                                                             },
-                                                            "wtReceipt": {
+                                                            "wtPeriod": {
                                                                 "type": "string"
                                                             },
                                                             "wtDday": {
@@ -1418,7 +1418,7 @@
                                                             "wtResultDay": {
                                                                 "type": "string"
                                                             },
-                                                            "ptReceipt": {
+                                                            "ptPerid": {
                                                                 "type": "string"
                                                             },
                                                             "ptDday": {
@@ -1582,10 +1582,10 @@
                                                     "examSchedules": [
                                                         {
                                                             "turn": "회차 : 2023년정기기사4회",
-                                                            "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
                                                             "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                             "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                            "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
                                                             "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                             "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                         }
@@ -1754,7 +1754,7 @@
                                                             "turn": {
                                                                 "type": "string"
                                                             },
-                                                            "wtReceipt": {
+                                                            "wtPeriod": {
                                                                 "type": "string"
                                                             },
                                                             "wtDday": {
@@ -1763,7 +1763,7 @@
                                                             "wtResultDay": {
                                                                 "type": "string"
                                                             },
-                                                            "ptReceipt": {
+                                                            "ptPerid": {
                                                                 "type": "string"
                                                             },
                                                             "ptDday": {
@@ -2332,7 +2332,7 @@
                                             "data": [
                                                 {
                                                     "id": "언어별 id : adfhttwerqwrasxczx",
-                                                    "test": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
+                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
                                                     "examDate": "시험날짜 : 2023-11-19 09:20",
                                                     "openDate": "접수 시작 날짜 : 2023-10-02 10:00",
                                                     "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
@@ -2353,22 +2353,19 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "path": {
-                                                    "type": "string"
-                                                },
                                                 "hompage": {
                                                     "type": "string"
                                                 },
-                                                "turn": {
-                                                    "type": "string | null"
-                                                },
-                                                "Dday": {
+                                                "title": {
                                                     "type": "string"
                                                 },
-                                                "resultDay": {
+                                                "examDate": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "openDate": {
+                                                    "type": "string"
+                                                },
+                                                "closeDate": {
                                                     "type": "string"
                                                 }
                                             }
@@ -2452,10 +2449,10 @@
                                                     "examSchedules": {
                                                         "id": "회차 id : adfhttwerqwrasxczx",
                                                         "turn": "회차 : 2023년정기기사4회",
-                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
                                                         "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                         "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
                                                         "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                         "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                     }
@@ -2496,7 +2493,7 @@
                                                         "turn": {
                                                             "type": "string"
                                                         },
-                                                        "wtReceipt": {
+                                                        "wtPeriod": {
                                                             "type": "string"
                                                         },
                                                         "wtDday": {
@@ -2505,7 +2502,7 @@
                                                         "wtResultDay": {
                                                             "type": "string"
                                                         },
-                                                        "ptReceipt": {
+                                                        "ptPeriod": {
                                                             "type": "string"
                                                         },
                                                         "ptDday": {
@@ -2549,7 +2546,7 @@
                             "format": "path",
                             "example": "outside"
                         },
-                        "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, 언어 : toeic,toeicBR,toeicSW,toeicWT,toeicST,ch,jp,jpSP)"
+                        "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증)"
                     },
                     {
                         "name": "id",
@@ -2635,20 +2632,7 @@
                                             }
                                         }
                                     },
-                                    "languageData": {
-                                        "summary": "언어별 데이터",
-                                        "value": {
-                                            "data": {
-                                                "id": "언어별 id : adfhttwerqwrasxczx",
-                                                "path": "조회 목록 : toeic,toeicBR",
-                                                "homePage": "접수 홈페이지 : http://~~",
-                                                "turn": "회차 : 1회차 or null",
-                                                "Dday": "시험날짜 : 2023.11.26(일)오전9시20분",
-                                                "resultDay": "결과 발표 날짜 : 2023.12.06(수)낮12시",
-                                                "date": "접수 기간 : 정기접수:2023.10.09(월)오전10시~2023.11.13(월)오전10시특별추가:2023.11.15(수)오전10시~2023.11.23(목)낮12시"
-                                            }
-                                        }
-                                    },
+
                                     "qnetData": {
                                         "summary": "자격증 데이터",
                                         "value": {
@@ -2665,10 +2649,10 @@
                                                     {
                                                         "id": "회차 id : adfhttwerqwrasxczx",
                                                         "turn": "회차 : 2023년정기기사4회",
-                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
                                                         "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                         "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
                                                         "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                         "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                     }
@@ -2839,32 +2823,6 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "path": {
-                                                    "type": "string"
-                                                },
-                                                "hompage": {
-                                                    "type": "string"
-                                                },
-                                                "turn": {
-                                                    "type": "string | null"
-                                                },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "resultDay": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
                                                 "detail": {
                                                     "type": "string"
                                                 },
@@ -2897,7 +2855,7 @@
                                                             "turn": {
                                                                 "type": "string"
                                                             },
-                                                            "wtReceipt": {
+                                                            "wtPeriod": {
                                                                 "type": "string"
                                                             },
                                                             "wtDday": {
@@ -2906,7 +2864,7 @@
                                                             "wtResultDay": {
                                                                 "type": "string"
                                                             },
-                                                            "ptReceipt": {
+                                                            "ptPerid": {
                                                                 "type": "string"
                                                             },
                                                             "ptDday": {
@@ -3548,10 +3506,10 @@
                                                     "examSchedules": {
                                                         "id": "회차 id : adfhttwerqwrasxczx",
                                                         "turn": "회차 : 2023년정기기사4회",
-                                                        "wtReceipt": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
                                                         "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                         "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptReceipt": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
                                                         "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                         "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                     }
@@ -3592,7 +3550,7 @@
                                                         "turn": {
                                                             "type": "string"
                                                         },
-                                                        "wtReceipt": {
+                                                        "wtPeriod": {
                                                             "type": "string"
                                                         },
                                                         "wtDday": {
@@ -3601,7 +3559,7 @@
                                                         "wtResultDay": {
                                                             "type": "string"
                                                         },
-                                                        "ptReceipt": {
+                                                        "ptPerid": {
                                                             "type": "string"
                                                         },
                                                         "ptDday": {
