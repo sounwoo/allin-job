@@ -114,11 +114,6 @@ export class CrawlingService {
         path,
         id,
     }: findeDetailType): Promise<findeDetailCrawling | null> {
-        if (path === 'language')
-            return this.elastic
-                .get({ index: path, id })
-                .then((el) => el.body._source);
-
         return this.elastic
             .update(
                 {
