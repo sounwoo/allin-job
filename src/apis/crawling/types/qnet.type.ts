@@ -1,9 +1,9 @@
 export interface ExamSchedules {
     turn: string;
-    wtReceipt: string;
+    wtPeriod: string;
     wtDday: string;
     wtResultDay: string;
-    ptReceipt: string;
+    ptPeriod: string;
     ptDday: string;
     resultDay: string;
 }

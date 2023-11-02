@@ -31,7 +31,6 @@ class CommunityController {
         this.router.get(
             '/:id',
             Validate.findOneCommunity,
-            accessGuard.handle,
             asyncHandler(this.findeOne.bind(this)),
         );
         this.router.patch(

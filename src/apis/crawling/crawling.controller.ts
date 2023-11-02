@@ -26,25 +26,10 @@ class CrawlingController {
 
     init() {
         this.router.get(
-            '/finde/outside',
+            '/finde/:path',
             asyncHandler(this.findeCrawling.bind(this)),
         );
-        this.router.get(
-            '/finde/competition',
-            asyncHandler(this.findeCrawling.bind(this)),
-        );
-        this.router.get(
-            '/finde/intern',
-            asyncHandler(this.findeCrawling.bind(this)),
-        );
-        this.router.get(
-            '/finde/language',
-            asyncHandler(this.findeCrawling.bind(this)),
-        );
-        this.router.get(
-            '/finde/qnet',
-            asyncHandler(this.findeCrawling.bind(this)),
-        );
+
         this.router.get(
             '/findeDetail',
             asyncHandler(this.findeDetailCrawling.bind(this)),
@@ -85,11 +70,13 @@ class CrawlingController {
 
     async findeCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
+        const { path } = req.params as Path;
         const { ...data } = req.query as fidneCrawlingType;
 
         res.status(200).json({
             data: await this.crawlingService.findeCrawling({
                 ...data,
+                path,
             }),
         });
     }

@@ -14,7 +14,7 @@ export const linkareerType = (path: string, i: number) => {
             dataType = {
                 institution: '',
                 target: '',
-                date: '',
+                period: '',
                 participationPeriod: '',
                 personnel: '',
                 location: '',
@@ -33,7 +33,7 @@ export const linkareerType = (path: string, i: number) => {
             }%2C%22pageSize%22%3A20%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22cacb5fff62346779e715a849c212cd8ce31b37c4154bb7e6508239063281c825%22%7D%7D`;
             dataType = {
                 institution: '',
-                date: '',
+                period: '',
                 preferentialTreatment: '',
                 personnel: '',
                 target: '',
@@ -52,7 +52,7 @@ export const linkareerType = (path: string, i: number) => {
                 institution: '',
                 target: '',
                 scale: '',
-                date: '',
+                period: '',
                 homePage: '',
                 benefits: '',
                 interests: '',
@@ -66,45 +66,61 @@ export const linkareerType = (path: string, i: number) => {
 };
 
 export const languageType = (test: string) => {
-    let url = 'https://www.toeicswt.co.kr/receipt/examSchList.php';
+    let homePage = 'https://www.toeicswt.co.kr/receipt/examSchList.php';
     let testType = 'tbody > tr';
-    const dataObj: Pick<LanguageType, 'turn' | 'Dday' | 'resultDay' | 'date'> =
-        {
-            turn: '',
-            Dday: '',
-            resultDay: '',
-            date: '',
-        };
+    let classify = '영어';
+    let mainImage = process.env.TOEIC_IMAGE!;
+    const dataObj: {
+        turn: string | undefined;
+        Dday: string;
+        resultDay: string;
+        date: string;
+    } = {
+        turn: '',
+        Dday: '',
+        resultDay: '',
+        date: '',
+    };
 
     switch (test) {
         case 'toeic':
-            url = 'https://exam.toeic.co.kr/receipt/examSchList.php';
+            homePage = 'https://exam.toeic.co.kr/receipt/examSchList.php';
             break;
         case 'toeicBR':
-            url = 'https://www.toeicbridge.co.kr/receipt/examSchList.php';
+            homePage = 'https://www.toeicbridge.co.kr/receipt/examSchList.php';
+            mainImage = process.env.TOEICBR_IMAGE!;
             delete dataObj.turn;
             break;
         case 'toeicSW':
             testType = 'tr.speakingwriting';
+            mainImage = process.env.TOEICSW_IMAGE!;
             delete dataObj.turn;
             break;
         case 'toeicWT':
             testType = 'tr.writing';
+            mainImage = process.env.TOEICWT_IMAGE!;
             delete dataObj.turn;
             break;
         case 'toeicST':
+            mainImage = process.env.TOEICST_IMAGE!;
             delete dataObj.turn;
             break;
         case 'ch':
-            url = 'https://www.ybmtsc.co.kr/receipt/examSchList.php';
+            homePage = 'https://www.ybmtsc.co.kr/receipt/examSchList.php';
+            classify = '중국어';
+            mainImage = process.env.CH_IMAGE!;
             break;
         case 'jp':
-            url = 'https://www.jpt.co.kr/receipt/examSchList.php';
+            homePage = 'https://www.jpt.co.kr/receipt/examSchList.php';
+            classify = '일본어';
+            mainImage = process.env.JP_IMAGE!;
             break;
         case 'jpSP':
-            url = 'https://www.ybmsjpt.co.kr/receipt/examSchList.php';
+            homePage = 'https://www.ybmsjpt.co.kr/receipt/examSchList.php';
+            classify = '일본어';
+            mainImage = process.env.JPSP_IMAGE!;
             break;
     }
 
-    return { url, testType, dataObj };
+    return { homePage, testType, dataObj, classify, mainImage };
 };

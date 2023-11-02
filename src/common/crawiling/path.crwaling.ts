@@ -1,7 +1,12 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import { languageType, linkareerType } from './crawiling.data';
-import { createLinkareerPaths, createPaths, itmeType } from './interface';
+import {
+    createLinkareerPaths,
+    createPaths,
+    itmeType,
+    testType,
+} from './interface';
 import { CrawlingService } from '../../apis/crawling/crawling.service';
 import { Service } from 'typedi';
 import { QNetObj } from './seed.q-net';
@@ -10,6 +15,7 @@ import {
     CategortObj,
     ExamSchedules,
 } from '../../apis/crawling/types/qnet.type';
+import { languageData } from '../util/languageData';
 const decode = require('decode-html');
 
 @Service()
@@ -27,7 +33,7 @@ export class PathCrawling {
         return Array(3)
             .fill(0)
             .map(async (_, i) => {
-                let month: number;
+                let month: number = 0;
                 const {
                     url,
                     dataType,
@@ -75,7 +81,7 @@ export class PathCrawling {
                                             (1000 * 60 * 60 * 24) /
                                             30,
                                     );
-                                } else month = 0;
+                                }
                                 const field = $('span.jss17')
                                     .map((_, el) => $(el).html())
                                     .get()
@@ -102,7 +108,7 @@ export class PathCrawling {
                             title: $('h2.title').text(),
                             view: +String($('span.count').html()),
                             mainImage: $(`img.${mainImageType}`).attr('src'),
-                            organization: $('h2.organization-name').text(),
+                            enterprise: $('h2.organization-name').text(),
                             ...dataType,
                             ...(dataType.scale && { scale: +dataType.scale }),
                             detail: $(
@@ -120,9 +126,10 @@ export class PathCrawling {
             });
     }
 
-    async languageData({ test }: { test: createPaths['test'] }) {
-        const { testType, dataObj, url } = languageType(test);
-        const result = await axios.get(url);
+    async languageData({ test }: { test: testType }) {
+        const { testType, dataObj, homePage, classify, mainImage } =
+            languageType(test);
+        const result = await axios.get(homePage);
         const $ = cheerio.load(result.data);
         $(testType).each((_, el) => {
             $(el)
@@ -135,35 +142,15 @@ export class PathCrawling {
                             .replace(/\s+/g, '');
                     }
                 });
-            let classify: string = '영어';
-            let mainImage = '';
-
-            if (test.includes('ch')) {
-                classify = '중국어';
-                mainImage = process.env.CH_IMAGE as string;
-            } else if (test.includes('jp')) {
-                classify = '일본어';
-                mainImage =
-                    test === 'jp'
-                        ? (process.env.JP_IMAGE as string)
-                        : (process.env.JPSP_IMAGE as string);
-            } else {
-                mainImage =
-                    test === 'toeic'
-                        ? (process.env.TOEIC_IMAGE as string)
-                        : test === 'toeicBR'
-                        ? (process.env.TOEICBR_IMAGE as string)
-                        : test === 'toeicSW' || test === 'toeicST'
-                        ? (process.env.TOEICSW_IMAGE as string)
-                        : (process.env.TOEICST_IMAGE as string);
-            }
+            const { Dday, date } = dataObj;
 
             this.crawlingServcie.createLanguageData({
                 test,
                 classify,
                 mainImage,
-                homePage: url,
-                dataObj,
+                homePage,
+                scrap: 0,
+                ...languageData(Dday, date),
             });
         });
         return ['true'];
@@ -218,10 +205,10 @@ export class PathCrawling {
                     $('tbody > tr').each((_, el) => {
                         const examScheduleObj = {
                             turn: '',
-                            wtReceipt: '',
+                            wtPeriod: '',
                             wtDday: '',
                             wtResultDay: '',
-                            ptReceipt: '',
+                            ptPeriod: '',
                             ptDday: '',
                             resultDay: '',
                         };
@@ -251,7 +238,8 @@ export class PathCrawling {
                         /<\/body[^>]*>([\s\S]*?)<\/textarea[^>]*>/gi,
                         '',
                     );
-                    const data = {
+
+                    await this.crawlingServcie.createQNetData({
                         detail,
                         scheduleInfo: $('div.infoBox.mt10.mb40').html() ?? '',
                         examSchedules,
@@ -261,10 +249,6 @@ export class PathCrawling {
                         institution: implNm,
                         scrap: 0,
                         view: 0,
-                    };
-
-                    await this.crawlingServcie.createQNetData({
-                        data,
                         categoryObj,
                     });
                 }
