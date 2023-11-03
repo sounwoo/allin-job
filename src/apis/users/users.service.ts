@@ -252,44 +252,38 @@ export class UserService {
             },
         });
 
-        const plusMinus = (await chkScrap?.[scrapData(path).column].length)
-            ? 'ctx._source.scrap--'
-            : 'ctx._source.scrap++';
+        const chkPlusMinus = chkScrap?.[scrapData(path).column].length;
+        const plusMinus = `ctx._source.scrap${chkPlusMinus ? '--' : '++'}`;
 
-        await this.elastic
-            .update(
-                {
-                    index: path,
-                    id: scrapId,
-                    body: {
-                        script: {
-                            source: plusMinus,
+        await Promise.all([
+            this.elastic
+                .update(
+                    {
+                        index: path,
+                        id: scrapId,
+                        body: {
+                            script: {
+                                source: plusMinus,
+                            },
                         },
-                        _source: true,
                     },
+                    { ignore: [404] },
+                )
+                .then((el) => el.body.error && el.meta.context),
+
+            this.prisma.user.update({
+                where: { id },
+                data: {
+                    [scrapData(path).column]: chkPlusMinus
+                        ? {
+                              deleteMany: { [scrapData(path).id]: scrapId },
+                          }
+                        : { create: { [scrapData(path).id]: scrapId } },
                 },
-                { ignore: [404] },
-            )
-            .then((el) =>
-                el.body.error ? el.meta.context : el.body.get._source,
-            );
+            }),
+        ]);
 
-        await this.prisma.user.update({
-            where: { id },
-            data: {
-                [scrapData(path).column]: chkScrap?.[scrapData(path).column]
-                    .length
-                    ? {
-                          deleteMany: { [scrapData(path).id]: scrapId },
-                      }
-                    : { create: { [scrapData(path).id]: scrapId } },
-            },
-            include: {
-                [scrapData(path).column]: true,
-            },
-        });
-
-        return !(await chkScrap?.[scrapData(path).column].length);
+        return chkPlusMinus ? false : true;
     }
 
     async getUserScrap({
@@ -322,8 +316,7 @@ export class UserService {
                             _id,
                         },
                     },
-                    size: page && 4,
-                    from: page && (+page - 1 || 0) * 4,
+                    ...(page && { size: 4, from: (+page - 1 || 0) * 4 }),
                 },
             })
             .then((data) => {

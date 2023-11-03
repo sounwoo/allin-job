@@ -2910,16 +2910,6 @@
                 ],
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "competition"
-                        },
-                        "description": "competition:공모전"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -3043,16 +3033,6 @@
                 ],
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "outside"
-                        },
-                        "description": "대외활동(outside)"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -3175,16 +3155,6 @@
                     }
                 ],
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "intern"
-                        },
-                        "description": "intern:인턴"
-                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -3313,16 +3283,6 @@
                     }
                 ],
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "language"
-                        },
-                        "description": "language 데이터 조회"
-                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -3460,16 +3420,6 @@
                     }
                 ],
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "qnet"
-                        },
-                        "description": " qnet:자격증"
-                    },
                     {
                         "name": "count",
                         "in": "query",
