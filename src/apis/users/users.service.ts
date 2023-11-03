@@ -357,4 +357,11 @@ export class UserService {
                     : null;
             });
     }
+    async delete(email: string): Promise<boolean> {
+        const user = await this.findOneUserByEmail(email);
+
+        const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
+        console.log(qqq);
+        return true;
+    }
 }

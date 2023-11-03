@@ -82,6 +82,8 @@ class UserController {
             AccessGuard.handle,
             asyncHandler(this.getUserScrap.bind(this)),
         );
+
+        this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -166,6 +168,13 @@ class UserController {
                 id,
                 ...data,
             }),
+        });
+    }
+
+    async delete(req: Request, res: Response) {
+        const { email } = req.body;
+        res.status(200).json({
+            data: await this.userService.delete(email),
         });
     }
 }
