@@ -1,5 +1,4 @@
 export const examSchedulesSort = (data: any) => {
-    console.log(data._source.examSchedules);
     const now = new Date();
     const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
     const examSchedules = data._source.examSchedules.filter((el: any) => {
