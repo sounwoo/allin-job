@@ -353,8 +353,12 @@ export class UserService {
     async delete(email: string): Promise<boolean> {
         const user = await this.findOneUserByEmail(email);
 
-        const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
-        console.log(qqq);
-        return true;
+        if (user) {
+            await this.prisma.userInterest.deleteMany({
+                where: { userId: user.id },
+            });
+            await this.prisma.user.delete({ where: { email } });
+            return true;
+        } else return false;
     }
 }
