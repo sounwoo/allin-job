@@ -100,11 +100,11 @@ model Keyword {
 
 model UserInterest {
   id         String   @id @unique @default(uuid())
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  interest   Interest @relation(fields: [interestId], references: [id])
+  interest   Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
   interestId String
-  keyword    Keyword  @relation(fields: [keywordId], references: [id])
+  keyword    Keyword  @relation(fields: [keywordId], references: [id], onDelete: Cascade)
   keywordId  String
 }
 
