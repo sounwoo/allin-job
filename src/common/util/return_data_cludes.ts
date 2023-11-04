@@ -2,21 +2,17 @@ import { Path } from '../crawiling/interface';
 
 export const cludes = (path: Path['path'] | 'language'): string[] => {
     const common = ['title', 'view', 'scrap'];
-    const qnetExcept = [...common, 'Dday', 'mainImage', 'institution', 'date'];
+    const qnetLanExcept = [...common, 'Dday', 'mainImage', 'enterprise'];
     const cludes = {
-        ousideOrCompetition: qnetExcept,
+        ousideOrCompetition: [...qnetLanExcept],
         intern: [
-            'Dday',
-            'date',
-            'institution',
-            'view',
-            'mainImage',
+            ...qnetLanExcept,
+            'preferentialTreatment',
             'location',
-            'organization',
-            'title',
+            'period',
         ],
-        qnet: ['title', 'relatedDepartment', 'institution', 'examSchedules'],
-        language: ['test', 'examDate', 'closeDate'],
+        qnet: [...common, 'relatedDepartment', 'institution', 'examSchedules'],
+        language: ['test', 'examDate', 'closeDate', 'homePage'],
     };
 
     return (

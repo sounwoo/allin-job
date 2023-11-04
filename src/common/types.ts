@@ -11,6 +11,12 @@ export type providerTokenType = {
     token: string;
 };
 
+export type dateToStringType = {
+    eDate: Date;
+    oDate?: Date;
+    cDate: Date;
+};
+
 export type idType = {
     id: User['id'];
 };
