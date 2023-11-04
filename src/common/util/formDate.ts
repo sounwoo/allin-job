@@ -1,5 +1,4 @@
-export const formDate = (date: string): string => {
-    console.log(date);
+export const formDate = (date: string): Date => {
     const timeStr = date.split(')')[1];
     const dateStr = date.split(')')[0].split('(')[0];
 
@@ -17,19 +16,23 @@ export const formDate = (date: string): string => {
                 : '낮',
         )[1];
 
-        if (timeStr.includes('오후') || timeStr.includes('밤'))
+        if (timeStr.includes('오후') || timeStr.includes('밤')) {
             time = String(+time + 12);
-        else if (+time < 10) time = '0' + String(time);
+        } else if (+time < 10) {
+            time = '0' + String(time);
+        }
 
         const minute =
             +minuteStr.slice(0, -1) < 10
                 ? '0' + minuteStr.slice(0, -1)
                 : minuteStr.slice(0, -1);
 
-        return `${dateStr.replaceAll('.', '-')} ${time}:${
+        const formattedDate = `${dateStr.replaceAll('.', '-')} ${time}:${
             minuteStr ? minute : '00'
         }`;
+
+        return new Date(formattedDate);
     } else {
-        return `${dateStr.replaceAll('.', '-')}`;
+        return new Date(dateStr.replaceAll('.', '-'));
     }
 };
