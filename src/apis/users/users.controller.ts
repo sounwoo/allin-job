@@ -83,6 +83,12 @@ class UserController {
             asyncHandler(this.getUserScrap.bind(this)),
         );
 
+        this.router.post(
+            '/createThermometer',
+            AccessGuard.handle,
+            asyncHandler(this.createThermometer.bind(this)),
+        );
+
         this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
     }
 
@@ -176,6 +182,30 @@ class UserController {
         res.status(200).json({
             data: await this.userService.delete(email),
         });
+    }
+
+    async createThermometer(req: Request, res: Response) {
+        const { id } = req.user as idType;
+        const { path, createThermometer } = req.body;
+
+        const datas = await this.userService.createThermometer({
+            id,
+            path,
+            createThermometer,
+        });
+
+        res.status(200).json({
+            data: await this.userService.getCount(id),
+        });
+        // if (datas) {
+        //     res.status(200).json({
+        //         success: true,
+        //     });
+        // } else {
+        //     res.status(400).json({
+        //         success: false,
+        //     });
+        // }
     }
 }
 

@@ -40,6 +40,11 @@ model User {
   scrapLanguage    ScrapLanguage[]
   scrapQNet        ScrapQNet[]
   scrapIntern      ScrapIntern[]
+  userCompetition  UserCompetition[]
+  userOutside      UserOutside[]
+  userQnet         UserQnet[]
+  userIntern       UserIntern[]
+  userLanguage     UserLanguage[]
 }
 
 model Community {
@@ -146,6 +151,53 @@ model ScrapIntern {
   internId  String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+}
+
+model UserCompetition {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  User          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserOutside {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  User          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserQnet {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  User          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserIntern {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  period        String
+  User          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserLanguage {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  score         String
+  User          User?   @relation(fields: [userId], references: [id])
+  userId        String?
 }
 
 // 대용량 데이터를 생각해서 -> 엘라스틱 서치 -> 이동 완료

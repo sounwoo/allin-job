@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
+    IThermometerCreate,
     IUserCreateDTO,
     IUserFindOneUserByID,
     IUserUpdateDTO,
@@ -18,6 +19,7 @@ import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
 import { dateToString, languageTitle } from '../../common/util/languageData';
+import { percentage } from '../../common/util/termometer';
 
 @Service()
 export class UserService {
@@ -372,5 +374,70 @@ export class UserService {
             await this.prisma.user.delete({ where: { email } });
             return true;
         } else return false;
+    }
+
+    async createThermometer({
+        id,
+        path,
+        createThermometer,
+    }: IThermometerCreate): Promise<User> {
+        await this.isUserByID(id);
+
+        const obj: { [key: string]: () => { column: string } } = {
+            outside: () => ({ column: 'userOutside' }),
+            intern: () => ({ column: 'userIntern' }),
+            competition: () => ({
+                column: 'userCompetition',
+            }),
+            language: () => ({ column: 'userLanguage' }),
+            qnet: () => ({ column: 'userQnet' }),
+        };
+
+        return this.prisma.user.update({
+            where: { id },
+            data: {
+                [obj[path]().column]: {
+                    create: {
+                        ...createThermometer,
+                    },
+                },
+            },
+        });
+    }
+
+    async getCount(userId: string): Promise<number[]> {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                userCompetition: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userOutside: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userQnet: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userIntern: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userLanguage: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        });
+
+        console.log(percentage(user));
+        return percentage(user);
     }
 }
