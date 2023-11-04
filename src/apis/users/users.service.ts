@@ -17,7 +17,7 @@ import { splitDate } from '../../common/util/splitDate';
 import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
-import { languageTitle } from '../../common/util/languageData';
+import { dateToString, languageTitle } from '../../common/util/languageData';
 
 @Service()
 export class UserService {
@@ -252,44 +252,38 @@ export class UserService {
             },
         });
 
-        const plusMinus = (await chkScrap?.[scrapData(path).column].length)
-            ? 'ctx._source.scrap--'
-            : 'ctx._source.scrap++';
+        const chkPlusMinus = chkScrap?.[scrapData(path).column].length;
+        const plusMinus = `ctx._source.scrap${chkPlusMinus ? '--' : '++'}`;
 
-        await this.elastic
-            .update(
-                {
-                    index: path,
-                    id: scrapId,
-                    body: {
-                        script: {
-                            source: plusMinus,
+        await Promise.all([
+            this.elastic
+                .update(
+                    {
+                        index: path,
+                        id: scrapId,
+                        body: {
+                            script: {
+                                source: plusMinus,
+                            },
                         },
-                        _source: true,
                     },
+                    { ignore: [404] },
+                )
+                .then((el) => el.body.error && el.meta.context),
+
+            this.prisma.user.update({
+                where: { id },
+                data: {
+                    [scrapData(path).column]: chkPlusMinus
+                        ? {
+                              deleteMany: { [scrapData(path).id]: scrapId },
+                          }
+                        : { create: { [scrapData(path).id]: scrapId } },
                 },
-                { ignore: [404] },
-            )
-            .then((el) =>
-                el.body.error ? el.meta.context : el.body.get._source,
-            );
+            }),
+        ]);
 
-        await this.prisma.user.update({
-            where: { id },
-            data: {
-                [scrapData(path).column]: chkScrap?.[scrapData(path).column]
-                    .length
-                    ? {
-                          deleteMany: { [scrapData(path).id]: scrapId },
-                      }
-                    : { create: { [scrapData(path).id]: scrapId } },
-            },
-            include: {
-                [scrapData(path).column]: true,
-            },
-        });
-
-        return !(await chkScrap?.[scrapData(path).column].length);
+        return chkPlusMinus ? false : true;
     }
 
     async getUserScrap({
@@ -322,8 +316,7 @@ export class UserService {
                             _id,
                         },
                     },
-                    size: page && 4,
-                    from: page && (+page - 1 || 0) * 4,
+                    ...(page && { size: 4, from: (+page - 1 || 0) * 4 }),
                 },
             })
             .then((data) => {
@@ -331,27 +324,39 @@ export class UserService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
-                          let date;
                           if (path === 'language') {
-                              const { classify, test, ...data } = el._source;
+                              const {
+                                  classify,
+                                  test,
+                                  examDate,
+                                  closeDate,
+                                  ...data
+                              } = el._source;
                               return {
                                   id: el._id,
-                                  data,
+                                  enterprise: 'YBM',
+                                  ...data,
                                   title: languageTitle(test),
+                                  ...dateToString({
+                                      eDate: examDate,
+                                      cDate: closeDate,
+                                  }),
                               };
                           }
                           if (path === 'qnet') {
                               const schedule = el._source.examSchedules[0];
-                              date =
-                                  splitDate(schedule.wtReceipt) ??
-                                  splitDate(schedule.ptReceipt);
                               delete el._source.examSchedules;
-                          } else
-                              date = splitDate(el._source.date).split('(')[0];
+                              return {
+                                  mainImage: process.env.QNET_IMAGE,
+                                  id: el._id,
+                                  period: schedule.wtPeriod,
+                                  examDate: schedule.wtDday,
+                                  ...el._source,
+                              };
+                          }
                           return {
                               id: el._id,
                               ...el._source,
-                              date,
                           };
                       })
                     : null;
@@ -360,8 +365,12 @@ export class UserService {
     async delete(email: string): Promise<boolean> {
         const user = await this.findOneUserByEmail(email);
 
-        const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
-        console.log(qqq);
-        return true;
+        if (user) {
+            await this.prisma.userInterest.deleteMany({
+                where: { userId: user.id },
+            });
+            await this.prisma.user.delete({ where: { email } });
+            return true;
+        } else return false;
     }
 }

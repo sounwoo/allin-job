@@ -37,27 +37,7 @@ class CrawlingController {
         this.router.get('/data', asyncHandler(this.crawling.bind(this)));
         this.router.get('/main/:path', asyncHandler(this.bestData.bind(this)));
         this.router.get(
-            '/myKeywordCrawling/competition',
-            AccessGuard.handle,
-            asyncHandler(this.myKeywordCrawling.bind(this)),
-        );
-        this.router.get(
-            '/myKeywordCrawling/outside',
-            AccessGuard.handle,
-            asyncHandler(this.myKeywordCrawling.bind(this)),
-        );
-        this.router.get(
-            '/myKeywordCrawling/intern',
-            AccessGuard.handle,
-            asyncHandler(this.myKeywordCrawling.bind(this)),
-        );
-        this.router.get(
-            '/myKeywordCrawling/language',
-            AccessGuard.handle,
-            asyncHandler(this.myKeywordCrawling.bind(this)),
-        );
-        this.router.get(
-            '/myKeywordCrawling/qnet',
+            '/myKeywordCrawling/:path',
             AccessGuard.handle,
             asyncHandler(this.myKeywordCrawling.bind(this)),
         );
@@ -119,11 +99,13 @@ class CrawlingController {
 
     async myKeywordCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
+        const { path } = req.params as Path;
         const { ...data } = req.query as fidneCrawlingType;
         const { id } = req.user as idType;
         const result = await this.crawlingService.myKeywordCrawling({
             ...data,
             id,
+            path,
         });
 
         res.status(200).json({

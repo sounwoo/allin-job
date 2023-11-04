@@ -1176,13 +1176,12 @@
                                             "data": [
                                                 {
                                                     "id": "대외활동 id : asdasda",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url",
-                                                    "institution": "주최기관 : 대기업",
-                                                    "date": "접수기간 : 23.9.12 ~ 23.9.18"
+                                                    "scrap": 0,
+                                                    "enterprise": "조직: (주)~~",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집"
                                                 }
                                             ]
                                         }
@@ -1193,14 +1192,13 @@
                                             "data": [
                                                 {
                                                     "id": "인턴 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 대기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11",
-                                                    "location": "지역 :서울"
+                                                    "scrap": 0,
+                                                    "enterprise": "조직: (주)~~",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "location": "지역 :서울",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -1211,13 +1209,12 @@
                                             "data": [
                                                 {
                                                     "id": "공모전 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 공공기관/공기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                    "scrap": 0,
+                                                    "enterprise": "조직: (주)~~",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -1227,45 +1224,30 @@
                                         "value": {
                                             "data": [
                                                 {
-                                                    "id": "자격증 id : adfhttwerqwrasxczx",
-                                                    "title": "자격증명 : 에너지산업기사",
-                                                    "view": 100,
-                                                    "scrap": 0,
-                                                    "relatedDepartment": "과련부처 : 통겨청",
-                                                    "institution": "시행기관 : 한국산업인력공단",
                                                     "mainImage": "...",
-                                                    "examSchedules": [
-                                                        {
-                                                            "turn": "회차 : 2023년정기기사4회",
-                                                            "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
-                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
-                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                            "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
-                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
-                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
-                                                        }
-                                                    ]
+                                                    "id": "자격증 id : adfhttwerqwrasxczx",
+                                                    "period": "접수기간: 23.10.4 ~ 23.12.31",
+                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
+                                                    "institution": "시행기관 : 한국산업인력공단",
+                                                    "scrap": 0,
+                                                    "view": 100,
+                                                    "title": "자격증명 : 에너지산업기사"
                                                 }
                                             ]
                                         }
                                     },
-                                    "communituData": {
-                                        "summary": "취중job담 데이터",
+                                    "languageData": {
+                                        "summary": "어학시험 데이터",
                                         "value": {
                                             "data": [
                                                 {
                                                     "id": "커뮤니티 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
-                                                    "category": "경로 : 공모전/대외활동",
-                                                    "title": "제목 : 공모전 활동",
-                                                    "date": "등록 시간 : 2023-09-16",
-                                                    "view": 0,
-                                                    "likeCount": 0,
-                                                    "commentCount": 0,
-                                                    "user": {
-                                                        "id": "e03c1b88-0b4f-46fb-90a8-ccb349c044d7",
-                                                        "nickname": "닉네임",
-                                                        "profileImage": "profile url"
-                                                    }
+                                                    "enterprise": "조직: (주)~~",
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "scrap": 1,
+                                                    "title": "제목",
+                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
+                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00"
                                                 }
                                             ]
                                         }
@@ -1279,10 +1261,30 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
                                                 "Dday": {
                                                     "type": "string"
                                                 },
                                                 "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
                                                     "type": "string"
                                                 },
                                                 "view": {
@@ -1291,10 +1293,19 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1303,12 +1314,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "id": {
-                                                    "type": "string"
-                                                },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
                                                     "type": "string"
                                                 },
                                                 "view": {
@@ -1317,10 +1322,45 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "period": {
+                                                    "type": "string"
+                                                },
+                                                "examDate": {
+                                                    "type": "string"
+                                                },
                                                 "institution": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1331,147 +1371,23 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
+                                                "enterprise": {
                                                     "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
-                                                "view": {
-                                                    "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "path": {
-                                                    "type": "string"
-                                                },
-                                                "hompage": {
-                                                    "type": "string"
-                                                },
-                                                "turn": {
-                                                    "type": "string | null"
-                                                },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "resultDay": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
+                                                "scrap": {
+                                                    "type": "number"
                                                 },
                                                 "title": {
                                                     "type": "string"
                                                 },
-                                                "engTitle": {
-                                                    "type": "string | null"
-                                                },
-                                                "relatedDepartment": {
+                                                "examDate": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "closeDate": {
                                                     "type": "string"
-                                                },
-                                                "image": {
-                                                    "type": "string"
-                                                },
-                                                "examSchedules": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
-                                                            "turn": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtPeriod": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtResultDay": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptPerid": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "resultDay": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "category": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "date"
-                                                },
-                                                "view": {
-                                                    "type": "number"
-                                                },
-                                                "likeCount": {
-                                                    "type": "number"
-                                                },
-                                                "commentCount": {
-                                                    "type": "number"
-                                                },
-                                                "user": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
-                                                            "nickname": {
-                                                                "type": "string"
-                                                            },
-                                                            "profileImage": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    }
                                                 }
                                             }
                                         }
@@ -1521,13 +1437,12 @@
                                             "data": [
                                                 {
                                                     "id": "대외활동 id : asdasda",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url",
-                                                    "institution": "주최기관 : 대기업",
-                                                    "date": "접수기간 : 23.9.12 ~ 23.9.18"
+                                                    "scrap": 0,
+                                                    "enterprise": "주최기관",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집"
                                                 }
                                             ]
                                         }
@@ -1538,14 +1453,13 @@
                                             "data": [
                                                 {
                                                     "id": "인턴 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 대기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11",
-                                                    "location": "지역 :서울"
+                                                    "scrap": 0,
+                                                    "enterprise": "주최기관",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "location": "지역 :서울",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -1556,13 +1470,12 @@
                                             "data": [
                                                 {
                                                     "id": "공모전 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 공공기관/공기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                    "scrap": 0,
+                                                    "enterprise": "주최기관",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -1573,23 +1486,12 @@
                                             "data": [
                                                 {
                                                     "id": "자격증 id : adfhttwerqwrasxczx",
-                                                    "title": "자격증명 : 에너지산업기사",
-                                                    "view": 100,
-                                                    "scrap": 0,
-                                                    "relatedDepartment": "과련부처 : 통겨청",
                                                     "institution": "시행기관 : 한국산업인력공단",
-                                                    "mainImage": "...",
-                                                    "examSchedules": [
-                                                        {
-                                                            "turn": "회차 : 2023년정기기사4회",
-                                                            "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
-                                                            "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
-                                                            "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                            "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
-                                                            "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
-                                                            "resultDay": "최종합격자 발표일 : 2023.11.15"
-                                                        }
-                                                    ]
+                                                    "scrap": 0,
+                                                    "view": 100,
+                                                    "relatedDepartment": "과련부처 : 통겨청",
+                                                    "title": "자격증명 : 에너지산업기사",
+                                                    "mainImage": "..."
                                                 }
                                             ]
                                         }
@@ -1624,10 +1526,30 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
+                                                "view": {
+                                                    "type": "number"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
                                                 "Dday": {
                                                     "type": "string"
                                                 },
                                                 "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
                                                     "type": "string"
                                                 },
                                                 "view": {
@@ -1636,10 +1558,19 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1648,12 +1579,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "id": {
-                                                    "type": "string"
-                                                },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
                                                     "type": "string"
                                                 },
                                                 "view": {
@@ -1662,10 +1587,16 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1676,104 +1607,23 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
+                                                "institution": {
                                                     "type": "string"
                                                 },
-                                                "title": {
-                                                    "type": "string"
+                                                "scrap": {
+                                                    "type": "number"
                                                 },
                                                 "view": {
                                                     "type": "number"
-                                                },
-                                                "mainImage": {
-                                                    "type": "string"
-                                                },
-                                                "institution": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "path": {
-                                                    "type": "string"
-                                                },
-                                                "hompage": {
-                                                    "type": "string"
-                                                },
-                                                "turn": {
-                                                    "type": "string | null"
-                                                },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "resultDay": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
-                                                "engTitle": {
-                                                    "type": "string | null"
                                                 },
                                                 "relatedDepartment": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "title": {
                                                     "type": "string"
                                                 },
-                                                "image": {
+                                                "mainImage": {
                                                     "type": "string"
-                                                },
-                                                "examSchedules": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
-                                                            "turn": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtPeriod": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "wtResultDay": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptPerid": {
-                                                                "type": "string"
-                                                            },
-                                                            "ptDday": {
-                                                                "type": "string"
-                                                            },
-                                                            "resultDay": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    }
                                                 }
                                             }
                                         },
@@ -1922,13 +1772,12 @@
                                             "data": [
                                                 {
                                                     "id": "대외활동 id : asdasda",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url",
-                                                    "institution": "주최기관 : 대기업",
-                                                    "date": "접수기간 : 23.9.12 ~ 23.9.18"
+                                                    "scrap": 0,
+                                                    "enterprise": "주최기관",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집"
                                                 }
                                             ]
                                         }
@@ -1945,25 +1794,22 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
                                                 "view": {
-                                                    "type": "number"
-                                                },
-                                                "scrap": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -2060,13 +1906,12 @@
                                             "data": [
                                                 {
                                                     "id": "공모전 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 공공기관/공기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                    "scrap": 0,
+                                                    "enterprise": "주최기관",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -2083,25 +1928,22 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
                                                 "view": {
-                                                    "type": "number"
-                                                },
-                                                "scrap": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -2198,14 +2040,13 @@
                                             "data": [
                                                 {
                                                     "id": "인턴 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11",
-                                                    "institution": "주체 기관 : 대기업",
                                                     "view": 100,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "organization": "조직 : (주)~~",
+                                                    "enterprise": "주최기관",
+                                                    "preferentialTreatment": "IT/인터넷",
                                                     "location": "서울 강남구",
-                                                    "title": "제목"
+                                                    "title": "제목",
+                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00"
                                                 }
                                             ]
                                         }
@@ -2223,28 +2064,25 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                },
-                                                "institution": {
-                                                    "type": "string"
-                                                },
                                                 "view": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "organization": {
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
                                                     "type": "string"
                                                 },
                                                 "location": {
                                                     "type": "string"
                                                 },
                                                 "title": {
+                                                    "type": "string"
+                                                },
+                                                "closeDate": {
                                                     "type": "string"
                                                 }
                                             }
@@ -2332,11 +2170,10 @@
                                             "data": [
                                                 {
                                                     "id": "언어별 id : adfhttwerqwrasxczx",
-                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
-                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
-                                                    "openDate": "접수 시작 날짜 : 2023-10-02 10:00",
                                                     "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
-                                                    "homePage": "접수 홈페이지 : http://~~"
+                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
+                                                    "homePage": "접수 홈페이지 : http://~~",
+                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험"
                                                 }
                                             ]
                                         }
@@ -2353,19 +2190,16 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "hompage": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
+                                                "closeDate": {
                                                     "type": "string"
                                                 },
                                                 "examDate": {
                                                     "type": "string"
                                                 },
-                                                "openDate": {
+                                                "hompage": {
                                                     "type": "string"
                                                 },
-                                                "closeDate": {
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -2442,20 +2276,19 @@
                                             "data": [
                                                 {
                                                     "id": "자격증 id : adfhttwerqwrasxczx",
-                                                    "title": "자격증명 : 에너지산업기사",
-                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null",
-                                                    "relatedDepartment": "과련부처 : 통겨청",
                                                     "institution": "시행기관 : 한국산업인력공단",
+                                                    "relatedDepartment": "과련부처 : 통겨청",
                                                     "examSchedules": {
-                                                        "id": "회차 id : adfhttwerqwrasxczx",
-                                                        "turn": "회차 : 2023년정기기사4회",
-                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
-                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                         "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
-                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
-                                                        "resultDay": "최종합격자 발표일 : 2023.11.15"
-                                                    }
+                                                        "resultDay": "최종합격자 발표일 : 2023.11.15",
+                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "turn": "회차 : 2023년정기기사4회",
+                                                        "ptPeriod": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26"
+                                                    },
+                                                    "title": "자격증명 : 에너지산업기사",
+                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null"
                                                 }
                                             ]
                                         }
@@ -2472,34 +2305,28 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "title": {
+                                                "institution": {
                                                     "type": "string"
-                                                },
-                                                "engTitle": {
-                                                    "type": "string | null"
                                                 },
                                                 "relatedDepartment": {
-                                                    "type": "string"
-                                                },
-                                                "institution": {
                                                     "type": "string"
                                                 },
                                                 "examSchedules": {
                                                     "type": "object",
                                                     "properties": {
-                                                        "id": {
+                                                        "wtResultDay": {
                                                             "type": "string"
                                                         },
-                                                        "turn": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtPeriod": {
+                                                        "resultDay": {
                                                             "type": "string"
                                                         },
                                                         "wtDday": {
                                                             "type": "string"
                                                         },
-                                                        "wtResultDay": {
+                                                        "wtPeriod": {
+                                                            "type": "string"
+                                                        },
+                                                        "turn": {
                                                             "type": "string"
                                                         },
                                                         "ptPeriod": {
@@ -2507,11 +2334,14 @@
                                                         },
                                                         "ptDday": {
                                                             "type": "string"
-                                                        },
-                                                        "resultDay": {
-                                                            "type": "string"
                                                         }
                                                     }
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
                                                 }
                                             }
                                         }
@@ -2569,24 +2399,25 @@
                                         "summary": "대외활동 데이터",
                                         "value": {
                                             "data": {
-                                                "id": "대외활동 id : asdasda",
                                                 "Dday": "남은 일수 : D-10",
                                                 "title": "제목 : 모집",
                                                 "view": 100,
                                                 "mainImage": "이미지 url",
-                                                "organization": "조직 : (주)~~",
+                                                "enterprise": "조직: (주)~~",
                                                 "institution": "주최기관 : 대기업",
-                                                "date": "접수기간 : 23.9.12 ~ 23.9.18",
-                                                "participationPeriod": "활동기간 : 23.10.4 ~ 23.12.31",
-                                                "preferentialTreatment": "우대상항 : 컴퓨터 활용능력, 휴학 중/시간 투자 가능",
-                                                "personnel": "모집 인원 : 10명",
                                                 "target": "참여 대상 : 대학생",
+                                                "period": "접수기간: 23.10.4 ~ 23.12.31",
+                                                "participationPeriod": "활동기간 : 23.10.4 ~ 23.12.31",
+                                                "personnel": "모집 인원 : 10명",
                                                 "location": "지역 : 서울",
+                                                "preferentialTreatment": "우대상항 : 컴퓨터 활용능력, 휴학 중/시간 투자 가능",
                                                 "hompage": "주체 홈페이지 :awihqwifbjqjfbo",
                                                 "benefits": "활동 혜택 : 활동비,입사시 혜택",
                                                 "interests": "관심 분야 : 콘텐츠, 디자인/사진/영상",
                                                 "field": "활동 분야 : 서포터즈 마케터",
-                                                "detail": "html 코드"
+                                                "detail": "html 코드",
+                                                "scrap": 0,
+                                                "month": 1
                                             }
                                         }
                                     },
@@ -2594,20 +2425,20 @@
                                         "summary": "인턴 데이터",
                                         "value": {
                                             "data": {
-                                                "id": "인턴 id : adfhttwerqwrasxczx",
                                                 "Dday": "남은 일수 : D-10",
                                                 "title": "제목",
                                                 "view": 100,
                                                 "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                "organization": "조직 : 한국정보인증",
+                                                "enterprise": "조직: (주)~~",
                                                 "institution": "주체 기관 : 대기업",
-                                                "date": "접수 기간 : 23.8.28 ~ 23.9.11",
+                                                "period": "접수기간: 23.10.4 ~ 23.12.31",
                                                 "preferentialTreatment": "모집 직무 : IT/인터넷",
                                                 "personnel": "채용인원 : 10명",
                                                 "target": "채용형태 : 인턴",
-                                                "location": "지역 : 서울",
                                                 "hompage": "채용 홈페이지 : http://~~",
-                                                "detail": "html 코드"
+                                                "location": "지역 : 서울",
+                                                "detail": "html 코드",
+                                                "scrap": 0
                                             }
                                         }
                                     },
@@ -2615,49 +2446,49 @@
                                         "summary": "공모전 데이터",
                                         "value": {
                                             "data": {
-                                                "id": "공모전 id : adfhttwerqwrasxczx",
                                                 "Dday": "남은 일수 : D-10",
                                                 "title": "제목",
                                                 "view": 100,
                                                 "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                "organization": "조직 : 한국교육개발원",
+                                                "enterprise": "조직: (주)~~",
                                                 "institution": "주체 기관 : 공공기관/공기업",
-                                                "date": "접수 기간 : 23.8.28 ~ 23.9.11",
-                                                "scale": 100,
-                                                "benefits": "활동 혜택 : 상장 수여",
                                                 "target": "참여대상 : 청소년, 대학생",
-                                                "interest": "공모분야 : 디자인/순수미술/공예",
+                                                "scale": 100,
+                                                "period": "접수기간: 23.10.4 ~ 23.12.31",
                                                 "hompage": "주체 홈페이지 : http://~~",
-                                                "detail": "html 코드"
+                                                "benefits": "활동 혜택 : 상장 수여",
+                                                "interests": "공모분야 : 디자인/순수미술/공예",
+                                                "detail": "html 코드",
+                                                "scrap": 0
                                             }
                                         }
                                     },
-
                                     "qnetData": {
                                         "summary": "자격증 데이터",
                                         "value": {
                                             "data": {
-                                                "id": "자격증 id : adfhttwerqwrasxczx",
+                                                "mainImage": "...",
+                                                "mainCategory": "메인카테고리: 환경.에너지",
+                                                "subCategory": "서브카테고리: 환경",
                                                 "detail": "html 코드",
                                                 "scheduleInfo": "시험 일정 설명 : html 코드",
-                                                "title": "자격증명 : 에너지산업기사",
-                                                "engTitle": "자격증 영어명 : Engineer Energy Management or null",
-                                                "relatedDepartment": "과련부처 : 통겨청",
-                                                "institution": "시행기관 : 한국산업인력공단",
-                                                "mainImage": "...",
                                                 "examSchedules": [
                                                     {
-                                                        "id": "회차 id : adfhttwerqwrasxczx",
                                                         "turn": "회차 : 2023년정기기사4회",
                                                         "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
                                                         "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                         "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptPeriod": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
                                                         "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
                                                         "resultDay": "최종합격자 발표일 : 2023.11.15"
                                                     }
                                                 ],
-                                                "subCategoryId": "서브카테고리 id : adfhttwerqwrasxczx"
+                                                "title": "자격증명 : 에너지산업기사",
+                                                "enTitle": "자격증 영어명 : Engineer Energy Management or null",
+                                                "relatedDepartment": "과련부처 : 통겨청",
+                                                "institution": "시행기관 : 한국산업인력공단",
+                                                "scrap": 0,
+                                                "view": 0
                                             }
                                         }
                                     }
@@ -2667,9 +2498,6 @@
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
                                                 "Dday": {
                                                     "type": "string"
                                                 },
@@ -2682,31 +2510,31 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "organization": {
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
                                                 "institution": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "target": {
+                                                    "type": "string"
+                                                },
+                                                "period": {
                                                     "type": "string"
                                                 },
                                                 "participationPeriod": {
                                                     "type": "string"
                                                 },
-                                                "preferentialTreatment": {
-                                                    "type": "string"
-                                                },
                                                 "personnel": {
-                                                    "type": "string"
-                                                },
-                                                "target": {
                                                     "type": "string"
                                                 },
                                                 "location": {
                                                     "type": "string"
                                                 },
-                                                "hompage": {
+                                                "preferentialTreatment": {
+                                                    "type": "string"
+                                                },
+                                                "homePage": {
                                                     "type": "string"
                                                 },
                                                 "benefits": {
@@ -2720,15 +2548,18 @@
                                                 },
                                                 "detail": {
                                                     "type": "string"
+                                                },
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "month": {
+                                                    "type": "number"
                                                 }
                                             }
                                         },
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
                                                 "Dday": {
                                                     "type": "string"
                                                 },
@@ -2741,13 +2572,13 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "organization": {
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
                                                 "institution": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "period": {
                                                     "type": "string"
                                                 },
                                                 "preferentialTreatment": {
@@ -2759,23 +2590,23 @@
                                                 "target": {
                                                     "type": "string"
                                                 },
-                                                "location": {
+                                                "hompage": {
                                                     "type": "string"
                                                 },
-                                                "hompage": {
+                                                "location": {
                                                     "type": "string"
                                                 },
                                                 "detail": {
                                                     "type": "string"
+                                                },
+                                                "scrap": {
+                                                    "type": "number"
                                                 }
                                             }
                                         },
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
                                                 "Dday": {
                                                     "type": "string"
                                                 },
@@ -2788,39 +2619,48 @@
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "organization": {
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
                                                 "institution": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "target": {
                                                     "type": "string"
                                                 },
                                                 "scale": {
                                                     "type": "number"
                                                 },
-                                                "benefits": {
-                                                    "type": "string"
-                                                },
-                                                "target": {
-                                                    "type": "string"
-                                                },
-                                                "interest": {
+                                                "period": {
                                                     "type": "string"
                                                 },
                                                 "hompage": {
                                                     "type": "string"
                                                 },
+                                                "benefits": {
+                                                    "type": "string"
+                                                },
+                                                "interests": {
+                                                    "type": "string"
+                                                },
                                                 "detail": {
                                                     "type": "string"
+                                                },
+                                                "scrap": {
+                                                    "type": "number"
                                                 }
                                             }
                                         },
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
+                                                "mainImage": {
+                                                    "type": "string"
+                                                },
+                                                "mainCategory": {
+                                                    "type": "string"
+                                                },
+                                                "subCategory": {
                                                     "type": "string"
                                                 },
                                                 "detail": {
@@ -2829,29 +2669,11 @@
                                                 "scheduleInfo": {
                                                     "type": "string"
                                                 },
-                                                "title": {
-                                                    "type": "string"
-                                                },
-                                                "engTitle": {
-                                                    "type": "string | null"
-                                                },
-                                                "relatedDepartment": {
-                                                    "type": "string"
-                                                },
-                                                "institution": {
-                                                    "type": "string"
-                                                },
-                                                "mainImage": {
-                                                    "type": "string"
-                                                },
                                                 "examSchedules": {
                                                     "type": "array",
                                                     "items": {
                                                         "type": "object",
                                                         "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
                                                             "turn": {
                                                                 "type": "string"
                                                             },
@@ -2864,7 +2686,7 @@
                                                             "wtResultDay": {
                                                                 "type": "string"
                                                             },
-                                                            "ptPerid": {
+                                                            "ptPeriod": {
                                                                 "type": "string"
                                                             },
                                                             "ptDday": {
@@ -2876,8 +2698,20 @@
                                                         }
                                                     }
                                                 },
-                                                "subCategoryId": {
+                                                "title": {
                                                     "type": "string"
+                                                },
+                                                "enTitle": {
+                                                    "type": "string | null"
+                                                },
+                                                "relatedDepartment": {
+                                                    "type": "string"
+                                                },
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "view": {
+                                                    "type": "number"
                                                 }
                                             }
                                         }
@@ -2909,16 +2743,6 @@
                     }
                 ],
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "competition"
-                        },
-                        "description": "competition:공모전"
-                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -2958,13 +2782,12 @@
                                             "data": [
                                                 {
                                                     "id": "공모전 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "institution": "주체 기관 : 공공기관/공기업",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11"
+                                                    "scrap": 0,
+                                                    "enterprise": "조직: (주)~~",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목"
                                                 }
                                             ]
                                         }
@@ -2981,25 +2804,22 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
                                                 "view": {
-                                                    "type": "number"
-                                                },
-                                                "scrap": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -3043,16 +2863,6 @@
                 ],
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "outside"
-                        },
-                        "description": "대외활동(outside)"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -3091,13 +2901,12 @@
                                             "data": [
                                                 {
                                                     "id": "대외활동 id : asdasda",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집",
                                                     "view": 100,
-                                                    "scrap": 0,
                                                     "mainImage": "이미지 url",
-                                                    "institution": "주최기관 : 대기업",
-                                                    "date": "접수기간 : 23.9.12 ~ 23.9.18"
+                                                    "scrap": 0,
+                                                    "enterprise": "조직: (주)~~",
+                                                    "Dday": "남은 일수 : D-10",
+                                                    "title": "제목 : 모집"
                                                 }
                                             ]
                                         }
@@ -3114,25 +2923,22 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
                                                 "view": {
-                                                    "type": "number"
-                                                },
-                                                "scrap": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "institution": {
+                                                "scrap": {
+                                                    "type": "number"
+                                                },
+                                                "enterprise": {
                                                     "type": "string"
                                                 },
-                                                "date": {
+                                                "Dday": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -3176,16 +2982,6 @@
                 ],
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "intern"
-                        },
-                        "description": "intern:인턴"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -3224,14 +3020,13 @@
                                             "data": [
                                                 {
                                                     "id": "인턴 id : adfhttwerqwrasxczx",
-                                                    "Dday": "남은 일수 : D-10",
-                                                    "date": "접수 기간 : 23.8.28 ~ 23.9.11",
-                                                    "institution": "주체 기관 : 대기업",
                                                     "view": 100,
                                                     "mainImage": "이미지 url : awihqwifbjqjfbo",
-                                                    "organization": "조직 : (주)~~",
+                                                    "enterprise": "조직: (주)~~",
+                                                    "preferentialTreatment": "모집 직무 : IT/인터넷",
                                                     "location": "서울 강남구",
-                                                    "title": "제목"
+                                                    "title": "제목",
+                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00"
                                                 }
                                             ]
                                         }
@@ -3249,28 +3044,25 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "Dday": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string"
-                                                },
-                                                "institution": {
-                                                    "type": "string"
-                                                },
                                                 "view": {
                                                     "type": "number"
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
                                                 },
-                                                "organization": {
+                                                "enterprise": {
+                                                    "type": "string"
+                                                },
+                                                "preferentialTreatment": {
                                                     "type": "string"
                                                 },
                                                 "location": {
                                                     "type": "string"
                                                 },
                                                 "title": {
+                                                    "type": "string"
+                                                },
+                                                "closeDate": {
                                                     "type": "string"
                                                 }
                                             }
@@ -3313,16 +3105,6 @@
                     }
                 ],
                 "parameters": [
-                    {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "language"
-                        },
-                        "description": "language 데이터 조회"
-                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -3372,11 +3154,10 @@
                                             "data": [
                                                 {
                                                     "id": "언어별 id : adfhttwerqwrasxczx",
-                                                    "test": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
-                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
-                                                    "openDate": "접수 시작 날짜 : 2023-10-02 10:00",
                                                     "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
-                                                    "homePage": "접수 홈페이지 : http://~~"
+                                                    "examDate": "시험날짜 : 2023-11-19 09:20",
+                                                    "homePage": "접수 홈페이지 : http://~~",
+                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험"
                                                 }
                                             ]
                                         }
@@ -3399,22 +3180,16 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "path": {
+                                                "closeDate": {
                                                     "type": "string"
                                                 },
-                                                "hompage": {
+                                                "examDate": {
                                                     "type": "string"
                                                 },
-                                                "turn": {
-                                                    "type": "string | null"
-                                                },
-                                                "Dday": {
+                                                "homePage": {
                                                     "type": "string"
                                                 },
-                                                "resultDay": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
+                                                "title": {
                                                     "type": "string"
                                                 }
                                             }
@@ -3461,16 +3236,6 @@
                 ],
                 "parameters": [
                     {
-                        "name": "path",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "format": "path",
-                            "example": "qnet"
-                        },
-                        "description": " qnet:자격증"
-                    },
-                    {
                         "name": "count",
                         "in": "query",
                         "schema": {
@@ -3499,20 +3264,19 @@
                                             "data": [
                                                 {
                                                     "id": "자격증 id : adfhttwerqwrasxczx",
-                                                    "title": "자격증명 : 에너지산업기사",
-                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null",
-                                                    "relatedDepartment": "과련부처 : 통겨청",
                                                     "institution": "시행기관 : 한국산업인력공단",
+                                                    "relatedDepartment": "과련부처 : 통겨청",
                                                     "examSchedules": {
-                                                        "id": "회차 id : adfhttwerqwrasxczx",
-                                                        "turn": "회차 : 2023년정기기사4회",
-                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
-                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
                                                         "wtResultDay": "필기 시험 발표 날짜 : 2023.09.22",
-                                                        "ptPerid": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
-                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26",
-                                                        "resultDay": "최종합격자 발표일 : 2023.11.15"
-                                                    }
+                                                        "resultDay": "최종합격자 발표일 : 2023.11.15",
+                                                        "wtDday": "필기 시험 날짜 : 2023.09.02~2023.09.17",
+                                                        "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                        "turn": "회차 : 2023년정기기사4회",
+                                                        "ptPeriod": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                        "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26"
+                                                    },
+                                                    "title": "자격증명 : 에너지산업기사",
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo"
                                                 }
                                             ]
                                         }
@@ -3529,46 +3293,43 @@
                                                 "id": {
                                                     "type": "string"
                                                 },
-                                                "title": {
+                                                "institution": {
                                                     "type": "string"
-                                                },
-                                                "engTitle": {
-                                                    "type": "string | null"
                                                 },
                                                 "relatedDepartment": {
-                                                    "type": "string"
-                                                },
-                                                "institution": {
                                                     "type": "string"
                                                 },
                                                 "examSchedules": {
                                                     "type": "object",
                                                     "properties": {
-                                                        "id": {
+                                                        "wtResultDay": {
                                                             "type": "string"
                                                         },
-                                                        "turn": {
-                                                            "type": "string"
-                                                        },
-                                                        "wtPeriod": {
+                                                        "resultDay": {
                                                             "type": "string"
                                                         },
                                                         "wtDday": {
                                                             "type": "string"
                                                         },
-                                                        "wtResultDay": {
+                                                        "wtPeriod": {
                                                             "type": "string"
                                                         },
-                                                        "ptPerid": {
+                                                        "turn": {
+                                                            "type": "string"
+                                                        },
+                                                        "ptPeriod": {
                                                             "type": "string"
                                                         },
                                                         "ptDday": {
                                                             "type": "string"
-                                                        },
-                                                        "resultDay": {
-                                                            "type": "string"
                                                         }
                                                     }
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "mainImage": {
+                                                    "type": "string"
                                                 }
                                             }
                                         }
@@ -4305,7 +4066,11 @@
                                                         "id": "comments id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
                                                         "comment": "댓글 내용: 굳",
                                                         "date": "댓글 생성 시간 : 2023-09-16",
-                                                        "userId": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                                        "user": {
+                                                            "id": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                            "profileImage": "profile url",
+                                                            "nickname": "닉네임"
+                                                        }
                                                     }
                                                 ],
                                                 "communitiyLikes": [
@@ -4413,8 +4178,21 @@
                                                             "createAt": {
                                                                 "type": "string"
                                                             },
-                                                            "userId": {
-                                                                "type": "string"
+                                                            "user": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "nickname": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "profileImage": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }

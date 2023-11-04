@@ -4,9 +4,9 @@ export interface LanguageType {
     classify: string;
     mainImage: string;
     homePage: string;
-    examDate: string;
-    openDate: string;
-    closeDate: string;
+    examDate: Date;
+    openDate: Date;
+    closeDate: Date;
     scrap: number;
 }
 

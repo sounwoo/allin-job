@@ -16,7 +16,8 @@ import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
-import { languageData, languageTitle } from '../../common/util/languageData';
+import { dateToString, languageTitle } from '../../common/util/languageData';
+import { splitDate } from '../../common/util/splitDate';
 
 @Service()
 export class CrawlingService {
@@ -52,6 +53,16 @@ export class CrawlingService {
                 index: `${path}*`,
                 _source_includes: cludes(path),
                 body: {
+                    sort:
+                        path === 'language'
+                            ? [
+                                  {
+                                      examDate: {
+                                          order: 'asc',
+                                      },
+                                  },
+                              ]
+                            : [{ view: { order: 'desc' } }],
                     query: {
                         ...(must.length
                             ? {
@@ -68,14 +79,28 @@ export class CrawlingService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
-                          const test = el._source.test;
-                          delete el._source.test;
+                          const { examDate, closeDate, test, period } =
+                              el._source;
+
+                          delete el._source.test, delete el._source.period;
+
+                          if (path === 'intern')
+                              delete el._source.scrap, delete el._source.Dday;
+                          if (path === 'qnet')
+                              delete el._source.scrap, delete el._source.view;
 
                           return {
                               id: el._id,
                               ...el._source,
+                              ...(path === 'intern' && {
+                                  closeDate: splitDate(period),
+                              }),
                               ...(path === 'language' && {
                                   title: languageTitle(test),
+                                  ...dateToString({
+                                      eDate: examDate,
+                                      cDate: closeDate,
+                                  }),
                               }),
                               ...(path === 'qnet' && {
                                   ...examSchedulesSort(el),
@@ -200,13 +225,22 @@ export class CrawlingService {
                 size: 12,
             })
             .then((el) =>
-                el.body.hits.hits.map((el: any) => ({
-                    id: el._id,
-                    ...el._source,
-                    ...(path === 'qnet' && {
-                        ...examSchedulesSort(el),
-                    }),
-                })),
+                el.body.hits.hits.map((el: any) => {
+                    if (path === 'intern') {
+                        delete el._source.period;
+                        delete el._source.preferentialTreatment;
+                    }
+                    if (path === 'qnet') {
+                        delete el._source.examSchedules;
+                    }
+                    return {
+                        id: el._id,
+                        ...el._source,
+                        ...(path === 'qnet' && {
+                            mainImage: process.env.QNET_IMAGE,
+                        }),
+                    };
+                }),
             );
     }
     async randomCrwling(): Promise<any> {

@@ -1,5 +1,7 @@
 import { testType } from '../crawiling/interface';
+import { dateToStringType } from '../types';
 import { formDate } from './formDate';
+import { transformDate } from './transformDate';
 
 export const languageTitle = (test: testType): string => {
     const obj = {
@@ -22,6 +24,14 @@ export const languageData = (Dday: string, date: string) => {
         date.split('특별추가')[0].split('~')[0].replace('정기접수:', ''),
     );
     const closeDate = formDate(date.split('특별추가')[0].split('~')[1]);
+
+    return { examDate, openDate, closeDate };
+};
+
+export const dateToString = ({ eDate, oDate, cDate }: dateToStringType) => {
+    const examDate = transformDate(eDate);
+    const openDate = oDate && transformDate(oDate);
+    const closeDate = transformDate(cDate);
 
     return { examDate, openDate, closeDate };
 };
