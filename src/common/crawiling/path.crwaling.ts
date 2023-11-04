@@ -1,20 +1,12 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import { languageType, linkareerType } from './crawiling.data';
-import {
-    createLinkareerPaths,
-    createPaths,
-    itmeType,
-    testType,
-} from './interface';
+import { createLinkareerPaths, itmeType, testType } from './interface';
 import { CrawlingService } from '../../apis/crawling/crawling.service';
 import { Service } from 'typedi';
 import { QNetObj } from './seed.q-net';
 import iconv from 'iconv-lite';
-import {
-    CategortObj,
-    ExamSchedules,
-} from '../../apis/crawling/types/qnet.type';
+import { ExamSchedules } from '../../apis/crawling/types/qnet.type';
 import { languageData } from '../util/languageData';
 const decode = require('decode-html');
 
@@ -160,7 +152,8 @@ export class PathCrawling {
         const category = await axios.get(
             'http://openapi.q-net.or.kr/api/service/rest/InquiryListNationalQualifcationSVC/getList?serviceKey=sWAEtBKCgnfT4ANvlYmgqRju8t9TcJHpyQvLY5zz6qu%2BRzrrMv%2FQyMHjzYUbtK%2FTJqePrdyM2nVPzTwEImSGvQ%3D%3D',
         );
-        let categoryObj: CategortObj = {};
+        const categoryObj: any = {};
+
         await Promise.all(
             category.data.response.body.items.item.map(async (el: itmeType) => {
                 const {
@@ -169,7 +162,7 @@ export class PathCrawling {
                     jmcd,
                 } = el;
                 if (QNetObj[jmcd]) {
-                    categoryObj = {
+                    categoryObj[jmcd] = {
                         mainCategory: mainKeyword,
                         subCategory: subKeyword,
                     };
@@ -249,7 +242,7 @@ export class PathCrawling {
                         institution: implNm,
                         scrap: 0,
                         view: 0,
-                        categoryObj,
+                        categoryObj: categoryObj[jmCd],
                     });
                 }
             });

@@ -8,11 +8,6 @@ export interface ExamSchedules {
     resultDay: string;
 }
 
-export interface CategortObj {
-    mainCategory?: QnetType['mainCategory'];
-    subCategory?: QnetType['subCategory'];
-}
-
 export interface QnetType {
     id: string;
     detail: string;

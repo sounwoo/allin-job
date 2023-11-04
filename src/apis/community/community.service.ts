@@ -84,11 +84,16 @@ export class CommunityService {
                     select: {
                         id: true,
                         date: true,
-                        userId: true,
                         comment: true,
+                        user: {
+                            select: {
+                                id: true,
+                                profileImage: true,
+                                nickname: true,
+                            },
+                        },
                     },
                 },
-
                 communitiyLikes: {
                     select: {
                         id: true,

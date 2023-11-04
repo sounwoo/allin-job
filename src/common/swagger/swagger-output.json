@@ -4066,7 +4066,11 @@
                                                         "id": "comments id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
                                                         "comment": "댓글 내용: 굳",
                                                         "date": "댓글 생성 시간 : 2023-09-16",
-                                                        "userId": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                                        "user": {
+                                                            "id": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                            "profileImage": "profile url",
+                                                            "nickname": "닉네임"
+                                                        }
                                                     }
                                                 ],
                                                 "communitiyLikes": [
@@ -4174,8 +4178,21 @@
                                                             "createAt": {
                                                                 "type": "string"
                                                             },
-                                                            "userId": {
-                                                                "type": "string"
+                                                            "user": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "nickname": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "profileImage": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
