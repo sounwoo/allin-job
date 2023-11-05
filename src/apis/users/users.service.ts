@@ -18,6 +18,8 @@ import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
 import { dateToString, languageTitle } from '../../common/util/languageData';
+import { CrawlingService } from '../crawling/crawling.service';
+import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
 
 @Service()
 export class UserService {
@@ -25,6 +27,7 @@ export class UserService {
         private readonly prisma: CustomPrismaClient, //
         private readonly redis: RedisClient,
         private readonly elastic: ElasitcClient,
+        private readonly crawlingService: CrawlingService,
     ) {}
 
     async findUserKeyword({
@@ -114,6 +117,31 @@ export class UserService {
         );
     }
 
+    async saveUserMajor({ prisma, major, id }: SaveUserMajorDTO) {
+        const [mainMajor, subMajor] = Object.entries(major)[0];
+
+        return Promise.all([
+            prisma.mainMajor.upsert({
+                where: { mainMajor },
+                update: {},
+                create: { mainMajor },
+            }),
+            prisma.subMajor.upsert({
+                where: { subMajor },
+                update: {},
+                create: { subMajor },
+            }),
+        ]).then(([mainMajorId, subMajorId]) => {
+            return prisma.userMajor.create({
+                data: {
+                    userId: id,
+                    mainMajorId: mainMajorId.id,
+                    subMajorId: subMajorId.id,
+                },
+            });
+        });
+    }
+
     findOneUserByEmail(email: string): Promise<User | null> {
         return this.prisma.user.findUnique({
             where: {
@@ -124,6 +152,11 @@ export class UserService {
                     include: {
                         interest: true,
                         keyword: true,
+                    },
+                },
+                major: {
+                    include: {
+                        subMajor: true,
                     },
                 },
                 communities: true,
@@ -174,8 +207,22 @@ export class UserService {
         });
     }
 
+    async getLoginUserInfo(id: string) {
+        const user = await this.isUserByID(id);
+
+        const { nickname, profileImage } = user;
+
+        const solution = await this.crawlingService.randomCrwling();
+
+        return {
+            nickname,
+            profileImage,
+            solution,
+        };
+    }
+
     async createUser({ createDTO }: IUserCreateDTO): Promise<User['id']> {
-        const { interests, ...userData } = createDTO;
+        const { interests, major, ...userData } = createDTO;
 
         await this.isNickname(userData.nickname);
 
@@ -185,9 +232,8 @@ export class UserService {
                     ...userData,
                 },
             });
-
             await this.saveInterestKeyword({ prisma, interests, id: user.id });
-            this.redis.del(userData.email);
+            await this.saveUserMajor({ prisma, major, id: user.id });
             return user.id;
         });
     }
