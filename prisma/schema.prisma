@@ -29,7 +29,7 @@ model User {
   nickname         String             @unique @db.VarChar(10)
   phone            String             @db.VarChar(13)
   profileImage     String
-  major            String
+  major            UserMajor[]
   interests        UserInterest[]
   communities      Community[]
   comments         Comment[]
@@ -106,6 +106,30 @@ model UserInterest {
   interestId String
   keyword    Keyword  @relation(fields: [keywordId], references: [id], onDelete: Cascade)
   keywordId  String
+}
+
+model UserMajor {
+  id          String    @id @unique @default(uuid())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  mainMajor   MainMajor @relation(fields: [mainMajorId], references: [id], onDelete: Cascade)
+  mainMajorId String
+  subMajor    SubMajor  @relation(fields: [subMajorId], references: [id], onDelete: Cascade)
+  subMajorId  String
+}
+
+model MainMajor {
+  id        String      @id @unique @default(uuid())
+  mainMajor String      @unique
+  subMajor  SubMajor[]
+  userMajor UserMajor[]
+}
+
+model SubMajor {
+  id        String      @id @unique @default(uuid())
+  subMajor  String      @unique
+  mainMajor MainMajor[]
+  userMajor UserMajor[]
 }
 
 model ScrapCompetition {
