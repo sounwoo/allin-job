@@ -117,31 +117,6 @@ export class UserService {
         );
     }
 
-    async saveUserMajor({ prisma, major, id }: SaveUserMajorDTO) {
-        const [mainMajor, subMajor] = Object.entries(major)[0];
-
-        return Promise.all([
-            prisma.mainMajor.upsert({
-                where: { mainMajor },
-                update: {},
-                create: { mainMajor },
-            }),
-            prisma.subMajor.upsert({
-                where: { subMajor },
-                update: {},
-                create: { subMajor },
-            }),
-        ]).then(([mainMajorId, subMajorId]) => {
-            return prisma.userMajor.create({
-                data: {
-                    userId: id,
-                    mainMajorId: mainMajorId.id,
-                    subMajorId: subMajorId.id,
-                },
-            });
-        });
-    }
-
     findOneUserByEmail(email: string): Promise<User | null> {
         return this.prisma.user.findUnique({
             where: {
@@ -152,11 +127,6 @@ export class UserService {
                     include: {
                         interest: true,
                         keyword: true,
-                    },
-                },
-                major: {
-                    include: {
-                        subMajor: true,
                     },
                 },
                 communities: true,
@@ -224,16 +194,29 @@ export class UserService {
     async createUser({ createDTO }: IUserCreateDTO): Promise<User['id']> {
         const { interests, major, ...userData } = createDTO;
 
+        const [mainMajor, subMajor] = Object.entries(major)[0];
+
         await this.isNickname(userData.nickname);
 
         return await this.prisma.$transaction(async (prisma) => {
+            const subMajorId = await prisma.subMajor.create({
+                data: {
+                    subMajor,
+                    mainMajor: {
+                        connectOrCreate: {
+                            where: { mainMajor },
+                            create: { mainMajor },
+                        },
+                    },
+                },
+            });
             const user = await prisma.user.create({
                 data: {
                     ...userData,
+                    subMajorId: subMajorId.id,
                 },
             });
             await this.saveInterestKeyword({ prisma, interests, id: user.id });
-            await this.saveUserMajor({ prisma, major, id: user.id });
             return user.id;
         });
     }
@@ -410,13 +393,8 @@ export class UserService {
     }
     async delete(email: string): Promise<boolean> {
         const user = await this.findOneUserByEmail(email);
-
-        if (user) {
-            await this.prisma.userInterest.deleteMany({
-                where: { userId: user.id },
-            });
-            await this.prisma.user.delete({ where: { email } });
-            return true;
-        } else return false;
+        const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
+        console.log(qqq);
+        return true;
     }
 }
