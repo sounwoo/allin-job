@@ -39,6 +39,12 @@ class UserController {
         );
 
         this.router.get(
+            '/getLoginUserInfo',
+            AccessGuard.handle,
+            asyncHandler(this.getLoginUserInfo.bind(this)),
+        );
+
+        this.router.get(
             '/isNickname',
             Validate.isNickname,
             asyncHandler(this.isNickName.bind(this)),
@@ -102,6 +108,15 @@ class UserController {
                 name,
                 phone,
             }),
+        });
+    }
+
+    async getLoginUserInfo(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { id } = req.user as idType;
+
+        res.status(200).json({
+            data: await this.userService.getLoginUserInfo(id),
         });
     }
 

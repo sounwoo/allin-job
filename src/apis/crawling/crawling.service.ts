@@ -18,6 +18,7 @@ import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
 import { dateToString, languageTitle } from '../../common/util/languageData';
 import { splitDate } from '../../common/util/splitDate';
+import { randomSolution } from '../../common/util/return_data_randomSolution';
 
 @Service()
 export class CrawlingService {
@@ -243,6 +244,7 @@ export class CrawlingService {
                 }),
             );
     }
+
     async randomCrwling(): Promise<any> {
         return await Promise.all(
             ['outside', 'competition', 'intern', 'qnet'].map(async (el) => {

@@ -408,8 +408,13 @@
                                         "example": "profile url"
                                     },
                                     "major": {
-                                        "type": "string",
-                                        "example": "컴퓨터공학"
+                                        "type": "object",
+                                        "properties": {
+                                            "정보통신": {
+                                                "type": "string",
+                                                "example": "정보통신공학"
+                                            }
+                                        }
                                     },
                                     "interests": {
                                         "type": "array",
