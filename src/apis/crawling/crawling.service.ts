@@ -255,6 +255,7 @@ export class CrawlingService {
                           [el]: await this.elastic
                               .search({
                                   index: el,
+                                  _source_includes: randomSolution(el),
                                   body: {
                                       query: {
                                           function_score: {

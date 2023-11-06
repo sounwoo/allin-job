@@ -7,7 +7,7 @@ const registerKakaoStrategy = () => {
         new KakaoStrategy(
             {
                 clientID: process.env.KAKAO_CLIENT_ID,
-                clientSecret: process.env.KAKAO_CLIENT_SEVRET,
+                clientSecret: process.env.KAKAO_CLIENT_SECRET,
                 callbackURL: `${url().domain}login/kakao/callback`,
             } as StrategyOption,
             (_: string, __: string, profile, done) => {

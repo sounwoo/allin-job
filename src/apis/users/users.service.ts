@@ -199,17 +199,25 @@ export class UserService {
         await this.isNickname(userData.nickname);
 
         return await this.prisma.$transaction(async (prisma) => {
-            const subMajorId = await prisma.subMajor.create({
-                data: {
-                    subMajor,
-                    mainMajor: {
-                        connectOrCreate: {
-                            where: { mainMajor },
-                            create: { mainMajor },
-                        },
-                    },
-                },
+            const isSubMajor = await prisma.subMajor.findFirst({
+                where: { AND: [{ subMajor, mainMajor: { mainMajor } }] },
+                select: { id: true },
             });
+            const subMajorId = isSubMajor
+                ? isSubMajor
+                : await prisma.subMajor.create({
+                      data: {
+                          subMajor,
+                          mainMajor: {
+                              connectOrCreate: {
+                                  where: { mainMajor },
+                                  create: { mainMajor },
+                              },
+                          },
+                      },
+                      select: { id: true },
+                  });
+
             const user = await prisma.user.create({
                 data: {
                     ...userData,
