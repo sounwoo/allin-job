@@ -410,7 +410,11 @@
                                     "major": {
                                         "type": "object",
                                         "properties": {
-                                            "정보통신": {
+                                            "mainMajor": {
+                                                "type": "string",
+                                                "example": "정보통신"
+                                            },
+                                            "subMajor": {
                                                 "type": "string",
                                                 "example": "정보통신공학"
                                             }
