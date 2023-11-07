@@ -194,7 +194,7 @@ export class UserService {
     async createUser({ createDTO }: IUserCreateDTO): Promise<User['id']> {
         const { interests, major, ...userData } = createDTO;
 
-        const [mainMajor, subMajor] = Object.entries(major)[0];
+        const { mainMajor, subMajor } = major;
 
         await this.isNickname(userData.nickname);
 
