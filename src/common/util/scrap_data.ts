@@ -27,7 +27,7 @@ export const scrapData = (path: Path['path'] | 'language') => {
             column: 'scrapLanguage',
             info: [
                 'Dday',
-                'mainImage', //
+                'mainImage',
                 'test',
                 'examDate',
                 'closeDate',
@@ -37,12 +37,7 @@ export const scrapData = (path: Path['path'] | 'language') => {
         qnet: {
             id: 'qNetId',
             column: 'scrapQNet',
-            info: [
-                'title', //
-                'institution',
-                'examSchedules',
-                ...viewScrap,
-            ],
+            info: ['title', 'institution', 'examSchedules', ...viewScrap],
         },
         intern: {
             id: 'internId',

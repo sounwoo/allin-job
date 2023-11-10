@@ -39,6 +39,12 @@ class UserController {
         );
 
         this.router.get(
+            '/findUserProfile',
+            AccessGuard.handle,
+            asyncHandler(this.findUserProfile.bind(this)),
+        );
+
+        this.router.get(
             '/getLoginUserInfo',
             AccessGuard.handle,
             asyncHandler(this.getLoginUserInfo.bind(this)),
@@ -126,6 +132,15 @@ class UserController {
                 name,
                 phone,
             }),
+        });
+    }
+
+    async findUserProfile(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { id } = req.user as idType;
+
+        res.status(200).json({
+            data: await this.userService.findUserProfile(id),
         });
     }
 

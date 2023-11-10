@@ -1,6 +1,7 @@
-import { Community, Provider, User } from '@prisma/client';
+import { Provider, User } from '@prisma/client';
 import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
-import { Path } from './crawiling/interface';
+import { Path, paths } from './crawiling/interface';
+import { CustomPrismaClient } from '../database/prismaConfig';
 
 export type email = {
     email: CreateUserDTO['email'];
@@ -11,10 +12,10 @@ export type providerTokenType = {
     token: string;
 };
 
-export type dateToStringType = {
-    eDate: Date;
-    oDate?: Date;
-    cDate: Date;
+export type getScrapIdType = {
+    prisma: CustomPrismaClient;
+    id: User['id'];
+    path: paths['path'];
 };
 
 export type idType = {
