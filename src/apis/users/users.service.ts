@@ -23,9 +23,9 @@ import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
 import { dateToString, languageTitle } from '../../common/util/languageData';
 import { percentage } from '../../common/util/termometer';
+import { PercentageType } from './types/thermometer.type';
 import { CrawlingService } from '../crawling/crawling.service';
 import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
-import { PercentageType } from './types/thermometer.type';
 
 @Service()
 export class UserService {
@@ -200,7 +200,7 @@ export class UserService {
     async createUser({ createDTO }: IUserCreateDTO): Promise<User['id']> {
         const { interests, major, ...userData } = createDTO;
 
-        const [mainMajor, subMajor] = Object.entries(major)[0];
+        const { mainMajor, subMajor } = major;
 
         await this.isNickname(userData.nickname);
 
