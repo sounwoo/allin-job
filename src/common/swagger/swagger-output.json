@@ -763,6 +763,118 @@
                 }
             }
         },
+        "/user/updateThermometer": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "열정온도계 활동내역 작성 또는 삭제하기",
+                "description": "path : competition, outside, qnet, intern, language ",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "type": "string",
+                                        "example": "competition, outside, qnet, intern, language 중 하나 작성"
+                                    },
+                                    "createThermometer": {
+                                        "type": "object",
+                                        "example": {
+                                            "category": "#기획/아이디어",
+                                            "activeTitle": "2023 meta Spark AR콘텐츠 공모전",
+                                            "activeContent": "활동 내용 작성",
+                                            "period": "2022.01.01 ~ 2022.02.01 (intern인 경우에만 추가)",
+                                            "score": "980(type :string)(language인 경우에만 추가)"
+                                        }
+                                    },
+
+                                    "deleteThermometer": {
+                                        "type": "object",
+                                        "example": {
+                                            "thermometerId": "81c0097e-73ec-4409-87a4-5ca315681276"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "열정온도 활동내역 등록 or 삭제 성공": {
+                                        "value": {
+                                            "success": true
+                                        }
+                                    },
+                                    "열정온도 활동내역 등록 or 삭제 실패": {
+                                        "value": {
+                                            "success": false
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "path : path must be a string",
+                                        "category : category must be a string",
+                                        "activeTitle : activeTitle must be a string",
+                                        "activeContent : activeContent must be a string",
+                                        "period : period must be a string (intern인 경우에만 추가)",
+                                        "score : score must be a string (language인 경우에만 추가)"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/updateProfile": {
             "patch": {
                 "tags": ["Users"],

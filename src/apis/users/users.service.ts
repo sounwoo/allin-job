@@ -1,6 +1,10 @@
 import { User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
+    IThermometerCreate,
+    IThermometerDelete,
+    IThermometerUser,
+    ITopPercentage,
     IUserCreateDTO,
     IUserFindOneUserByID,
     IUserUpdateDTO,
@@ -18,6 +22,8 @@ import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
 import { dateToString, languageTitle } from '../../common/util/languageData';
+import { percentage } from '../../common/util/termometer';
+import { PercentageType } from './types/thermometer.type';
 import { CrawlingService } from '../crawling/crawling.service';
 import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
 
@@ -404,5 +410,132 @@ export class UserService {
         const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
         console.log(qqq);
         return true;
+    }
+
+    async updateThermometer({
+        id,
+        path,
+        createThermometer,
+        mainMajorId,
+        thermometerId,
+    }: IThermometerCreate & IThermometerDelete): Promise<boolean> {
+        try {
+            await this.isUserByID(id);
+
+            const obj: { [key: string]: () => { column: string } } = {
+                outside: () => ({ column: 'userOutside' }),
+                intern: () => ({ column: 'userIntern' }),
+                competition: () => ({ column: 'userCompetition' }),
+                language: () => ({ column: 'userLanguage' }),
+                qnet: () => ({ column: 'userQnet' }),
+            };
+
+            await this.prisma.$transaction(async (priusma) => {
+                await this.prisma.user.update({
+                    where: { id },
+                    data: {
+                        [obj[path]().column]: createThermometer
+                            ? { create: { ...createThermometer } }
+                            : { delete: { id: thermometerId } },
+                    },
+                });
+
+                const { sum: thermometer } = await this.getCount(id);
+                await this.prisma.user.update({
+                    where: { id },
+                    data: {
+                        thermometer,
+                    },
+                });
+
+                await this.topPercent({ id, mainMajorId });
+                await this.updateTopPercentagesForAllUsers(mainMajorId);
+            });
+            return true;
+        } catch (error) {
+            console.error('transaction failed', error);
+            return false;
+        }
+    }
+
+    async getCount(id: string): Promise<PercentageType> {
+        await this.isUserByID(id);
+
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                userCompetition: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userOutside: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userQnet: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userIntern: {
+                    select: {
+                        id: true,
+                    },
+                },
+                userLanguage: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        });
+        return percentage(user as IThermometerUser);
+    }
+
+    async topPercent({ id, mainMajorId }: ITopPercentage): Promise<User> {
+        const top = await this.prisma.user.findMany({
+            select: {
+                id: true,
+            },
+            where: {
+                subMajor: {
+                    mainMajorId,
+                },
+            },
+            orderBy: {
+                thermometer: 'desc',
+            },
+        });
+
+        const grade = top.findIndex((el) => el.id === id) + 1;
+
+        const result = (grade / top.length) * 100;
+
+        return await this.prisma.user.update({
+            where: { id },
+            data: {
+                top: result,
+            },
+        });
+    }
+
+    async updateTopPercentagesForAllUsers(mainMajorId: string): Promise<void> {
+        const users = await this.prisma.user.findMany({
+            select: {
+                id: true,
+            },
+        });
+
+        for (const user of users) {
+            const { top } = await this.topPercent({ id: user.id, mainMajorId });
+            await this.prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    top,
+                },
+            });
+        }
     }
 }

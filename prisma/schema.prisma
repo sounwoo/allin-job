@@ -31,6 +31,8 @@ model User {
   profileImage     String
   subMajor         SubMajor           @relation(fields: [subMajorId], references: [id])
   subMajorId       String
+  thermometer      Int                @default(0)
+  top              Int                @default(100)
   interests        UserInterest[]
   communities      Community[]
   comments         Comment[]
@@ -41,6 +43,11 @@ model User {
   scrapLanguage    ScrapLanguage[]
   scrapQNet        ScrapQNet[]
   scrapIntern      ScrapIntern[]
+  userCompetition  UserCompetition[]
+  userOutside      UserOutside[]
+  userQnet         UserQnet[]
+  userIntern       UserIntern[]
+  userLanguage     UserLanguage[]
 }
 
 model Community {
@@ -120,7 +127,7 @@ model SubMajor {
   subMajor    String    @unique
   mainMajor   MainMajor @relation(fields: [mainMajorId], references: [id], onDelete: Cascade)
   mainMajorId String
-  User        User[]
+  user        User[]
 }
 
 model ScrapCompetition {
@@ -161,6 +168,53 @@ model ScrapIntern {
   internId  String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+}
+
+model UserCompetition {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  user          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserOutside {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  user          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserQnet {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  user          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserIntern {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  period        String
+  user          User?   @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model UserLanguage {
+  id            String  @id @unique @default(uuid())
+  category      String
+  activeTitle   String
+  activeContent String
+  score         String
+  user          User?   @relation(fields: [userId], references: [id])
+  userId        String?
 }
 
 // 대용량 데이터를 생각해서 -> 엘라스틱 서치 -> 이동 완료

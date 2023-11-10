@@ -89,6 +89,24 @@ class UserController {
             asyncHandler(this.getUserScrap.bind(this)),
         );
 
+        this.router.post(
+            '/updateThermometer',
+            AccessGuard.handle,
+            asyncHandler(this.updateThermometer.bind(this)),
+        );
+
+        this.router.get(
+            '/getCount',
+            AccessGuard.handle,
+            asyncHandler(this.getCount.bind(this)),
+        );
+
+        this.router.post(
+            '/topPercent',
+            AccessGuard.handle,
+            asyncHandler(this.topPercent.bind(this)),
+        );
+
         this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
     }
 
@@ -191,6 +209,54 @@ class UserController {
         res.status(200).json({
             data: await this.userService.delete(email),
         });
+    }
+
+    async updateThermometer(req: Request, res: Response) {
+        const { id } = req.user as idType;
+        const { path, createThermometer, thermometerId, mainMajorId } =
+            req.body;
+
+        const datas = await this.userService.updateThermometer({
+            id,
+            path,
+            createThermometer,
+            thermometerId,
+            mainMajorId,
+        });
+
+        if (datas) {
+            res.status(200).json({
+                success: true,
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+            });
+        }
+    }
+
+    async getCount(req: Request, res: Response) {
+        const { id } = req.user as idType;
+
+        res.status(200).json({
+            data: await this.userService.getCount(id),
+        });
+    }
+
+    async topPercent(req: Request, res: Response) {
+        const { id } = req.user as idType;
+        const { mainMajorId } = req.body;
+        const datas = await this.userService.topPercent({ id, mainMajorId });
+
+        if (datas) {
+            res.status(200).json({
+                success: true,
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+            });
+        }
     }
 }
 
