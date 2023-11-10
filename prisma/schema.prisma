@@ -29,7 +29,10 @@ model User {
   nickname         String             @unique @db.VarChar(10)
   phone            String             @db.VarChar(13)
   profileImage     String
-  major            String
+  subMajor         SubMajor           @relation(fields: [subMajorId], references: [id])
+  subMajorId       String
+  thermometer      Int                @default(0)
+  top              Int                @default(100)
   interests        UserInterest[]
   communities      Community[]
   comments         Comment[]
@@ -113,6 +116,20 @@ model UserInterest {
   keywordId  String
 }
 
+model MainMajor {
+  id        String     @id @unique @default(uuid())
+  mainMajor String     @unique
+  subMajor  SubMajor[]
+}
+
+model SubMajor {
+  id          String    @id @unique @default(uuid())
+  subMajor    String    @unique
+  mainMajor   MainMajor @relation(fields: [mainMajorId], references: [id], onDelete: Cascade)
+  mainMajorId String
+  user        User[]
+}
+
 model ScrapCompetition {
   id            String   @id @unique @default(uuid())
   createdAt     DateTime @default(dbgenerated("NOW()")) @db.DateTime
@@ -158,7 +175,7 @@ model UserCompetition {
   category      String
   activeTitle   String
   activeContent String
-  User          User?   @relation(fields: [userId], references: [id])
+  user          User?   @relation(fields: [userId], references: [id])
   userId        String?
 }
 
@@ -167,7 +184,7 @@ model UserOutside {
   category      String
   activeTitle   String
   activeContent String
-  User          User?   @relation(fields: [userId], references: [id])
+  user          User?   @relation(fields: [userId], references: [id])
   userId        String?
 }
 
@@ -176,7 +193,7 @@ model UserQnet {
   category      String
   activeTitle   String
   activeContent String
-  User          User?   @relation(fields: [userId], references: [id])
+  user          User?   @relation(fields: [userId], references: [id])
   userId        String?
 }
 
@@ -186,7 +203,7 @@ model UserIntern {
   activeTitle   String
   activeContent String
   period        String
-  User          User?   @relation(fields: [userId], references: [id])
+  user          User?   @relation(fields: [userId], references: [id])
   userId        String?
 }
 
@@ -196,7 +213,7 @@ model UserLanguage {
   activeTitle   String
   activeContent String
   score         String
-  User          User?   @relation(fields: [userId], references: [id])
+  user          User?   @relation(fields: [userId], references: [id])
   userId        String?
 }
 

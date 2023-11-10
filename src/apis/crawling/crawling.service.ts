@@ -18,6 +18,7 @@ import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
 import { dateToString, languageTitle } from '../../common/util/languageData';
 import { splitDate } from '../../common/util/splitDate';
+import { randomSolution } from '../../common/util/return_data_randomSolution';
 
 @Service()
 export class CrawlingService {
@@ -243,47 +244,56 @@ export class CrawlingService {
                 }),
             );
     }
-    async randomCrwling(): Promise<any> {
-        const path = ['outside', 'competition', 'intern', 'qnet'];
 
-        let data = await Promise.all(
-            path.map(async (el) => {
+    async randomCrwling(): Promise<any> {
+        return await Promise.all(
+            ['outside', 'competition', 'intern', 'qnet'].map(async (el) => {
                 const data = await this.redis.get(el);
-                return data ? { [el]: JSON.parse(data) } : null;
+                return data
+                    ? { [el]: JSON.parse(data) }
+                    : {
+                          [el]: await this.elastic
+                              .search({
+                                  index: el,
+                                  _source_includes: randomSolution(el),
+                                  body: {
+                                      query: {
+                                          function_score: {
+                                              query: { match_all: {} },
+                                              random_score: {},
+                                          },
+                                      },
+                                  },
+                                  size: 1,
+                              })
+                              .then((data) => {
+                                  const hits = data.body.hits.hits[0];
+                                  const { period, examSchedules, ...rest } =
+                                      hits._source;
+                                  const info = {
+                                      id: hits._id,
+                                      ...(el === 'intern' && {
+                                          closeDate: splitDate(period),
+                                      }),
+                                      ...(el === 'qnet' && {
+                                          mainImage: process.env.QNET_IMAGE,
+                                          wtPeriod: examSchedules[0].wtPeriod,
+                                          ptPeriod: examSchedules[0].ptPeriod,
+                                      }),
+                                      ...rest,
+                                  };
+                                  this.redis.set(
+                                      el,
+                                      JSON.stringify({ ...info }),
+                                      'EX',
+                                      60 * 60 * 12,
+                                  );
+                                  return {
+                                      ...info,
+                                  };
+                              }),
+                      };
             }),
         );
-
-        if (!data[0]) {
-            data = await Promise.all(
-                path.map(async (el) => {
-                    return await this.elastic
-                        .search({
-                            index: el,
-                            body: {
-                                query: {
-                                    function_score: {
-                                        query: { match_all: {} },
-                                        random_score: {},
-                                    },
-                                },
-                            },
-                            size: 1,
-                        })
-                        .then((data) => {
-                            const temp = JSON.stringify({
-                                id: data.body.hits.hits[0]._id,
-                                ...data.body.hits.hits[0]._source,
-                            });
-                            this.redis.set(el, temp, 'EX', 60 * 60 * 12);
-                            return {
-                                id: data.body.hits.hits[0]._id,
-                                ...data.body.hits.hits[0]._source,
-                            };
-                        });
-                }),
-            );
-        }
-
-        return data;
     }
 }

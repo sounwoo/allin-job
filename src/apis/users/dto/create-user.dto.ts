@@ -5,6 +5,10 @@ export interface Interests {
     [key: string]: string[];
 }
 
+export interface Major {
+    [key: string]: string;
+}
+
 export class CreateUserDTO {
     @IsEmail()
     email: User['email'];
@@ -28,8 +32,7 @@ export class CreateUserDTO {
     @IsString()
     profileImage: User['profileImage'];
 
-    @IsString()
-    major: User['major'];
+    major: Major;
 
     interests: Interests[];
 

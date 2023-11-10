@@ -1,8 +1,12 @@
+import { User, UserCompetition } from '@prisma/client';
+import { IThermometerUser } from '../../apis/users/interfaces/user.interface';
+import { PercentageType } from '../../apis/users/types/thermometer.type';
+
 const length = (data: number, num: number): number => {
-    return data >= num ? 100 / 5 : ((data / num) * 100) / num;
+    return data >= num ? 100 / 5 : ((data / num) * 100) / 5;
 };
 
-export const percentage = (user: any): number[] => {
+export const percentage = (user: IThermometerUser): PercentageType => {
     const { userCompetition, userIntern, userLanguage, userOutside, userQnet } =
         user;
     const competitionPercentage = length(userCompetition.length, 5);
@@ -18,12 +22,27 @@ export const percentage = (user: any): number[] => {
         languagePercentage +
         internPercentage;
 
-    return [
-        competitionPercentage,
-        outsidePercentage,
-        qnetPercentage,
-        languagePercentage,
-        internPercentage,
+    return {
+        competition: {
+            barType: 'competition',
+            percent: competitionPercentage,
+        },
+        outside: {
+            barType: 'outisde',
+            percent: outsidePercentage,
+        },
+        qnet: {
+            barType: 'qnet',
+            percent: qnetPercentage,
+        },
+        language: {
+            barType: 'language',
+            percent: languagePercentage,
+        },
+        intern: {
+            barType: 'intern',
+            percent: internPercentage,
+        },
         sum,
-    ];
+    };
 };

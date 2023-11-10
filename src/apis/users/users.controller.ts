@@ -39,6 +39,12 @@ class UserController {
         );
 
         this.router.get(
+            '/getLoginUserInfo',
+            AccessGuard.handle,
+            asyncHandler(this.getLoginUserInfo.bind(this)),
+        );
+
+        this.router.get(
             '/isNickname',
             Validate.isNickname,
             asyncHandler(this.isNickName.bind(this)),
@@ -84,9 +90,21 @@ class UserController {
         );
 
         this.router.post(
-            '/createThermometer',
+            '/updateThermometer',
             AccessGuard.handle,
-            asyncHandler(this.createThermometer.bind(this)),
+            asyncHandler(this.updateThermometer.bind(this)),
+        );
+
+        this.router.get(
+            '/getCount',
+            AccessGuard.handle,
+            asyncHandler(this.getCount.bind(this)),
+        );
+
+        this.router.post(
+            '/topPercent',
+            AccessGuard.handle,
+            asyncHandler(this.topPercent.bind(this)),
         );
 
         this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
@@ -108,6 +126,15 @@ class UserController {
                 name,
                 phone,
             }),
+        });
+    }
+
+    async getLoginUserInfo(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { id } = req.user as idType;
+
+        res.status(200).json({
+            data: await this.userService.getLoginUserInfo(id),
         });
     }
 
@@ -184,28 +211,52 @@ class UserController {
         });
     }
 
-    async createThermometer(req: Request, res: Response) {
+    async updateThermometer(req: Request, res: Response) {
         const { id } = req.user as idType;
-        const { path, createThermometer } = req.body;
+        const { path, createThermometer, thermometerId, mainMajorId } =
+            req.body;
 
-        const datas = await this.userService.createThermometer({
+        const datas = await this.userService.updateThermometer({
             id,
             path,
             createThermometer,
+            thermometerId,
+            mainMajorId,
         });
+
+        if (datas) {
+            res.status(200).json({
+                success: true,
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+            });
+        }
+    }
+
+    async getCount(req: Request, res: Response) {
+        const { id } = req.user as idType;
 
         res.status(200).json({
             data: await this.userService.getCount(id),
         });
-        // if (datas) {
-        //     res.status(200).json({
-        //         success: true,
-        //     });
-        // } else {
-        //     res.status(400).json({
-        //         success: false,
-        //     });
-        // }
+    }
+
+    async topPercent(req: Request, res: Response) {
+        const { id } = req.user as idType;
+        const { mainMajorId } = req.body;
+        const datas = await this.userService.topPercent({ id, mainMajorId });
+
+        if (datas) {
+            res.status(200).json({
+                success: true,
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+            });
+        }
     }
 }
 

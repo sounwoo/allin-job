@@ -408,8 +408,13 @@
                                         "example": "profile url"
                                     },
                                     "major": {
-                                        "type": "string",
-                                        "example": "컴퓨터공학"
+                                        "type": "object",
+                                        "properties": {
+                                            "정보통신": {
+                                                "type": "string",
+                                                "example": "정보통신공학"
+                                            }
+                                        }
                                     },
                                     "interests": {
                                         "type": "array",
@@ -754,10 +759,10 @@
                 }
             }
         },
-        "/user/createThermometer": {
+        "/user/updateThermometer": {
             "post": {
                 "tags": ["Users"],
-                "summary": "열정온도계 활동내역 작성하기",
+                "summary": "열정온도계 활동내역 작성 또는 삭제하기",
                 "description": "path : competition, outside, qnet, intern, language ",
                 "security": [
                     {
@@ -784,6 +789,13 @@
                                             "period": "2022.01.01 ~ 2022.02.01 (intern인 경우에만 추가)",
                                             "score": "980(type :string)(language인 경우에만 추가)"
                                         }
+                                    },
+
+                                    "deleteThermometer": {
+                                        "type": "object",
+                                        "example": {
+                                            "thermometerId": "81c0097e-73ec-4409-87a4-5ca315681276"
+                                        }
                                     }
                                 }
                             }
@@ -796,12 +808,12 @@
                         "content": {
                             "application/json": {
                                 "examples": {
-                                    "열정온도 활동내역 등록 성공": {
+                                    "열정온도 활동내역 등록 or 삭제 성공": {
                                         "value": {
                                             "success": true
                                         }
                                     },
-                                    "열정온도 활동내역 등록 실패": {
+                                    "열정온도 활동내역 등록 or 삭제 실패": {
                                         "value": {
                                             "success": false
                                         }
@@ -4171,7 +4183,11 @@
                                                         "id": "comments id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
                                                         "comment": "댓글 내용: 굳",
                                                         "date": "댓글 생성 시간 : 2023-09-16",
-                                                        "userId": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                                        "user": {
+                                                            "id": "댓글 단 사람의 id : 255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                            "profileImage": "profile url",
+                                                            "nickname": "닉네임"
+                                                        }
                                                     }
                                                 ],
                                                 "communitiyLikes": [
@@ -4279,8 +4295,21 @@
                                                             "createAt": {
                                                                 "type": "string"
                                                             },
-                                                            "userId": {
-                                                                "type": "string"
+                                                            "user": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "nickname": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "profileImage": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }

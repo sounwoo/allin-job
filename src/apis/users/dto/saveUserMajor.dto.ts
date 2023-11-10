@@ -2,7 +2,7 @@ import { IsString } from 'class-validator';
 import { Prisma, PrismaClient, User } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 
-export class SaveInterestKeywordDTO {
+export class SaveUserMajorDTO {
     prisma: Omit<
         PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
         | '$connect'
@@ -13,14 +13,14 @@ export class SaveInterestKeywordDTO {
         | '$extends'
     >;
 
-    interests: object[];
+    major: object;
 
     @IsString()
     id: User['id'];
 
-    constructor(data: SaveInterestKeywordDTO) {
+    constructor(data: SaveUserMajorDTO) {
         this.prisma = data.prisma;
-        this.interests = data.interests;
+        this.major = data.major;
         this.id = data.id;
     }
 }
