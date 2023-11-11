@@ -37,13 +37,15 @@ export type paths = {
     page: string;
     classify: string;
     count: string;
+    id?: string;
 };
 
-export type fidneCrawlingType = paths & { count: string };
+export type fidneCrawlingType = paths & { count: string } & { id: string };
 
 export type findeDetailType = {
     path: Path['path'] | 'language';
-    id: string;
+    dataId: string;
+    id?: string;
 };
 
 export type createLinkareerPaths = 'outside' | 'intern' | 'competition';

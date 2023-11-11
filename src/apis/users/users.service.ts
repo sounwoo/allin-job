@@ -9,7 +9,6 @@ import {
     IUserFindOneUserByID,
     IUserUpdateDTO,
 } from './interfaces/user.interface';
-import RedisClient from '../../database/redisConfig';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
 import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
@@ -17,21 +16,19 @@ import { ElasitcClient } from '../../database/elasticConfig';
 import { SaveInterestKeywordDTO } from './dto/saveInterestKeyword.dto';
 import { ScrappingDTO } from './dto/scrapping.dto';
 import { scrapData } from '../../common/util/scrap_data';
-import { splitDate } from '../../common/util/splitDate';
 import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
-import { dateToString, languageTitle } from '../../common/util/languageData';
 import { percentage } from '../../common/util/termometer';
 import { PercentageType } from './types/thermometer.type';
+import { languageTitle } from '../../common/util/languageData';
 import { CrawlingService } from '../crawling/crawling.service';
-import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
+import { getScrapId } from '../../common/util/getScrapId';
 
 @Service()
 export class UserService {
     constructor(
         private readonly prisma: CustomPrismaClient, //
-        private readonly redis: RedisClient,
         private readonly elastic: ElasitcClient,
         private readonly crawlingService: CrawlingService,
     ) {}
@@ -156,6 +153,46 @@ export class UserService {
         return isUser;
     }
 
+    async findUserProfile(id: string) {
+        const profile = await this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                profileImage: true,
+                nickname: true,
+                interests: {
+                    select: {
+                        interest: { select: { interest: true } },
+                        keyword: { select: { keyword: true } },
+                    },
+                },
+            },
+        });
+
+        const interestKeyword = profile?.interests.reduce(
+            (result: any, el: any) => {
+                const existingGroup = result.find(
+                    (group: any) => group.interest === el.interest.interest,
+                );
+                if (existingGroup)
+                    existingGroup.keyword.push(el.keyword.keyword);
+                else {
+                    result.push({
+                        interest: el.interest.interest,
+                        keyword: [el.keyword.keyword],
+                    });
+                }
+                return result;
+            },
+            [],
+        );
+
+        return {
+            profileImage: profile?.profileImage,
+            nickname: profile?.nickname,
+            interestKeyword,
+        };
+    }
+
     async isNickname(nickname: string): Promise<boolean> {
         const isNickname = await this.prisma.user.findUnique({
             where: {
@@ -185,14 +222,25 @@ export class UserService {
 
     async getLoginUserInfo(id: string) {
         const user = await this.isUserByID(id);
+        const { nickname, profileImage, thermometer, top } = user;
 
-        const { nickname, profileImage } = user;
+        const major = await this.prisma.subMajor.findUnique({
+            where: { id: user.subMajorId },
+            select: {
+                mainMajor: {
+                    select: { mainMajor: true },
+                },
+            },
+        });
 
-        const solution = await this.crawlingService.randomCrwling();
+        const solution = await this.crawlingService.randomCrawling();
 
         return {
             nickname,
             profileImage,
+            thermometer,
+            mainMajor: major!.mainMajor.mainMajor,
+            top,
             solution,
         };
     }
@@ -332,28 +380,27 @@ export class UserService {
     async getUserScrap({
         id,
         ...data
-    }: GetUserScrapDTO & { id: string }): Promise<ScrapType> {
+    }: GetUserScrapDTO & { id: string }): Promise<ScrapType[]> {
         const { path, count, page } = data;
         await this.isUserByID(id);
 
-        const _id = await this.prisma.user
-            .findUnique({
-                where: { id },
-                include: {
-                    [scrapData(path).column]: true,
-                },
-            })
-            .then((data) =>
-                data![scrapData(path).column].map(
-                    (el: any) => el[scrapData(path).id],
-                ),
-            );
+        const _id = await getScrapId({ prisma: this.prisma, id, path });
 
         return await this.elastic
             .search({
                 index: path,
                 _source_includes: scrapData(path).info,
                 body: {
+                    sort:
+                        path === 'language'
+                            ? [
+                                  {
+                                      sortDate: {
+                                          order: 'asc',
+                                      },
+                                  },
+                              ]
+                            : [{ view: { order: 'desc' } }],
                     query: {
                         terms: {
                             _id,
@@ -368,22 +415,12 @@ export class UserService {
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
                           if (path === 'language') {
-                              const {
-                                  classify,
-                                  test,
-                                  examDate,
-                                  closeDate,
-                                  ...data
-                              } = el._source;
+                              const { test, ...data } = el._source;
                               return {
                                   id: el._id,
                                   enterprise: 'YBM',
                                   ...data,
                                   title: languageTitle(test),
-                                  ...dateToString({
-                                      eDate: examDate,
-                                      cDate: closeDate,
-                                  }),
                               };
                           }
                           if (path === 'qnet') {
@@ -405,6 +442,7 @@ export class UserService {
                     : null;
             });
     }
+
     async delete(email: string): Promise<boolean> {
         const user = await this.findOneUserByEmail(email);
         const qqq = await this.prisma.user.delete({ where: { id: user?.id } });

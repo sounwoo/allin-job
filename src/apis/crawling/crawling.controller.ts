@@ -42,9 +42,9 @@ class CrawlingController {
             asyncHandler(this.myKeywordCrawling.bind(this)),
         );
         this.router.get(
-            '/ramdom',
+            '/random',
             // AccessGuard.handle,
-            asyncHandler(this.randomCrwling.bind(this)),
+            asyncHandler(this.randomCrawling.bind(this)),
         );
     }
 
@@ -63,9 +63,13 @@ class CrawlingController {
 
     async findeDetailCrawling(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
-        const { path, id } = req.query as findeDetailType;
+        const { path, dataId, id } = req.query as findeDetailType;
         res.status(200).json({
-            data: await this.crawlingService.findeDetailCrawling({ path, id }),
+            data: await this.crawlingService.findeDetailCrawling({
+                path,
+                dataId,
+                id,
+            }),
         });
     }
 
@@ -90,7 +94,8 @@ class CrawlingController {
     async bestData(req: Request, res: Response) {
         // #swagger.tags = ['Crawling']
         const { path } = req.params as Path;
-        const result = await this.crawlingService.bsetData({ path });
+        const { id } = req.query as idType;
+        const result = await this.crawlingService.bsetData({ path, id });
 
         res.status(200).json({
             data: result.length ? result : null,
@@ -113,13 +118,14 @@ class CrawlingController {
         });
     }
 
-    async randomCrwling(req: Request, res: Response) {
+    async randomCrawling(req: Request, res: Response) {
         // const { id } = req.user as idType;
         res.status(200).json({
-            data: await this.crawlingService.randomCrwling(),
+            data: await this.crawlingService.randomCrawling(),
         });
     }
 }
+
 export default new CrawlingController(
     Container.get(CrawlingService),
     Container.get(PathCrawling),

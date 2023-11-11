@@ -300,6 +300,215 @@
                 }
             }
         },
+        "/user/findUserProfile": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "유저 프로필 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "profileImage": "profile url",
+                                        "nickname": "닉네임",
+                                        "interestKeyword": [
+                                            {
+                                                "interest": "competition / outside / intern / language / qnet",
+                                                "keyword": [
+                                                    "키워드1",
+                                                    "키워드2"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "interestKeyword": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "interest": {
+                                                                "type": "string"
+                                                            },
+                                                            "keyword": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "keyword": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getLoginUserInfo": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "로그인한 유저 우측 데이터 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "nickname": "닉네임",
+                                        "profileImage": "profile url",
+                                        "thermometer": 0,
+                                        "mainMajor": "정보통신",
+                                        "top": 100,
+                                        "solution": [
+                                            {
+                                                "outside": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": "대외활동 아이디",
+                                                            "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                            "enterprise": "조직: (주)~~",
+                                                            "Dday": "남은 일수 : D-10",
+                                                            "location": "서울 강남구",
+                                                            "title": "제목",
+                                                            "interests": "활동분야",
+                                                            "target": "활동대상"
+                                                        }
+                                                    }
+                                                },
+                                                "competition": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": "공모전 아이디",
+                                                            "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                            "enterprise": "조직: (주)~~",
+                                                            "Dday": "남은 일수 : D-10",
+                                                            "title": "제목",
+                                                            "interests": "공모분야",
+                                                            "target": "공모대상"
+                                                        }
+                                                    }
+                                                },
+                                                "intern": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": "인턴 아이디",
+                                                            "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
+                                                            "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                            "preferentialTreatment": "IT/인터넷",
+                                                            "location": "서울 강남구",
+                                                            "title": "제목"
+                                                        }
+                                                    }
+                                                },
+                                                "qnet": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": "자격증 아이디",
+                                                            "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                            "wtPeriod": "필기 접수 기간 : 2023.08.07~2023.08.10[빈자리접수:2023.08.27~2023.08.28]",
+                                                            "ptPeriod": "실기 접수 기간 : 2023.09.04~2023.09.07빈자리접수:2023.10.01~2023.10.02",
+                                                            "institution": "시행기관 : 한국산업인력공단",
+                                                            "title": "제목"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "profileImage": {
+                                                    "type": "string"
+                                                },
+                                                "nickname": {
+                                                    "type": "string"
+                                                },
+                                                "interestKeyword": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "interest": {
+                                                                "type": "string"
+                                                            },
+                                                            "keyword": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "keyword": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/isNickname": {
             "get": {
                 "tags": ["Users"],
@@ -1544,6 +1753,16 @@
                             "example": "outside"
                         },
                         "description": "데이터 조회 outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, community: 취준job담"
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
                     }
                 ],
                 "responses": {
@@ -1563,7 +1782,8 @@
                                                     "scrap": 0,
                                                     "enterprise": "주최기관",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집"
+                                                    "title": "제목 : 모집",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -1580,7 +1800,8 @@
                                                     "enterprise": "주최기관",
                                                     "Dday": "남은 일수 : D-10",
                                                     "location": "지역 :서울",
-                                                    "title": "제목"
+                                                    "title": "제목",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -1596,7 +1817,8 @@
                                                     "scrap": 0,
                                                     "enterprise": "주최기관",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목"
+                                                    "title": "제목",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -1612,7 +1834,8 @@
                                                     "view": 100,
                                                     "relatedDepartment": "과련부처 : 통겨청",
                                                     "title": "자격증명 : 에너지산업기사",
-                                                    "mainImage": "..."
+                                                    "mainImage": "...",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -1664,6 +1887,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -1693,6 +1919,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -1719,6 +1948,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -1745,6 +1977,9 @@
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -1814,6 +2049,16 @@
                 "tags": ["Crawling"],
                 "summary": "대외활동 데이터 리스트 조회하기",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
+                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -1898,7 +2143,8 @@
                                                     "scrap": 0,
                                                     "enterprise": "주최기관",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집"
+                                                    "title": "제목 : 모집",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -1932,6 +2178,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -1958,6 +2207,16 @@
                 "tags": ["Crawling"],
                 "summary": "공모전 데이터 리스트 조회하기",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
+                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -2032,7 +2291,8 @@
                                                     "scrap": 0,
                                                     "enterprise": "주최기관",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목"
+                                                    "title": "제목",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -2066,6 +2326,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -2092,6 +2355,16 @@
                 "tags": ["Crawling"],
                 "summary": "인턴 데이터 리스트 조회하기",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
+                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -2167,7 +2440,8 @@
                                                     "preferentialTreatment": "IT/인터넷",
                                                     "location": "서울 강남구",
                                                     "title": "제목",
-                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00"
+                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -2205,6 +2479,9 @@
                                                 },
                                                 "closeDate": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -2231,6 +2508,16 @@
                 "tags": ["Crawling"],
                 "summary": "자격증 리스트 조회하기",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
+                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -2294,7 +2581,8 @@
                                                     "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
                                                     "examDate": "시험날짜 : 2023-11-19 09:20",
                                                     "homePage": "접수 홈페이지 : http://~~",
-                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험"
+                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -2322,6 +2610,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -2348,6 +2639,16 @@
                 "tags": ["Crawling"],
                 "summary": "qnet 리스트 조회하기",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
+                    },
                     {
                         "name": "count",
                         "in": "query",
@@ -2409,7 +2710,8 @@
                                                         "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26"
                                                     },
                                                     "title": "자격증명 : 에너지산업기사",
-                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null"
+                                                    "engTitle": "자격증 영어명 : Engineer Energy Management or null",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -2463,6 +2765,9 @@
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -2490,6 +2795,16 @@
                 "summary": "크롤링 데이터 상세 조회",
                 "parameters": [
                     {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "bd8e8a03-ac7c-4a3f-8db9-d13bde9d58bb"
+                        },
+                        "description": "로그인한 경우, 유저 ID"
+                    },
+                    {
                         "name": "path",
                         "in": "query",
                         "schema": {
@@ -2500,11 +2815,11 @@
                         "description": "크롤링 데이터 ( outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증)"
                     },
                     {
-                        "name": "id",
+                        "name": "dataId",
                         "in": "query",
                         "schema": {
                             "type": "string",
-                            "format": "id",
+                            "format": "dataId",
                             "example": "02c3c0fd-5716-4982-8347-30920d1f409d"
                         },
                         "description": "크롤링 데이터 id"
@@ -2538,7 +2853,8 @@
                                                 "field": "활동 분야 : 서포터즈 마케터",
                                                 "detail": "html 코드",
                                                 "scrap": 0,
-                                                "month": 1
+                                                "month": 1,
+                                                "isScrap": "true or false"
                                             }
                                         }
                                     },
@@ -2559,7 +2875,8 @@
                                                 "hompage": "채용 홈페이지 : http://~~",
                                                 "location": "지역 : 서울",
                                                 "detail": "html 코드",
-                                                "scrap": 0
+                                                "scrap": 0,
+                                                "isScrap": "true or false"
                                             }
                                         }
                                     },
@@ -2580,7 +2897,8 @@
                                                 "benefits": "활동 혜택 : 상장 수여",
                                                 "interests": "공모분야 : 디자인/순수미술/공예",
                                                 "detail": "html 코드",
-                                                "scrap": 0
+                                                "scrap": 0,
+                                                "isScrap": "true or false"
                                             }
                                         }
                                     },
@@ -2609,7 +2927,8 @@
                                                 "relatedDepartment": "과련부처 : 통겨청",
                                                 "institution": "시행기관 : 한국산업인력공단",
                                                 "scrap": 0,
-                                                "view": 0
+                                                "view": 0,
+                                                "isScrap": "true or false"
                                             }
                                         }
                                     }
@@ -2675,6 +2994,9 @@
                                                 },
                                                 "month": {
                                                     "type": "number"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -2722,6 +3044,9 @@
                                                 },
                                                 "scrap": {
                                                     "type": "number"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -2769,6 +3094,9 @@
                                                 },
                                                 "scrap": {
                                                     "type": "number"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -2833,6 +3161,9 @@
                                                 },
                                                 "view": {
                                                     "type": "number"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -2908,7 +3239,8 @@
                                                     "scrap": 0,
                                                     "enterprise": "조직: (주)~~",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목"
+                                                    "title": "제목",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -2942,6 +3274,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -3027,7 +3362,8 @@
                                                     "scrap": 0,
                                                     "enterprise": "조직: (주)~~",
                                                     "Dday": "남은 일수 : D-10",
-                                                    "title": "제목 : 모집"
+                                                    "title": "제목 : 모집",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -3061,6 +3397,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -3147,7 +3486,8 @@
                                                     "preferentialTreatment": "모집 직무 : IT/인터넷",
                                                     "location": "서울 강남구",
                                                     "title": "제목",
-                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00"
+                                                    "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -3185,6 +3525,9 @@
                                                 },
                                                 "closeDate": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }
@@ -3278,7 +3621,8 @@
                                                     "closeDate": "접수 마감 날짜 : 2023-11-06 10:00",
                                                     "examDate": "시험날짜 : 2023-11-19 09:20",
                                                     "homePage": "접수 홈페이지 : http://~~",
-                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험"
+                                                    "title": "테스트 이름 : TOEIC, TOEIC (Bridge), TOEIC (Speaking, Writing), TOEIC (Writing), TSC 중국어 말하기 시험, JPT, SJPT 일본어 말하기 시험",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -3312,6 +3656,9 @@
                                                 },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         },
@@ -3397,7 +3744,8 @@
                                                         "ptDday": "실기 시험 날짜 : 2023.10.07~2023.10.26"
                                                     },
                                                     "title": "자격증명 : 에너지산업기사",
-                                                    "mainImage": "이미지 url : awihqwifbjqjfbo"
+                                                    "mainImage": "이미지 url : awihqwifbjqjfbo",
+                                                    "isScrap": "true or false"
                                                 }
                                             ]
                                         }
@@ -3451,6 +3799,9 @@
                                                 },
                                                 "mainImage": {
                                                     "type": "string"
+                                                },
+                                                "isScrap": {
+                                                    "type": "boolean"
                                                 }
                                             }
                                         }

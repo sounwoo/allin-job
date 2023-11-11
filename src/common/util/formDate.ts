@@ -1,4 +1,4 @@
-export const formDate = (date: string): Date => {
+export const formDate = (date: string): string => {
     const timeStr = date.split(')')[1];
     const dateStr = date.split(')')[0].split('(')[0];
 
@@ -27,12 +27,8 @@ export const formDate = (date: string): Date => {
                 ? '0' + minuteStr.slice(0, -1)
                 : minuteStr.slice(0, -1);
 
-        const formattedDate = `${dateStr.replaceAll('.', '-')} ${time}:${
+        return `${dateStr.replaceAll('.', '-')} ${time}:${
             minuteStr ? minute : '00'
         }`;
-
-        return new Date(formattedDate);
-    } else {
-        return new Date(dateStr.replaceAll('.', '-'));
-    }
+    } else return dateStr.replaceAll('.', '-');
 };

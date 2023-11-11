@@ -12,7 +12,7 @@ export const cludes = (path: Path['path'] | 'language'): string[] => {
             'period',
         ],
         qnet: [...common, 'relatedDepartment', 'institution', 'examSchedules'],
-        language: ['test', 'examDate', 'closeDate', 'homePage'],
+        language: ['test', 'openDate', 'examDate', 'closeDate', 'homePage'],
     };
 
     return (
