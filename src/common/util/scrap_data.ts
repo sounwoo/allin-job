@@ -1,5 +1,15 @@
 import { Path } from '../crawiling/interface';
 
+const scrapType = (path: string) => {
+    const temp = (path === 'qnet' ? path.slice(0, 2) : path[0]).toUpperCase();
+
+    const column = `scrap${
+        temp + path.slice(path === 'qnet' ? 2 : 1, temp.length)
+    }`;
+
+    return { column, id: `${path === 'qnet' ? 'qNet' : path}Id` };
+};
+
 export const scrapData = (path: Path['path'] | 'language') => {
     const common = [
         'Dday',
@@ -10,21 +20,21 @@ export const scrapData = (path: Path['path'] | 'language') => {
         'view',
     ];
     const viewScrap = ['view', 'scrap'];
-
+    const { id, column } = scrapType(path);
     const data = {
         competition: {
-            id: 'competitionId',
-            column: 'scrapCompetition',
+            id,
+            column,
             info: [...common],
         },
         outside: {
-            id: 'outsideId',
-            column: 'scrapOutside',
+            id,
+            column,
             info: [...common],
         },
         language: {
-            id: 'languageId',
-            column: 'scrapLanguage',
+            id,
+            column,
             info: [
                 'Dday',
                 'mainImage',
@@ -35,13 +45,13 @@ export const scrapData = (path: Path['path'] | 'language') => {
             ],
         },
         qnet: {
-            id: 'qNetId',
-            column: 'scrapQNet',
+            id,
+            column,
             info: ['title', 'institution', 'examSchedules', ...viewScrap],
         },
         intern: {
-            id: 'internId',
-            column: 'scrapIntern',
+            id,
+            column,
             info: [...common, 'location'],
         },
     };

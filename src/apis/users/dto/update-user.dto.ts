@@ -1,10 +1,4 @@
-import {
-    IsEmail,
-    IsString,
-    Length,
-    Matches,
-    ValidateIf,
-} from 'class-validator';
+import { IsString, Length, Matches, ValidateIf } from 'class-validator';
 
 export interface Interests {
     [key: string]: string[];
