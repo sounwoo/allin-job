@@ -1,5 +1,4 @@
 import { IsString } from 'class-validator';
-import { User } from '@prisma/client';
 import { Path } from '../../../common/crawiling/interface';
 
 export class ScrappingDTO {

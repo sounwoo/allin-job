@@ -11,7 +11,7 @@ import {
 import jwt from 'jsonwebtoken';
 import RedisClient from '../../database/redisConfig';
 import { saveBlackList } from '../../common/validator/saveBlackList';
-import { emailProviderType, providerTokenType } from '../../common/types';
+import { emailProviderType } from '../../common/types';
 import { saveCookie } from '../../common/util/save.cookie';
 import { Service } from 'typedi';
 import { socialEmail } from '../../common/util/getSocialUserData';

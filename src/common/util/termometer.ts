@@ -1,4 +1,3 @@
-import { User, UserCompetition } from '@prisma/client';
 import { IThermometerUser } from '../../apis/users/interfaces/user.interface';
 import { PercentageType } from '../../apis/users/types/thermometer.type';
 

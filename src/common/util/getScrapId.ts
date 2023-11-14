@@ -1,6 +1,7 @@
 import { getScrapIdType } from '../types';
 import { scrapData } from './scrap_data';
 
+// prisma 즉, DB접속은 service OR repository에서 사용해야됨
 export const getScrapId = async ({
     prisma,
     id,

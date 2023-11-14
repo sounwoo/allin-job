@@ -165,14 +165,14 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.userService.createUser({
-                createDTO: req.body,
+                createDTO: req.body, // type 설정
             }),
         });
     }
 
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const { phone } = req.body;
+        const { phone } = req.body; // type 설정
         res.status(200).json({
             data: await this.smsService.sendTokenSMS(phone),
         });
@@ -192,7 +192,7 @@ class UserController {
         res.status(200).json({
             data: await this.userService.updateProfile({
                 id,
-                updateDTO: req.body,
+                updateDTO: req.body, // type 설정
             }),
         });
     }
@@ -200,10 +200,12 @@ class UserController {
     async scrapping(req: Request, res: Response) {
         // #swagger.tags = ['User']
         const { id } = req.user as idType;
-        const { path, scrapId } = req.body as pathIdtype;
 
         res.status(200).json({
-            data: await this.userService.scrapping({ id, path, scrapId }),
+            data: await this.userService.scrapping({
+                id,
+                ...(req.body as pathIdtype),
+            }),
         });
     }
 
@@ -228,26 +230,15 @@ class UserController {
 
     async updateThermometer(req: Request, res: Response) {
         const { id } = req.user as idType;
-        const { path, createThermometer, thermometerId, mainMajorId } =
-            req.body;
 
         const datas = await this.userService.updateThermometer({
             id,
-            path,
-            createThermometer,
-            thermometerId,
-            mainMajorId,
+            ...req.body, // type 설정
         });
 
-        if (datas) {
-            res.status(200).json({
-                success: true,
-            });
-        } else {
-            res.status(400).json({
-                success: false,
-            });
-        }
+        res.status(datas ? 200 : 400).json({
+            success: datas ? true : false,
+        });
     }
 
     async getCount(req: Request, res: Response) {
@@ -260,18 +251,12 @@ class UserController {
 
     async topPercent(req: Request, res: Response) {
         const { id } = req.user as idType;
-        const { mainMajorId } = req.body;
+        const { mainMajorId } = req.body; // type 설정
         const datas = await this.userService.topPercent({ id, mainMajorId });
 
-        if (datas) {
-            res.status(200).json({
-                success: true,
-            });
-        } else {
-            res.status(400).json({
-                success: false,
-            });
-        }
+        res.status(datas ? 200 : 400).json({
+            success: datas ? true : false,
+        });
     }
 }
 
