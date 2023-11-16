@@ -1,9 +1,6 @@
 import { Request, Response, Router } from 'express';
 import passport from 'passport';
 import { AuthService } from './auth.service';
-import { LoginDTO } from './dto/login.dto';
-import { validateDTO } from '../../common/validator/validateDTO';
-import { restoreAccessTokenDTO } from './dto/restoreAccessToken.dto';
 import { idType, providerTokenType } from '../../common/types';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import { asyncHandler } from '../../middleware/async.handler';
@@ -27,7 +24,11 @@ class AuthController {
             asyncHandler(this.socialCallback.bind(this)),
         );
 
-        this.router.post('/', asyncHandler(this.login.bind(this)));
+        this.router.post(
+            '/',
+            Validate.login,
+            asyncHandler(this.login.bind(this)),
+        );
 
         this.router.post(
             '/logout',
@@ -82,7 +83,6 @@ class AuthController {
         // #swagger.tags = ['Auth']
         const { id } = req.body as idType;
 
-        await validateDTO(new LoginDTO({ id }));
         res.status(200).json({
             data: await this.authService.login({ id, res }),
         });
@@ -96,7 +96,6 @@ class AuthController {
         // #swagger.tags = ['Auth']
         const { id } = req.user as idType;
 
-        await validateDTO(new restoreAccessTokenDTO({ id }));
         res.status(200).json({
             data: this.authService.restoreAccessToken({ id }),
         });

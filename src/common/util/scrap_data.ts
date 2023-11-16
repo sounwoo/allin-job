@@ -4,7 +4,7 @@ const scrapType = (path: string) => {
     const temp = (path === 'qnet' ? path.slice(0, 2) : path[0]).toUpperCase();
 
     const column = `scrap${
-        temp + path.slice(path === 'qnet' ? 2 : 1, temp.length)
+        temp + path.slice(path === 'qnet' ? 2 : 1, path.length)
     }`;
 
     return { column, id: `${path === 'qnet' ? 'qNet' : path}Id` };

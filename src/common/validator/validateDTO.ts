@@ -29,6 +29,7 @@ import { ScrappingDTO } from '../../apis/users/dto/scrapping.dto';
 import { isNicknameDTO } from '../../apis/users/dto/isNickname.dto';
 import { SocialLoginDTO } from '../../apis/auth/dto/socialLogin.dto';
 import { GetUserScrapDTO } from '../../apis/users/dto/getUserScrap.dto';
+import { LoginDTO } from '../../apis/auth/dto/login.dto';
 
 class Validate {
     constructor() {
@@ -59,6 +60,7 @@ class Validate {
         this.socialLogin = asyncHandler(this.socialLogin.bind(this));
         this.scrapping = asyncHandler(this.scrapping.bind(this));
         this.getUserScrap = asyncHandler(this.getUserScrap.bind(this));
+        this.login = asyncHandler(this.login.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -168,6 +170,13 @@ class Validate {
         next();
     }
 
+    async login(req: Request, _: Response, next: NextFunction) {
+        const { id } = req.body as idType;
+        await this.errors(new LoginDTO({ id }));
+
+        next();
+    }
+
     async socialLogin(req: Request, _: Response, next: NextFunction) {
         const { provider, token } = req.body as providerTokenType;
         await this.errors(new SocialLoginDTO({ provider, token }));
@@ -190,16 +199,3 @@ class Validate {
     }
 }
 export default new Validate();
-
-export const validateDTO = async <T extends object>(dto: T) => {
-    const errors = await validate(dto);
-
-    if (errors.length > 0) {
-        const errorMessage = errors.map((error) => {
-            const temp = error.constraints && Object.values(error.constraints);
-            return `${error.property} : ${temp}`;
-        });
-
-        throw new CustomError(errorMessage, 400);
-    }
-};

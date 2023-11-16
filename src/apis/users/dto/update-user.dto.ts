@@ -1,20 +1,17 @@
-import { IsString, Length, Matches, ValidateIf } from 'class-validator';
-
-export interface Interests {
-    [key: string]: string[];
-}
+import { IsString, IsOptional, Length, Matches } from 'class-validator';
+import { Interests } from './create-user.dto';
 
 export class UpdateUserDTO {
+    @IsOptional()
     @IsString()
-    @ValidateIf((_, value) => value)
     profileImage?: string;
 
+    @IsOptional()
     @Length(2, 10)
     @Matches(/^[a-zA-Z가-힣]+$/)
-    @ValidateIf((_, value) => value)
     nickname?: string;
 
-    @ValidateIf((_, value) => value)
+    @IsOptional()
     interests?: Interests[];
 
     constructor(data: UpdateUserDTO) {
