@@ -54,6 +54,15 @@ export interface IGetUserScrap {
 }
 
 export interface ISaveInterestKeyword {
+    prisma: Omit<
+        PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+        | '$connect'
+        | '$disconnect'
+        | '$on'
+        | '$transaction'
+        | '$use'
+        | '$extends'
+    >;
     interests: Interests[];
 
     id: User['id'];
