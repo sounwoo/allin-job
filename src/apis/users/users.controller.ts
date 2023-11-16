@@ -13,6 +13,7 @@ import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import Validate from '../../common/validator/validateDTO';
+import { IThermometerUpdate } from './interfaces/user.interface';
 
 class UserController {
     router = Router();
@@ -114,6 +115,11 @@ class UserController {
         );
 
         this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
+
+        this.router.get(
+            '/findManyThermometer',
+            asyncHandler(this.findManyThermometer.bind(this)),
+        );
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -231,13 +237,8 @@ class UserController {
     async updateThermometer(req: Request, res: Response) {
         const { id } = req.user as idType;
 
-        const datas = await this.userService.updateThermometer({
-            id,
-            ...req.body, // type 설정
-        });
-
-        res.status(datas ? 200 : 400).json({
-            success: datas ? true : false,
+        res.status(200).json({
+            data: await this.userService.updateThermometer({ id, ...req.body }),
         });
     }
 
@@ -254,8 +255,8 @@ class UserController {
         const { mainMajorId } = req.body; // type 설정
         const datas = await this.userService.topPercent({ id, mainMajorId });
 
-        res.status(datas ? 200 : 400).json({
-            success: datas ? true : false,
+        res.status(200).json({
+            data: datas,
         });
     }
 }

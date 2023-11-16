@@ -25,7 +25,7 @@ export interface IUserUpdateDTO {
     nickname?: CreateUserDTO['nickname'];
     interests?: CreateUserDTO['interests'];
 }
-export interface IThermometerCreate {
+export interface IThermometerUpdate {
     id: idType['id'];
     path: paths['path'];
     createThermometer: CreateThermometerDTO;
@@ -40,13 +40,6 @@ export interface IThermometerUser {
     userIntern: UserIntern[];
     userLanguage: UserLanguage[];
 }
-
-// export interface IThermometerDelete {
-//     id: idType['id'];
-//     path: paths['path'];
-//     thermometerId: string;
-//     mainMajorId: MainMajor['id'];
-// }
 
 export interface ITopPercentage {
     id: idType['id'];

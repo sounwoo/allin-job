@@ -1,8 +1,7 @@
 import { User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
-    IThermometerCreate,
-    // IThermometerDelete,
+    IThermometerUpdate,
     IThermometerUser,
     ITopPercentage,
     IUserCreateDTO,
@@ -23,6 +22,8 @@ import { percentage } from '../../common/util/termometer';
 import { PercentageType } from './types/thermometer.type';
 import { languageTitle } from '../../common/util/languageData';
 import { CrawlingService } from '../crawling/crawling.service';
+import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
+import { index } from 'cheerio/lib/api/traversing';
 import { getScrapId } from '../../common/util/getScrapId';
 
 @Service()
@@ -459,47 +460,36 @@ export class UserService {
         createThermometer,
         mainMajorId,
         thermometerId,
-    }: IThermometerCreate): Promise<boolean> {
-        try {
-            await this.isUserByID(id);
-            // 객체는 따로 뺴서 사용
-            const obj = {
-                outside: 'userOutside',
-                intern: 'userIntern',
-                competition: 'userCompetition',
-                language: 'userLanguage',
-                qnet: 'userQnet',
-            };
+    }: IThermometerUpdate): Promise<boolean> {
+        await this.isUserByID(id);
 
-            await this.prisma.$transaction(async (prisma) => {
-                // 여기서 user update만 3번 일어나는데 어차피 할꺼면 한번에 update 하는게 좋지 않나? thermometer랑 top만 받아오면 한번만 update하면 될것같은데
-                // 여기서는 transaction이 안되지 않나? 같은 prisma를 사용하는게 아니라서?
+        const obj = {
+            outside: 'userOutside',
+            intern: 'userIntern',
+            competition: 'userCompetition',
+            language: 'userLanguage',
+            qnet: 'userQnet',
+        };
 
-                // 2번에서 한번으로 일단 줄임
-                const { sum: thermometer } = await this.getCount(id);
-                // await prisma.user.update({
-                //     where: { id },
-                //     data: {
-                //         thermometer,
-                //     },
-                // });
-                await prisma.user.update({
-                    where: { id },
-                    data: {
-                        [obj[path]]: thermometerId
-                            ? { delete: { id: thermometerId } }
-                            : { create: { ...createThermometer } },
-                        thermometer,
-                    },
-                });
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                [obj[path]]: createThermometer
+                    ? { create: { ...createThermometer } }
+                    : { delete: { id: thermometerId } },
+            },
+        });
+        const { sum: thermometer } = await this.getCount(id);
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                thermometer,
+            },
+        });
 
-                await this.topPercent({ id, mainMajorId });
-                // await this.updateTopPercentagesForAllUsers(mainMajorId);
-            });
-            return true;
-        } catch (error) {
-            throw new CustomError('실패', 400);
-        }
+        await this.topPercent({ id, mainMajorId });
+
+        return true;
     }
 
     async getCount(id: string): Promise<PercentageType> {
@@ -539,7 +529,7 @@ export class UserService {
     }
 
     async topPercent({ id, mainMajorId }: ITopPercentage): Promise<User> {
-        const user = await this.prisma.user.findMany({
+        const users = await this.prisma.user.findMany({
             where: {
                 subMajor: {
                     mainMajorId,
@@ -553,32 +543,27 @@ export class UserService {
             },
         });
 
-        const grade = user.findIndex((el) => el.id === id) + 1;
+        const grade = users.findIndex((el) => el.id === id) + 1;
 
-        const top = (grade / user.length) * 100;
+        await Promise.all(
+            users.map(async (el, index) => {
+                const { id } = el;
+                const grade = index + 1;
+                const top = (grade / users.length) * 100;
+                return this.prisma.user.update({
+                    where: { id },
+                    data: { top },
+                });
+            }),
+        );
+
+        const top = (grade / users.length) * 100;
 
         return this.prisma.user.update({
             where: { id },
-            data: { top },
+            data: {
+                top,
+            },
         });
     }
-
-    // 존재이유? topPercent랑 다른점이 뭐임
-    // async updateTopPercentagesForAllUsers(mainMajorId: string): Promise<void> {
-    //     const users = await this.prisma.user.findMany({
-    //         select: {
-    //             id: true,
-    //         },
-    //     });
-
-    //     for (const user of users) {
-    //         const { top } = await this.topPercent({ id: user.id, mainMajorId });
-    //         await this.prisma.user.update({
-    //             where: { id: user.id },
-    //             data: {
-    //                 top,
-    //             },
-    //         });
-    //     }
-    // }
 }
