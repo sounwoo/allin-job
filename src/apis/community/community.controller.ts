@@ -6,6 +6,8 @@ import accessGuard from '../../middleware/auth.guard/access.guard';
 import { idType } from '../../common/types';
 import Validate from '../../common/validator/validateDTO';
 import { FindManyCommunityDTO } from './dto/findMany.community';
+import { CreateCommunityDTO } from './dto/create.input';
+import { CreateCommunityCommentDTO } from './dto/create.comment.input';
 
 class CommunityController {
     router = Router();
@@ -58,7 +60,7 @@ class CommunityController {
     async create(req: Request, res: Response) {
         // #swagger.tags = ['Community']
         const { id } = req.user as idType;
-        const createCommunity = req.body;
+        const createCommunity = req.body as CreateCommunityDTO;
 
         res.status(200).json({
             data: await this.communityService.create({
@@ -109,12 +111,10 @@ class CommunityController {
     async createComment(req: Request, res: Response) {
         // #swagger.tags = ['Community']
         const { id: userId } = req.user as idType;
-        const { comment, id: communityId } = req.body;
 
         const comments = await this.communityService.createComment({
             userId,
-            communityId,
-            comment,
+            ...(req.body as CreateCommunityCommentDTO),
         });
 
         res.status(200).json({

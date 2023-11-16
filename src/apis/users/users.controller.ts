@@ -40,6 +40,12 @@ class UserController {
         );
 
         this.router.get(
+            '/findUserProfile',
+            AccessGuard.handle,
+            asyncHandler(this.findUserProfile.bind(this)),
+        );
+
+        this.router.get(
             '/getLoginUserInfo',
             AccessGuard.handle,
             asyncHandler(this.getLoginUserInfo.bind(this)),
@@ -135,6 +141,15 @@ class UserController {
         });
     }
 
+    async findUserProfile(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { id } = req.user as idType;
+
+        res.status(200).json({
+            data: await this.userService.findUserProfile(id),
+        });
+    }
+
     async getLoginUserInfo(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         const { id } = req.user as idType;
@@ -156,14 +171,14 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.userService.createUser({
-                createDTO: req.body,
+                createDTO: req.body, // type 설정
             }),
         });
     }
 
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const { phone } = req.body;
+        const { phone } = req.body; // type 설정
         res.status(200).json({
             data: await this.smsService.sendTokenSMS(phone),
         });
@@ -183,7 +198,7 @@ class UserController {
         res.status(200).json({
             data: await this.userService.updateProfile({
                 id,
-                updateDTO: req.body,
+                updateDTO: req.body, // type 설정
             }),
         });
     }
@@ -191,10 +206,12 @@ class UserController {
     async scrapping(req: Request, res: Response) {
         // #swagger.tags = ['User']
         const { id } = req.user as idType;
-        const { path, scrapId } = req.body as pathIdtype;
 
         res.status(200).json({
-            data: await this.userService.scrapping({ id, path, scrapId }),
+            data: await this.userService.scrapping({
+                id,
+                ...(req.body as pathIdtype),
+            }),
         });
     }
 
@@ -235,16 +252,12 @@ class UserController {
 
     async topPercent(req: Request, res: Response) {
         const { id } = req.user as idType;
-        const { mainMajorId } = req.body;
+        const { mainMajorId } = req.body; // type 설정
         const datas = await this.userService.topPercent({ id, mainMajorId });
 
         res.status(200).json({
             data: datas,
         });
-    }
-
-    async findManyThermometer(req: Request, res: Response) {
-        //
     }
 }
 

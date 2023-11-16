@@ -8,7 +8,6 @@ import {
     IUserFindOneUserByID,
     IUserUpdateDTO,
 } from './interfaces/user.interface';
-import RedisClient from '../../database/redisConfig';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
 import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
@@ -16,22 +15,21 @@ import { ElasitcClient } from '../../database/elasticConfig';
 import { SaveInterestKeywordDTO } from './dto/saveInterestKeyword.dto';
 import { ScrappingDTO } from './dto/scrapping.dto';
 import { scrapData } from '../../common/util/scrap_data';
-import { splitDate } from '../../common/util/splitDate';
 import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
-import { dateToString, languageTitle } from '../../common/util/languageData';
 import { percentage } from '../../common/util/termometer';
 import { PercentageType } from './types/thermometer.type';
+import { languageTitle } from '../../common/util/languageData';
 import { CrawlingService } from '../crawling/crawling.service';
 import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
 import { index } from 'cheerio/lib/api/traversing';
+import { getScrapId } from '../../common/util/getScrapId';
 
 @Service()
 export class UserService {
     constructor(
         private readonly prisma: CustomPrismaClient, //
-        private readonly redis: RedisClient,
         private readonly elastic: ElasitcClient,
         private readonly crawlingService: CrawlingService,
     ) {}
@@ -156,6 +154,47 @@ export class UserService {
         return isUser;
     }
 
+    // return type 설정
+    async findUserProfile(id: string) {
+        const profile = await this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                profileImage: true,
+                nickname: true,
+                interests: {
+                    select: {
+                        interest: { select: { interest: true } },
+                        keyword: { select: { keyword: true } },
+                    },
+                },
+            },
+        });
+
+        const interestKeyword = profile?.interests.reduce(
+            (result: any, el: any) => {
+                const existingGroup = result.find(
+                    (group: any) => group.interest === el.interest.interest,
+                );
+                if (existingGroup)
+                    existingGroup.keyword.push(el.keyword.keyword);
+                else {
+                    result.push({
+                        interest: el.interest.interest,
+                        keyword: [el.keyword.keyword],
+                    });
+                }
+                return result;
+            },
+            [],
+        );
+
+        return {
+            profileImage: profile?.profileImage,
+            nickname: profile?.nickname,
+            interestKeyword,
+        };
+    }
+
     async isNickname(nickname: string): Promise<boolean> {
         const isNickname = await this.prisma.user.findUnique({
             where: {
@@ -164,7 +203,7 @@ export class UserService {
         });
         if (isNickname)
             throw new CustomError('이미 사용중인 닉네임입니다', 400);
-        else return true;
+        return true;
     }
 
     findOneUserByID({
@@ -183,16 +222,28 @@ export class UserService {
         });
     }
 
+    //return type 설정
     async getLoginUserInfo(id: string) {
         const user = await this.isUserByID(id);
+        const { nickname, profileImage, thermometer, top } = user;
 
-        const { nickname, profileImage } = user;
+        const major = await this.prisma.subMajor.findUnique({
+            where: { id: user.subMajorId },
+            select: {
+                mainMajor: {
+                    select: { mainMajor: true },
+                },
+            },
+        });
 
-        const solution = await this.crawlingService.randomCrwling();
+        const solution = await this.crawlingService.randomCrawling();
 
         return {
             nickname,
             profileImage,
+            thermometer,
+            mainMajor: major!.mainMajor.mainMajor,
+            top,
             solution,
         };
     }
@@ -284,18 +335,19 @@ export class UserService {
         scrapId,
     }: idType & ScrappingDTO): Promise<boolean> {
         await this.isUserByID(id);
-
+        // 빼서 사용
+        const { column, id: _scrapId } = scrapData(path);
         const chkScrap = await this.prisma.user.findFirst({
             include: {
-                [scrapData(path).column]: {
+                [column]: {
                     where: {
-                        AND: [{ userId: id, [scrapData(path).id]: scrapId }],
+                        AND: [{ userId: id, [_scrapId]: scrapId }],
                     },
                 },
             },
         });
 
-        const chkPlusMinus = chkScrap?.[scrapData(path).column].length;
+        const chkPlusMinus = chkScrap?.[column].length;
         const plusMinus = `ctx._source.scrap${chkPlusMinus ? '--' : '++'}`;
 
         await Promise.all([
@@ -303,7 +355,7 @@ export class UserService {
                 .update(
                     {
                         index: path,
-                        id: scrapId,
+                        id: _scrapId,
                         body: {
                             script: {
                                 source: plusMinus,
@@ -317,11 +369,11 @@ export class UserService {
             this.prisma.user.update({
                 where: { id },
                 data: {
-                    [scrapData(path).column]: chkPlusMinus
+                    [column]: chkPlusMinus
                         ? {
-                              deleteMany: { [scrapData(path).id]: scrapId },
+                              deleteMany: { [_scrapId]: scrapId },
                           }
-                        : { create: { [scrapData(path).id]: scrapId } },
+                        : { create: { [_scrapId]: scrapId } },
                 },
             }),
         ]);
@@ -332,28 +384,27 @@ export class UserService {
     async getUserScrap({
         id,
         ...data
-    }: GetUserScrapDTO & { id: string }): Promise<ScrapType> {
+    }: GetUserScrapDTO & { id: string }): Promise<ScrapType[]> {
         const { path, count, page } = data;
         await this.isUserByID(id);
 
-        const _id = await this.prisma.user
-            .findUnique({
-                where: { id },
-                include: {
-                    [scrapData(path).column]: true,
-                },
-            })
-            .then((data) =>
-                data![scrapData(path).column].map(
-                    (el: any) => el[scrapData(path).id],
-                ),
-            );
+        const _id = await getScrapId({ prisma: this.prisma, id, path });
 
         return await this.elastic
             .search({
                 index: path,
                 _source_includes: scrapData(path).info,
                 body: {
+                    sort:
+                        path === 'language'
+                            ? [
+                                  {
+                                      sortDate: {
+                                          order: 'asc',
+                                      },
+                                  },
+                              ]
+                            : [{ view: { order: 'desc' } }],
                     query: {
                         terms: {
                             _id,
@@ -368,22 +419,12 @@ export class UserService {
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
                           if (path === 'language') {
-                              const {
-                                  classify,
-                                  test,
-                                  examDate,
-                                  closeDate,
-                                  ...data
-                              } = el._source;
+                              const { test, ...data } = el._source;
                               return {
                                   id: el._id,
                                   enterprise: 'YBM',
                                   ...data,
                                   title: languageTitle(test),
-                                  ...dateToString({
-                                      eDate: examDate,
-                                      cDate: closeDate,
-                                  }),
                               };
                           }
                           if (path === 'qnet') {
@@ -405,6 +446,7 @@ export class UserService {
                     : null;
             });
     }
+
     async delete(email: string): Promise<boolean> {
         const user = await this.findOneUserByEmail(email);
         const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
@@ -517,7 +559,7 @@ export class UserService {
 
         const top = (grade / users.length) * 100;
 
-        return await this.prisma.user.update({
+        return this.prisma.user.update({
             where: { id },
             data: {
                 top,

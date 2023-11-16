@@ -1,6 +1,7 @@
 import { IsString } from 'class-validator';
 import { Prisma, PrismaClient, User } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { Major } from './create-user.dto';
 
 export class SaveUserMajorDTO {
     prisma: Omit<
@@ -13,7 +14,7 @@ export class SaveUserMajorDTO {
         | '$extends'
     >;
 
-    major: object;
+    major: Major[];
 
     @IsString()
     id: User['id'];

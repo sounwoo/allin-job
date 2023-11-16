@@ -7,7 +7,6 @@ import {
     paths,
 } from '../../common/crawiling/interface';
 import { Service } from 'typedi';
-import { UserService } from '../users/users.service';
 import { ElasitcClient } from '../../database/elasticConfig';
 import { CommunityService } from '../community/community.service';
 import { cludes } from '../../common/util/return_data_cludes';
@@ -16,13 +15,17 @@ import { findeDetailCrawling } from './interfaces/returnType/findDetailCrawling.
 import { findCrawling } from './interfaces/returnType/findeCrawling.interface';
 import RedisClient from '../../database/redisConfig';
 import { examSchedulesSort } from '../../common/util/examSchedules.sort';
-import { dateToString, languageTitle } from '../../common/util/languageData';
+import { languageTitle } from '../../common/util/languageData';
 import { splitDate } from '../../common/util/splitDate';
 import { randomSolution } from '../../common/util/return_data_randomSolution';
+import { UserService } from '../users/users.service';
+import { CustomPrismaClient } from '../../database/prismaConfig';
+import { getScrapId } from '../../common/util/getScrapId';
 
 @Service()
 export class CrawlingService {
     constructor(
+        private readonly prisma: CustomPrismaClient, //
         private readonly elastic: ElasitcClient,
         private readonly redis: RedisClient,
         private readonly userService: UserService,
@@ -30,7 +33,10 @@ export class CrawlingService {
     ) {}
 
     async findeCrawling({ ...data }: paths): Promise<findCrawling[]> {
-        const { path, page, count, ..._data } = data;
+        const { path, page, count, id, ..._data } = data;
+
+        let scrapId: string[] = [];
+        if (id) scrapId = await getScrapId({ prisma: this.prisma, id, path });
 
         const datas: { [key: string]: string } = { ..._data };
         const must: object[] = [];
@@ -58,7 +64,7 @@ export class CrawlingService {
                         path === 'language'
                             ? [
                                   {
-                                      examDate: {
+                                      sortDate: {
                                           order: 'asc',
                                       },
                                   },
@@ -80,8 +86,7 @@ export class CrawlingService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
-                          const { examDate, closeDate, test, period } =
-                              el._source;
+                          const { closeDate, test, period } = el._source;
 
                           delete el._source.test, delete el._source.period;
 
@@ -98,14 +103,12 @@ export class CrawlingService {
                               }),
                               ...(path === 'language' && {
                                   title: languageTitle(test),
-                                  ...dateToString({
-                                      eDate: examDate,
-                                      cDate: closeDate,
-                                  }),
+                                  closeDate,
                               }),
                               ...(path === 'qnet' && {
                                   ...examSchedulesSort(el),
                               }),
+                              ...(id && { isScrap: scrapId.includes(el._id) }),
                           };
                       })
                     : [];
@@ -129,6 +132,7 @@ export class CrawlingService {
         };
         const { id, ..._data } = { ...data };
         const params = {
+            id,
             ..._data,
             ...(userKeyword.length && { [obj[data.path]]: userKeyword }),
         };
@@ -138,13 +142,18 @@ export class CrawlingService {
 
     async findeDetailCrawling({
         path,
+        dataId,
         id,
     }: findeDetailType): Promise<findeDetailCrawling | null> {
+        let scrapId: string[] = [];
+
+        if (id) scrapId = await getScrapId({ prisma: this.prisma, id, path });
+
         return this.elastic
             .update(
                 {
                     index: path,
-                    id,
+                    id: dataId,
                     body: {
                         script: {
                             source: 'ctx._source.view++',
@@ -160,6 +169,7 @@ export class CrawlingService {
                         mainImage: process.env.QNET_IMAGE,
                     }),
                     ...(el.body.error ? el.meta.context : el.body.get._source),
+                    ...(id && { isScrap: scrapId.includes(el.body._id) }),
                 };
             });
     }
@@ -210,7 +220,16 @@ export class CrawlingService {
 
     async bsetData({
         path,
-    }: Path | { path: 'community' }): Promise<bestDataType[]> {
+        id,
+    }: {
+        path: Path['path'] | 'community';
+        id: string;
+    }): Promise<bestDataType[]> {
+        let scrapId: string[] = [];
+
+        if (id && path !== 'community')
+            scrapId = await getScrapId({ prisma: this.prisma, id, path });
+
         if (path === 'community') return this.communityService.findeMany({});
 
         return this.elastic
@@ -240,12 +259,13 @@ export class CrawlingService {
                         ...(path === 'qnet' && {
                             mainImage: process.env.QNET_IMAGE,
                         }),
+                        ...(id && { isScrap: scrapId.includes(el._id) }),
                     };
                 }),
             );
     }
 
-    async randomCrwling(): Promise<any> {
+    async randomCrawling(): Promise<any> {
         return await Promise.all(
             ['outside', 'competition', 'intern', 'qnet'].map(async (el) => {
                 const data = await this.redis.get(el);
