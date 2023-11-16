@@ -92,13 +92,14 @@ export class UserService {
     }
 
     saveInterestKeyword({
+        prisma,
         interests,
         id,
     }: ISaveInterestKeyword): Promise<void[][]> {
         return Promise.all(
             interests.map(async (el) => {
                 const [interest, keywords] = Object.entries(el)[0];
-                const createdInterest = await this.prisma.interest.upsert({
+                const createdInterest = await prisma.interest.upsert({
                     where: { interest },
                     update: {},
                     create: { interest },
@@ -106,14 +107,12 @@ export class UserService {
 
                 return Promise.all(
                     keywords.map(async (keyword: string) => {
-                        const createdKeyword = await this.prisma.keyword.upsert(
-                            {
-                                where: { keyword },
-                                update: {},
-                                create: { keyword },
-                            },
-                        );
-                        await this.prisma.userInterest.create({
+                        const createdKeyword = await prisma.keyword.upsert({
+                            where: { keyword },
+                            update: {},
+                            create: { keyword },
+                        });
+                        await prisma.userInterest.create({
                             data: {
                                 userId: id,
                                 interestId: createdInterest.id,
@@ -284,6 +283,7 @@ export class UserService {
                 },
             });
             await this.saveInterestKeyword({
+                prisma,
                 interests,
                 id: user.id,
             });
@@ -306,6 +306,7 @@ export class UserService {
             await this.prisma
                 .$transaction(async (prisma) => {
                     await this.saveInterestKeyword({
+                        prisma,
                         interests,
                         id: chkUser.id,
                     });
