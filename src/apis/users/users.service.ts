@@ -1,8 +1,7 @@
 import { User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
-    IThermometerCreate,
-    IThermometerDelete,
+    IThermometerUpdate,
     IThermometerUser,
     ITopPercentage,
     IUserCreateDTO,
@@ -26,6 +25,7 @@ import { percentage } from '../../common/util/termometer';
 import { PercentageType } from './types/thermometer.type';
 import { CrawlingService } from '../crawling/crawling.service';
 import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
+import { index } from 'cheerio/lib/api/traversing';
 
 @Service()
 export class UserService {
@@ -418,44 +418,36 @@ export class UserService {
         createThermometer,
         mainMajorId,
         thermometerId,
-    }: IThermometerCreate & IThermometerDelete): Promise<boolean> {
-        try {
-            await this.isUserByID(id);
+    }: IThermometerUpdate): Promise<boolean> {
+        await this.isUserByID(id);
 
-            const obj: { [key: string]: () => { column: string } } = {
-                outside: () => ({ column: 'userOutside' }),
-                intern: () => ({ column: 'userIntern' }),
-                competition: () => ({ column: 'userCompetition' }),
-                language: () => ({ column: 'userLanguage' }),
-                qnet: () => ({ column: 'userQnet' }),
-            };
+        const obj = {
+            outside: 'userOutside',
+            intern: 'userIntern',
+            competition: 'userCompetition',
+            language: 'userLanguage',
+            qnet: 'userQnet',
+        };
 
-            await this.prisma.$transaction(async (priusma) => {
-                await this.prisma.user.update({
-                    where: { id },
-                    data: {
-                        [obj[path]().column]: createThermometer
-                            ? { create: { ...createThermometer } }
-                            : { delete: { id: thermometerId } },
-                    },
-                });
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                [obj[path]]: createThermometer
+                    ? { create: { ...createThermometer } }
+                    : { delete: { id: thermometerId } },
+            },
+        });
+        const { sum: thermometer } = await this.getCount(id);
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                thermometer,
+            },
+        });
 
-                const { sum: thermometer } = await this.getCount(id);
-                await this.prisma.user.update({
-                    where: { id },
-                    data: {
-                        thermometer,
-                    },
-                });
+        await this.topPercent({ id, mainMajorId });
 
-                await this.topPercent({ id, mainMajorId });
-                await this.updateTopPercentagesForAllUsers(mainMajorId);
-            });
-            return true;
-        } catch (error) {
-            console.error('transaction failed', error);
-            return false;
-        }
+        return true;
     }
 
     async getCount(id: string): Promise<PercentageType> {
@@ -495,47 +487,41 @@ export class UserService {
     }
 
     async topPercent({ id, mainMajorId }: ITopPercentage): Promise<User> {
-        const top = await this.prisma.user.findMany({
-            select: {
-                id: true,
-            },
+        const users = await this.prisma.user.findMany({
             where: {
                 subMajor: {
                     mainMajorId,
                 },
+            },
+            select: {
+                id: true,
             },
             orderBy: {
                 thermometer: 'desc',
             },
         });
 
-        const grade = top.findIndex((el) => el.id === id) + 1;
+        const grade = users.findIndex((el) => el.id === id) + 1;
 
-        const result = (grade / top.length) * 100;
+        await Promise.all(
+            users.map(async (el, index) => {
+                const { id } = el;
+                const grade = index + 1;
+                const top = (grade / users.length) * 100;
+                return this.prisma.user.update({
+                    where: { id },
+                    data: { top },
+                });
+            }),
+        );
+
+        const top = (grade / users.length) * 100;
 
         return await this.prisma.user.update({
             where: { id },
             data: {
-                top: result,
+                top,
             },
         });
-    }
-
-    async updateTopPercentagesForAllUsers(mainMajorId: string): Promise<void> {
-        const users = await this.prisma.user.findMany({
-            select: {
-                id: true,
-            },
-        });
-
-        for (const user of users) {
-            const { top } = await this.topPercent({ id: user.id, mainMajorId });
-            await this.prisma.user.update({
-                where: { id: user.id },
-                data: {
-                    top,
-                },
-            });
-        }
     }
 }

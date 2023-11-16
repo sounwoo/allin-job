@@ -13,6 +13,7 @@ import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import Validate from '../../common/validator/validateDTO';
+import { IThermometerUpdate } from './interfaces/user.interface';
 
 class UserController {
     router = Router();
@@ -108,6 +109,11 @@ class UserController {
         );
 
         this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
+
+        this.router.get(
+            '/findManyThermometer',
+            asyncHandler(this.findManyThermometer.bind(this)),
+        );
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -213,26 +219,10 @@ class UserController {
 
     async updateThermometer(req: Request, res: Response) {
         const { id } = req.user as idType;
-        const { path, createThermometer, thermometerId, mainMajorId } =
-            req.body;
 
-        const datas = await this.userService.updateThermometer({
-            id,
-            path,
-            createThermometer,
-            thermometerId,
-            mainMajorId,
+        res.status(200).json({
+            data: await this.userService.updateThermometer({ id, ...req.body }),
         });
-
-        if (datas) {
-            res.status(200).json({
-                success: true,
-            });
-        } else {
-            res.status(400).json({
-                success: false,
-            });
-        }
     }
 
     async getCount(req: Request, res: Response) {
@@ -248,15 +238,13 @@ class UserController {
         const { mainMajorId } = req.body;
         const datas = await this.userService.topPercent({ id, mainMajorId });
 
-        if (datas) {
-            res.status(200).json({
-                success: true,
-            });
-        } else {
-            res.status(400).json({
-                success: false,
-            });
-        }
+        res.status(200).json({
+            data: datas,
+        });
+    }
+
+    async findManyThermometer(req: Request, res: Response) {
+        //
     }
 }
 
