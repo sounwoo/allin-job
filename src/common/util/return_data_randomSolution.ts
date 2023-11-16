@@ -1,4 +1,6 @@
-export const randomSolution = (el: string): string[] => {
+import { Path } from '../crawiling/interface';
+
+export const randomSolution = (el: Path['path']): string[] => {
     const commonCompetitionOutside = [
         'mainImage',
         'enterprise',
@@ -9,7 +11,7 @@ export const randomSolution = (el: string): string[] => {
     ];
     const randomSolution = {
         competition: [...commonCompetitionOutside],
-        outside: [...commonCompetitionOutside, 'location'],
+        outside: [...commonCompetitionOutside],
         qnet: ['institution', 'title', 'examSchedules'],
         intern: [
             'mainImage',
@@ -20,7 +22,5 @@ export const randomSolution = (el: string): string[] => {
         ],
     };
 
-    return randomSolution[
-        (el as 'competition') || 'outside' || 'qnet' || 'intern'
-    ];
+    return randomSolution[el];
 };
