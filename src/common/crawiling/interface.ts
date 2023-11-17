@@ -1,8 +1,4 @@
-import {
-    QnetType,
-    CategortObj,
-    ExamSchedules,
-} from '../../apis/crawling/types/qnet.type';
+import { QnetType, ExamSchedules } from '../../apis/crawling/types/qnet.type';
 import { LanguageType } from '../../apis/crawling/types/language.type';
 
 export interface createQNet {
@@ -15,7 +11,7 @@ export interface createQNet {
     scrap: QnetType['scrap'];
     view: QnetType['view'];
     examSchedules: ExamSchedules[];
-    categoryObj: CategortObj;
+    categoryObj: Pick<QnetType, 'mainCategory' | 'subCategory'>;
 }
 
 export type Path = {

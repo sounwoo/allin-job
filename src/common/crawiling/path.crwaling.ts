@@ -104,7 +104,7 @@ export class PathCrawling {
                             ...dataType,
                             ...(dataType.scale && { scale: +dataType.scale }),
                             detail: $(
-                                'div.ActivityDetailTabContent__StyledWrapper-sc-5db6cf4b-0.bDYgjm',
+                                'div.ActivityDetailTabContent__StyledWrapper-sc-b6244026-0.lcsRCH',
                             ).html(),
                         };
 
