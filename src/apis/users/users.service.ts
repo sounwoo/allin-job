@@ -20,8 +20,6 @@ import { scrapData } from '../../common/util/scrap_data';
 import { ScrapType } from './types/scrap.type';
 import { PercentageType } from './types/thermometer.type';
 import { languageTitle } from '../../common/util/languageData';
-import { CrawlingService } from '../crawling/crawling.service';
-import { getScrapId } from '../../common/util/getScrapId';
 import { percentage, ThermometerPaths } from '../../common/util/thermometer';
 import {
     idType,
