@@ -1,4 +1,6 @@
 import {
+    Community,
+    Keyword,
     MainMajor,
     UserCompetition,
     UserIntern,
@@ -6,9 +8,8 @@ import {
     UserOutside,
     UserQnet,
 } from '@prisma/client';
-import { paths } from '../../../common/crawiling/interface';
+import { Path } from '../../../common/crawiling/interface';
 import { idType } from '../../../common/types';
-import { CreateThermometerDTO } from '../dto/create-thermometer.dto';
 import { CreateUserDTO } from '../dto/create-user.dto';
 
 export interface IUserCreateDTO {
@@ -27,8 +28,15 @@ export interface IUserUpdateDTO {
 }
 export interface IThermometerUpdate {
     id: idType['id'];
-    path: paths['path'];
-    createThermometer: CreateThermometerDTO;
+    path: Path['path'] | 'language';
+    createThermometer: {
+        category: Community['category'];
+        keyword: Keyword['keyword'];
+        activeTitle: UserIntern['activeTitle'];
+        activeContent: UserIntern['activeContent'];
+        period?: UserIntern['period'];
+        score?: UserLanguage['score'];
+    };
     mainMajorId: MainMajor['id'];
     thermometerId?: string | undefined;
 }
@@ -44,4 +52,9 @@ export interface IThermometerUser {
 export interface ITopPercentage {
     id: idType['id'];
     mainMajorId: MainMajor['id'];
+}
+
+export interface IThermometerFindPath {
+    id: idType['id'];
+    path: Path['path'] | 'language';
 }

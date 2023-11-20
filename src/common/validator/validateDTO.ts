@@ -15,6 +15,7 @@ import {
     providerTokenType,
     pathIdtype,
     pathPageCountType,
+    updateThermometerType,
 } from '../types';
 import { ToggleLikeCommunityDTO } from '../../apis/community/dto/create.community.toggleLike';
 import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
@@ -29,6 +30,9 @@ import { ScrappingDTO } from '../../apis/users/dto/scrapping.dto';
 import { isNicknameDTO } from '../../apis/users/dto/isNickname.dto';
 import { SocialLoginDTO } from '../../apis/auth/dto/socialLogin.dto';
 import { GetUserScrapDTO } from '../../apis/users/dto/getUserScrap.dto';
+import { CreateThermometerDTO } from '../../apis/users/dto/create-thermometer.dto';
+import { ThermometerPath } from '../../apis/users/types/thermometer.type';
+import { FindPathThermometerDTO } from '../../apis/users/dto/findPathThermometer.dto';
 
 class Validate {
     constructor() {
@@ -59,6 +63,9 @@ class Validate {
         this.socialLogin = asyncHandler(this.socialLogin.bind(this));
         this.scrapping = asyncHandler(this.scrapping.bind(this));
         this.getUserScrap = asyncHandler(this.getUserScrap.bind(this));
+        this.updateThermometer = asyncHandler(
+            this.updateThermometer.bind(this),
+        );
     }
 
     async errors<T extends object>(dto: T) {
@@ -185,6 +192,19 @@ class Validate {
     async getUserScrap(req: Request, _: Response, next: NextFunction) {
         const { ...data } = req.query as pathPageCountType;
         await this.errors(new GetUserScrapDTO({ ...data }));
+
+        next();
+    }
+
+    async updateThermometer(req: Request, _: Response, next: NextFunction) {
+        await this.errors(new CreateThermometerDTO(req.body));
+
+        next();
+    }
+
+    async findPathThermometer(req: Request, _: Response, next: NextFunction) {
+        const { ...data } = req.query as ThermometerPath;
+        await this.errors(new FindPathThermometerDTO(data));
 
         next();
     }

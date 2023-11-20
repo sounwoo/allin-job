@@ -8,12 +8,13 @@ import {
     nicknameType,
     pathIdtype,
     pathPageCountType,
+    updateThermometerType,
 } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import Validate from '../../common/validator/validateDTO';
-import { IThermometerUpdate } from './interfaces/user.interface';
+import { ThermometerPath } from './types/thermometer.type';
 
 class UserController {
     router = Router();
@@ -98,6 +99,7 @@ class UserController {
 
         this.router.post(
             '/updateThermometer',
+            Validate.updateThermometer,
             AccessGuard.handle,
             asyncHandler(this.updateThermometer.bind(this)),
         );
@@ -108,17 +110,18 @@ class UserController {
             asyncHandler(this.getCount.bind(this)),
         );
 
-        this.router.post(
-            '/topPercent',
-            AccessGuard.handle,
-            asyncHandler(this.topPercent.bind(this)),
-        );
-
         this.router.delete('/delete', asyncHandler(this.delete.bind(this)));
 
         this.router.get(
             '/findManyThermometer',
+            AccessGuard.handle,
             asyncHandler(this.findManyThermometer.bind(this)),
+        );
+
+        this.router.get(
+            '/findPathThermometer',
+            AccessGuard.handle,
+            asyncHandler(this.findPathThermometer.bind(this)),
         );
     }
 
@@ -238,7 +241,10 @@ class UserController {
         const { id } = req.user as idType;
 
         res.status(200).json({
-            data: await this.userService.updateThermometer({ id, ...req.body }),
+            data: await this.userService.updateThermometer({
+                id,
+                ...(req.body as updateThermometerType),
+            }),
         });
     }
 
@@ -250,13 +256,24 @@ class UserController {
         });
     }
 
-    async topPercent(req: Request, res: Response) {
+    async findManyThermometer(req: Request, res: Response) {
         const { id } = req.user as idType;
-        const { mainMajorId } = req.body; // type 설정
-        const datas = await this.userService.topPercent({ id, mainMajorId });
+        const data = await this.userService.findManyThermometer(id);
 
         res.status(200).json({
-            data: datas,
+            data,
+        });
+    }
+
+    async findPathThermometer(req: Request, res: Response) {
+        const { id } = req.user as idType;
+        const { path } = req.query as ThermometerPath;
+
+        res.status(200).json({
+            data: await this.userService.findPathThermometer({
+                id,
+                path,
+            }),
         });
     }
 }

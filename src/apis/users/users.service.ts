@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
+    IThermometerFindPath,
     IThermometerUpdate,
     IThermometerUser,
     ITopPercentage,
@@ -18,13 +19,11 @@ import { scrapData } from '../../common/util/scrap_data';
 import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
 import { idType } from '../../common/types';
-import { percentage } from '../../common/util/termometer';
 import { PercentageType } from './types/thermometer.type';
 import { languageTitle } from '../../common/util/languageData';
 import { CrawlingService } from '../crawling/crawling.service';
-import { SaveUserMajorDTO } from './dto/saveUserMajor.dto';
-import { index } from 'cheerio/lib/api/traversing';
 import { getScrapId } from '../../common/util/getScrapId';
+import { percentage, ThermometerPaths } from '../../common/util/thermometer';
 
 @Service()
 export class UserService {
@@ -463,33 +462,34 @@ export class UserService {
     }: IThermometerUpdate): Promise<boolean> {
         await this.isUserByID(id);
 
-        const obj = {
-            outside: 'userOutside',
-            intern: 'userIntern',
-            competition: 'userCompetition',
-            language: 'userLanguage',
-            qnet: 'userQnet',
-        };
+        try {
+            await this.prisma.$transaction(async (prisma) => {
+                await prisma.user.update({
+                    where: { id },
+                    data: {
+                        [ThermometerPaths[path]]: createThermometer
+                            ? { create: { ...createThermometer } }
+                            : { delete: { id: thermometerId } },
+                    },
+                });
 
-        await this.prisma.user.update({
-            where: { id },
-            data: {
-                [obj[path]]: createThermometer
-                    ? { create: { ...createThermometer } }
-                    : { delete: { id: thermometerId } },
-            },
-        });
-        const { sum: thermometer } = await this.getCount(id);
-        await this.prisma.user.update({
-            where: { id },
-            data: {
-                thermometer,
-            },
-        });
+                const { sum: thermometer } = await this.getCount(id);
 
-        await this.topPercent({ id, mainMajorId });
+                await prisma.user.update({
+                    where: { id },
+                    data: {
+                        thermometer,
+                    },
+                });
+            });
 
-        return true;
+            await this.topPercent({ id, mainMajorId });
+
+            return true;
+        } catch (error) {
+            console.error('트랜잭션 실패:', error);
+            return false;
+        }
     }
 
     async getCount(id: string): Promise<PercentageType> {
@@ -528,7 +528,7 @@ export class UserService {
         return percentage(user as IThermometerUser);
     }
 
-    async topPercent({ id, mainMajorId }: ITopPercentage): Promise<User> {
+    async topPercent({ id, mainMajorId }: ITopPercentage): Promise<User[]> {
         const users = await this.prisma.user.findMany({
             where: {
                 subMajor: {
@@ -543,27 +543,90 @@ export class UserService {
             },
         });
 
-        const grade = users.findIndex((el) => el.id === id) + 1;
-
-        await Promise.all(
+        return Promise.all(
             users.map(async (el, index) => {
                 const { id } = el;
                 const grade = index + 1;
                 const top = (grade / users.length) * 100;
+
                 return this.prisma.user.update({
                     where: { id },
                     data: { top },
                 });
             }),
         );
+    }
 
-        const top = (grade / users.length) * 100;
-
-        return this.prisma.user.update({
+    async findManyThermometer(id: string): Promise<any> {
+        return await this.prisma.user.findMany({
             where: { id },
-            data: {
-                top,
+            select: {
+                userCompetition: {
+                    select: {
+                        activeTitle: true,
+                    },
+                },
+                userOutside: {
+                    select: {
+                        activeTitle: true,
+                    },
+                },
+                userQnet: {
+                    select: {
+                        activeTitle: true,
+                    },
+                },
+                userLanguage: {
+                    select: {
+                        activeTitle: true,
+                    },
+                },
+                userIntern: {
+                    select: {
+                        activeTitle: true,
+                    },
+                },
             },
         });
+    }
+
+    async findPathThermometer({
+        id,
+        path,
+    }: IThermometerFindPath): Promise<any> {
+        await this.isUserByID(id);
+        const addField = await this.addField(ThermometerPaths[path]);
+
+        return await this.prisma.user.findMany({
+            where: { id },
+            select: {
+                [ThermometerPaths[path]]: {
+                    select: {
+                        id: true,
+                        category: true,
+                        keyword: true,
+                        activeTitle: true,
+                        activeContent: true,
+                        ...addField,
+                    },
+                },
+            },
+        });
+    }
+
+    async addField(field: string): Promise<Record<string, boolean>> {
+        switch (field) {
+            case 'userLanguage':
+                return {
+                    score: true,
+                };
+            case 'userIntern':
+                return {
+                    period: true,
+                };
+
+            default:
+                return {};
+        }
     }
 }
