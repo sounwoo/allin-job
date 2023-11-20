@@ -19,13 +19,11 @@ import { languageTitle } from '../../common/util/languageData';
 import { splitDate } from '../../common/util/splitDate';
 import { randomSolution } from '../../common/util/return_data_randomSolution';
 import { UserService } from '../users/users.service';
-import { CustomPrismaClient } from '../../database/prismaConfig';
-import { getScrapId } from '../../common/util/getScrapId';
+import { myKeywordCrawlingObj } from '../../common/util/myKeywordCrawlingObj';
 
 @Service()
 export class CrawlingService {
     constructor(
-        private readonly prisma: CustomPrismaClient, //
         private readonly elastic: ElasitcClient,
         private readonly redis: RedisClient,
         private readonly userService: UserService,
@@ -35,8 +33,8 @@ export class CrawlingService {
     async findeCrawling({ ...data }: paths): Promise<findCrawling[]> {
         const { path, page, count, id, ..._data } = data;
 
-        let scrapId: string[] = [];
-        if (id) scrapId = await getScrapId({ prisma: this.prisma, id, path });
+        let scrapIds: string[] = [];
+        id && (scrapIds = await this.userService.getScrapId({ id, path }));
 
         const datas: { [key: string]: string } = { ..._data };
         const must: object[] = [];
@@ -86,18 +84,19 @@ export class CrawlingService {
                     ? data.body.hits.total.value
                     : data.body.hits.hits.length
                     ? data.body.hits.hits.map((el: any) => {
-                          const { closeDate, test, period } = el._source;
+                          const { closeDate, test, period, ...rest } =
+                              el._source;
 
-                          delete el._source.test, delete el._source.period;
-
-                          if (path === 'intern')
-                              delete el._source.scrap, delete el._source.Dday;
-                          if (path === 'qnet')
-                              delete el._source.scrap, delete el._source.view;
+                          if (path === 'intern' || path === 'qnet') {
+                              delete el._source.scrap,
+                                  path === 'intern'
+                                      ? delete el._source.Dday
+                                      : delete el._source.view;
+                          }
 
                           return {
                               id: el._id,
-                              ...el._source,
+                              ...rest,
                               ...(path === 'intern' && {
                                   closeDate: splitDate(period),
                               }),
@@ -108,7 +107,7 @@ export class CrawlingService {
                               ...(path === 'qnet' && {
                                   ...examSchedulesSort(el),
                               }),
-                              ...(id && { isScrap: scrapId.includes(el._id) }),
+                              ...(id && { isScrap: scrapIds.includes(el._id) }),
                           };
                       })
                     : [];
@@ -123,18 +122,14 @@ export class CrawlingService {
         });
         if (!userKeyword) return [];
 
-        const obj = {
-            competition: 'interests',
-            outside: 'field',
-            intern: 'institution',
-            qnet: 'mainCategory',
-            language: 'test',
-        };
         const { id, ..._data } = { ...data };
+
         const params = {
             id,
             ..._data,
-            ...(userKeyword.length && { [obj[data.path]]: userKeyword }),
+            ...(userKeyword.length && {
+                [myKeywordCrawlingObj(data.path)]: userKeyword,
+            }),
         };
 
         return this.findeCrawling(params);
@@ -145,9 +140,8 @@ export class CrawlingService {
         dataId,
         id,
     }: findeDetailType): Promise<findeDetailCrawling | null> {
-        let scrapId: string[] = [];
-
-        if (id) scrapId = await getScrapId({ prisma: this.prisma, id, path });
+        let scrapIds: string[] = [];
+        id && (scrapIds = await this.userService.getScrapId({ id, path }));
 
         return this.elastic
             .update(
@@ -169,7 +163,7 @@ export class CrawlingService {
                         mainImage: process.env.QNET_IMAGE,
                     }),
                     ...(el.body.error ? el.meta.context : el.body.get._source),
-                    ...(id && { isScrap: scrapId.includes(el.body._id) }),
+                    ...(id && { isScrap: scrapIds.includes(el.body._id) }),
                 };
             });
     }
@@ -225,10 +219,9 @@ export class CrawlingService {
         path: Path['path'] | 'community';
         id: string;
     }): Promise<bestDataType[]> {
-        let scrapId: string[] = [];
-
+        let scrapIds: string[] = [];
         if (id && path !== 'community')
-            scrapId = await getScrapId({ prisma: this.prisma, id, path });
+            scrapIds = await this.userService.getScrapId({ id, path });
 
         if (path === 'community') return this.communityService.findeMany({});
 
@@ -250,16 +243,15 @@ export class CrawlingService {
                         delete el._source.period;
                         delete el._source.preferentialTreatment;
                     }
-                    if (path === 'qnet') {
-                        delete el._source.examSchedules;
-                    }
+                    if (path === 'qnet') delete el._source.examSchedules;
+
                     return {
                         id: el._id,
                         ...el._source,
                         ...(path === 'qnet' && {
                             mainImage: process.env.QNET_IMAGE,
                         }),
-                        ...(id && { isScrap: scrapId.includes(el._id) }),
+                        ...(id && { isScrap: scrapIds.includes(el._id) }),
                     };
                 }),
             );
@@ -275,7 +267,9 @@ export class CrawlingService {
                           [el]: await this.elastic
                               .search({
                                   index: el,
-                                  _source_includes: randomSolution(el),
+                                  _source_includes: randomSolution(
+                                      el as Path['path'],
+                                  ),
                                   body: {
                                       query: {
                                           function_score: {

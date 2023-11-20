@@ -33,6 +33,8 @@ import { GetUserScrapDTO } from '../../apis/users/dto/getUserScrap.dto';
 import { CreateThermometerDTO } from '../../apis/users/dto/create-thermometer.dto';
 import { ThermometerPath } from '../../apis/users/types/thermometer.type';
 import { FindPathThermometerDTO } from '../../apis/users/dto/findPathThermometer.dto';
+import { LoginDTO } from '../../apis/auth/dto/login.dto';
+
 
 class Validate {
     constructor() {
@@ -66,6 +68,7 @@ class Validate {
         this.updateThermometer = asyncHandler(
             this.updateThermometer.bind(this),
         );
+        this.login = asyncHandler(this.login.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -175,6 +178,13 @@ class Validate {
         next();
     }
 
+    async login(req: Request, _: Response, next: NextFunction) {
+        const { id } = req.body as idType;
+        await this.errors(new LoginDTO({ id }));
+
+        next();
+    }
+
     async socialLogin(req: Request, _: Response, next: NextFunction) {
         const { provider, token } = req.body as providerTokenType;
         await this.errors(new SocialLoginDTO({ provider, token }));
@@ -210,16 +220,3 @@ class Validate {
     }
 }
 export default new Validate();
-
-export const validateDTO = async <T extends object>(dto: T) => {
-    const errors = await validate(dto);
-
-    if (errors.length > 0) {
-        const errorMessage = errors.map((error) => {
-            const temp = error.constraints && Object.values(error.constraints);
-            return `${error.property} : ${temp}`;
-        });
-
-        throw new CustomError(errorMessage, 400);
-    }
-};

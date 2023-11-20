@@ -3,41 +3,46 @@ import { CustomPrismaClient } from '../../database/prismaConfig';
 import {
     IThermometerFindPath,
     IThermometerUpdate,
+    IFindUserKeyword,
     IThermometerUser,
     ITopPercentage,
+    IUpdateProfile,
     IUserCreateDTO,
     IUserFindOneUserByID,
-    IUserUpdateDTO,
+    ISaveInterestKeyword,
+    IScrapping,
+    IGetUserScrap,
 } from './interfaces/user.interface';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
-import { FindUserKeywordDTO } from './dto/findUserKeyword.dto';
 import { ElasitcClient } from '../../database/elasticConfig';
-import { SaveInterestKeywordDTO } from './dto/saveInterestKeyword.dto';
-import { ScrappingDTO } from './dto/scrapping.dto';
 import { scrapData } from '../../common/util/scrap_data';
-import { GetUserScrapDTO } from './dto/getUserScrap.dto';
 import { ScrapType } from './types/scrap.type';
-import { idType } from '../../common/types';
 import { PercentageType } from './types/thermometer.type';
 import { languageTitle } from '../../common/util/languageData';
 import { CrawlingService } from '../crawling/crawling.service';
 import { getScrapId } from '../../common/util/getScrapId';
 import { percentage, ThermometerPaths } from '../../common/util/thermometer';
+import {
+    idType,
+    emailProviderType,
+    getScrapIdType,
+    interestKeywordType,
+    userProfileType,
+} from '../../common/types';
 
 @Service()
 export class UserService {
     constructor(
         private readonly prisma: CustomPrismaClient, //
         private readonly elastic: ElasitcClient,
-        private readonly crawlingService: CrawlingService,
     ) {}
 
     async findUserKeyword({
         id,
         path,
         classify,
-    }: FindUserKeywordDTO): Promise<string> {
+    }: IFindUserKeyword): Promise<string> {
         const result = await this.prisma.user.findUnique({
             where: {
                 id,
@@ -90,7 +95,11 @@ export class UserService {
         return keywords.filter((el) => el).join(' ');
     }
 
-    saveInterestKeyword({ prisma, interests, id }: SaveInterestKeywordDTO) {
+    saveInterestKeyword({
+        prisma,
+        interests,
+        id,
+    }: ISaveInterestKeyword): Promise<void[][]> {
         return Promise.all(
             interests.map(async (el) => {
                 const [interest, keywords] = Object.entries(el)[0];
@@ -120,7 +129,7 @@ export class UserService {
         );
     }
 
-    findOneUserByEmail(email: string): Promise<User | null> {
+    findOneUserByEmail(email: User['email']): Promise<User | null> {
         return this.prisma.user.findUnique({
             where: {
                 email,
@@ -137,7 +146,7 @@ export class UserService {
         });
     }
 
-    async isUserByID(id: string): Promise<User> {
+    async isUserByID(id: User['id']): Promise<User> {
         const isUser = await this.prisma.user.findUnique({
             where: {
                 id,
@@ -153,11 +162,11 @@ export class UserService {
         return isUser;
     }
 
-    // return type 설정
-    async findUserProfile(id: string) {
+    async findUserProfile(id: User['id']): Promise<userProfileType> {
         const profile = await this.prisma.user.findUnique({
             where: { id },
             select: {
+                email: true,
                 profileImage: true,
                 nickname: true,
                 interests: {
@@ -169,32 +178,31 @@ export class UserService {
             },
         });
 
-        const interestKeyword = profile?.interests.reduce(
-            (result: any, el: any) => {
-                const existingGroup = result.find(
-                    (group: any) => group.interest === el.interest.interest,
-                );
-                if (existingGroup)
-                    existingGroup.keyword.push(el.keyword.keyword);
-                else {
-                    result.push({
-                        interest: el.interest.interest,
-                        keyword: [el.keyword.keyword],
-                    });
-                }
-                return result;
-            },
-            [],
-        );
+        const interestKeyword: interestKeywordType[] = [];
+        profile?.interests.map((el) => {
+            const { interest, keyword } = el;
+            const isInterest = interestKeyword.find(
+                (item: interestKeywordType) =>
+                    item.interest === interest.interest,
+            );
+
+            if (isInterest) isInterest.keyword.push(keyword.keyword);
+            else
+                interestKeyword.push({
+                    interest: interest.interest,
+                    keyword: [keyword.keyword],
+                });
+        });
 
         return {
-            profileImage: profile?.profileImage,
-            nickname: profile?.nickname,
+            email: profile!.email,
+            profileImage: profile!.profileImage,
+            nickname: profile!.nickname,
             interestKeyword,
         };
     }
 
-    async isNickname(nickname: string): Promise<boolean> {
+    async isNickname(nickname: User['nickname']): Promise<boolean> {
         const isNickname = await this.prisma.user.findUnique({
             where: {
                 nickname,
@@ -208,7 +216,7 @@ export class UserService {
     findOneUserByID({
         name,
         phone,
-    }: IUserFindOneUserByID): Promise<{ email: string; provider: string }[]> {
+    }: IUserFindOneUserByID): Promise<emailProviderType[]> {
         return this.prisma.user.findMany({
             where: {
                 name,
@@ -221,10 +229,14 @@ export class UserService {
         });
     }
 
-    //return type 설정
-    async getLoginUserInfo(id: string) {
-        const user = await this.isUserByID(id);
-        const { nickname, profileImage, thermometer, top } = user;
+    //return type 설정 - 추후에 solution 정리되면
+    async getLoginUserInfo(id: User['id']) {
+        const user = await this.isUserByID(id).then((el) => {
+            const { nickname, profileImage, thermometer, top, subMajorId } = el;
+            return { nickname, profileImage, thermometer, top, subMajorId };
+        });
+
+        const { subMajorId, ...rest } = user;
 
         const major = await this.prisma.subMajor.findUnique({
             where: { id: user.subMajorId },
@@ -235,15 +247,9 @@ export class UserService {
             },
         });
 
-        const solution = await this.crawlingService.randomCrawling();
-
         return {
-            nickname,
-            profileImage,
-            thermometer,
+            ...rest,
             mainMajor: major!.mainMajor.mainMajor,
-            top,
-            solution,
         };
     }
 
@@ -280,18 +286,16 @@ export class UserService {
                     subMajorId: subMajorId.id,
                 },
             });
-            await this.saveInterestKeyword({ prisma, interests, id: user.id });
+            await this.saveInterestKeyword({
+                prisma,
+                interests,
+                id: user.id,
+            });
             return user.id;
         });
     }
 
-    async updateProfile({
-        id,
-        updateDTO,
-    }: {
-        id: string;
-        updateDTO: IUserUpdateDTO;
-    }): Promise<User> {
+    async updateProfile({ id, updateDTO }: IUpdateProfile): Promise<User> {
         const { interests, ...data } = updateDTO;
 
         const chkUser = await this.isUserByID(id);
@@ -328,14 +332,11 @@ export class UserService {
         });
     }
 
-    async scrapping({
-        id,
-        path,
-        scrapId,
-    }: idType & ScrappingDTO): Promise<boolean> {
+    async scrapping({ id, scrappingDTO }: IScrapping): Promise<boolean> {
         await this.isUserByID(id);
-        // 빼서 사용
+        const { path, scrapId } = scrappingDTO;
         const { column, id: _scrapId } = scrapData(path);
+
         const chkScrap = await this.prisma.user.findFirst({
             include: {
                 [column]: {
@@ -354,7 +355,7 @@ export class UserService {
                 .update(
                     {
                         index: path,
-                        id: _scrapId,
+                        id: scrapId,
                         body: {
                             script: {
                                 source: plusMinus,
@@ -382,12 +383,12 @@ export class UserService {
 
     async getUserScrap({
         id,
-        ...data
-    }: GetUserScrapDTO & { id: string }): Promise<ScrapType[]> {
-        const { path, count, page } = data;
+        getUserScrapDTO,
+    }: IGetUserScrap): Promise<ScrapType[]> {
+        const { path, count, page } = getUserScrapDTO;
         await this.isUserByID(id);
 
-        const _id = await getScrapId({ prisma: this.prisma, id, path });
+        const _id = await this.getScrapId({ id, path });
 
         return await this.elastic
             .search({
@@ -446,7 +447,22 @@ export class UserService {
             });
     }
 
-    async delete(email: string): Promise<boolean> {
+    async getScrapId({ id, path }: getScrapIdType): Promise<string[]> {
+        return await this.prisma.user
+            .findUnique({
+                where: { id },
+                include: {
+                    [scrapData(path).column]: true,
+                },
+            })
+            .then((data) =>
+                data![scrapData(path).column].map(
+                    (el: any) => el[scrapData(path).id],
+                ),
+            );
+    }
+
+    async delete(email: User['email']): Promise<boolean> {
         const user = await this.findOneUserByEmail(email);
         const qqq = await this.prisma.user.delete({ where: { id: user?.id } });
         console.log(qqq);

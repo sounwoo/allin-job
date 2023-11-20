@@ -2,6 +2,7 @@ import { UserService } from './users.service';
 import { Request, Response, Router } from 'express';
 import { SmsService } from '../../common/util/sms/sms.service';
 import {
+    createDTOType,
     email,
     findOneUserByIDType,
     idType,
@@ -9,12 +10,17 @@ import {
     pathIdtype,
     pathPageCountType,
     updateThermometerType,
+    phoneType,
+    updateDTOType,
+    validateTokenType,
+    yearMonthType,
 } from '../../common/types';
 import { asyncHandler } from '../../middleware/async.handler';
 import { Container } from 'typedi';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
 import Validate from '../../common/validator/validateDTO';
 import { ThermometerPath } from './types/thermometer.type';
+import { CrawlingService } from '../crawling/crawling.service';
 
 class UserController {
     router = Router();
@@ -23,6 +29,7 @@ class UserController {
     constructor(
         private readonly userService: UserService,
         private readonly smsService: SmsService,
+        private readonly crawlingService: CrawlingService,
     ) {
         this.init();
     }
@@ -157,8 +164,13 @@ class UserController {
         // #swagger.tags = ['Users']
         const { id } = req.user as idType;
 
+        const solution = await this.crawlingService.randomCrawling();
+
         res.status(200).json({
-            data: await this.userService.getLoginUserInfo(id),
+            data: {
+                ...(await this.userService.getLoginUserInfo(id)),
+                solution,
+            },
         });
     }
 
@@ -174,14 +186,14 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.userService.createUser({
-                createDTO: req.body, // type 설정
+                createDTO: req.body as createDTOType,
             }),
         });
     }
 
     async sendTokenSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const { phone } = req.body; // type 설정
+        const { phone } = req.body as phoneType;
         res.status(200).json({
             data: await this.smsService.sendTokenSMS(phone),
         });
@@ -190,7 +202,9 @@ class UserController {
     async validateToken(req: Request, res: Response) {
         // #swagger.tags = ['Users']
         res.status(200).json({
-            data: await this.smsService.validateToken(req.body),
+            data: await this.smsService.validateToken(
+                req.body as validateTokenType,
+            ),
         });
     }
 
@@ -201,7 +215,7 @@ class UserController {
         res.status(200).json({
             data: await this.userService.updateProfile({
                 id,
-                updateDTO: req.body, // type 설정
+                updateDTO: req.body as updateDTOType,
             }),
         });
     }
@@ -213,7 +227,7 @@ class UserController {
         res.status(200).json({
             data: await this.userService.scrapping({
                 id,
-                ...(req.body as pathIdtype),
+                scrappingDTO: req.body as pathIdtype,
             }),
         });
     }
@@ -221,11 +235,10 @@ class UserController {
     async getUserScrap(req: Request, res: Response) {
         // #swagger.tags = ['User']
         const { id } = req.user as idType;
-        const { ...data } = req.query as pathPageCountType;
         res.status(200).json({
             data: await this.userService.getUserScrap({
                 id,
-                ...data,
+                getUserScrapDTO: req.query as pathPageCountType,
             }),
         });
     }
@@ -281,4 +294,5 @@ class UserController {
 export default new UserController(
     Container.get(UserService),
     Container.get(SmsService),
+    Container.get(CrawlingService),
 );

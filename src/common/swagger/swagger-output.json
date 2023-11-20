@@ -316,6 +316,7 @@
                             "application/json": {
                                 "example": {
                                     "data": {
+                                        "email": "abc@abc.com",
                                         "profileImage": "profile url",
                                         "nickname": "닉네임",
                                         "interestKeyword": [
@@ -334,6 +335,9 @@
                                         {
                                             "type": "object",
                                             "properties": {
+                                                "email": {
+                                                    "type": "string"
+                                                },
                                                 "profileImage": {
                                                     "type": "string"
                                                 },
