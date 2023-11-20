@@ -4,28 +4,35 @@ import {
     UserIntern,
     UserLanguage,
 } from '@prisma/client';
-import { IsString } from 'class-validator';
-import { paths } from '../../../common/crawiling/interface';
+import { IsOptional, IsString } from 'class-validator';
+import { Path } from '../../../common/crawiling/interface';
+
 export class CreateThermometerDTO {
     @IsString()
-    path: paths['path'];
+    path: Path['path'] | 'language';
 
     @IsString()
+    @IsOptional()
     category: UserCompetition['category'];
 
     @IsString()
+    @IsOptional()
     keyword: Keyword['keyword'];
 
     @IsString()
+    @IsOptional()
     activeTitle: UserCompetition['activeTitle'];
 
     @IsString()
+    @IsOptional()
     activeContent: UserCompetition['activeContent'];
 
     @IsString()
+    @IsOptional()
     period?: UserIntern['period'];
 
     @IsString()
+    @IsOptional()
     score?: UserLanguage['score'];
 
     constructor(data: CreateThermometerDTO) {

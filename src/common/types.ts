@@ -1,4 +1,12 @@
-import { Provider, User } from '@prisma/client';
+import {
+    Community,
+    Keyword,
+    MainMajor,
+    Provider,
+    User,
+    UserIntern,
+    UserLanguage,
+} from '@prisma/client';
 import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
 import { Path, paths } from './crawiling/interface';
 import { CustomPrismaClient } from '../database/prismaConfig';
@@ -95,4 +103,18 @@ export type cookie = {
 export type emailProviderType = {
     email: CreateUserDTO['email'];
     provider: Provider;
+};
+
+export type updateThermometerType = {
+    path: Path['path'] | 'language';
+    createThermometer: {
+        category: Community['category'];
+        keyword: Keyword['keyword'];
+        activeTitle: UserIntern['activeTitle'];
+        activeContent: UserIntern['activeContent'];
+        period?: UserIntern['period'];
+        score?: UserLanguage['score'];
+    };
+    mainMajorId: MainMajor['id'];
+    thermometerId?: string | undefined;
 };

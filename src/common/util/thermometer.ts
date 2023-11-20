@@ -45,3 +45,11 @@ export const percentage = (user: IThermometerUser): PercentageType => {
         sum,
     };
 };
+
+export const ThermometerPaths = {
+    outside: 'userOutside',
+    intern: 'userIntern',
+    competition: 'userCompetition',
+    language: 'userLanguage',
+    qnet: 'userQnet',
+};

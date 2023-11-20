@@ -173,6 +173,7 @@ model ScrapIntern {
 model UserCompetition {
   id            String  @id @unique @default(uuid())
   category      String
+  keyword       String
   activeTitle   String
   activeContent String
   user          User?   @relation(fields: [userId], references: [id])
@@ -182,6 +183,7 @@ model UserCompetition {
 model UserOutside {
   id            String  @id @unique @default(uuid())
   category      String
+  keyword       String
   activeTitle   String
   activeContent String
   user          User?   @relation(fields: [userId], references: [id])
@@ -191,6 +193,7 @@ model UserOutside {
 model UserQnet {
   id            String  @id @unique @default(uuid())
   category      String
+  keyword       String
   activeTitle   String
   activeContent String
   user          User?   @relation(fields: [userId], references: [id])
@@ -200,6 +203,7 @@ model UserQnet {
 model UserIntern {
   id            String  @id @unique @default(uuid())
   category      String
+  keyword       String
   activeTitle   String
   activeContent String
   period        String
@@ -210,6 +214,7 @@ model UserIntern {
 model UserLanguage {
   id            String  @id @unique @default(uuid())
   category      String
+  keyword       String
   activeTitle   String
   activeContent String
   score         String

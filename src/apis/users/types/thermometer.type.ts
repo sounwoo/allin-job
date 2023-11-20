@@ -1,5 +1,7 @@
+import { Path } from '../../../common/crawiling/interface';
+
 interface PercentageData {
-    barType: string; // 여기에 실제 타입을 지정하십시오.
+    barType: string;
     percent: number;
 }
 
@@ -11,3 +13,6 @@ export interface PercentageType {
     intern: PercentageData;
     sum: number;
 }
+export type ThermometerPath = {
+    path: Path['path'] | 'language';
+};

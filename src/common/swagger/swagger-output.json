@@ -585,6 +585,123 @@
                 }
             }
         },
+        "/user/findManyThermometer": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "유저의 온도계 활동내역 게시물 전부 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": [
+                                        {
+                                            "userCompetition": [
+                                                {
+                                                    "activeTitle": "회원이 등록한 공모전관련 게시물 전부"
+                                                }
+                                            ],
+                                            "userOutside": [
+                                                {
+                                                    "activeTitle": "회원이 등록한 대외활동관련 게시물 전부"
+                                                }
+                                            ],
+                                            "userQnet": [
+                                                {
+                                                    "activeTitle": "회원이 등록한 자격증관련 게시물 전부"
+                                                }
+                                            ],
+                                            "userLanguage": [
+                                                {
+                                                    "activeTitle": "회원이 등록한 어학성적관련 게시물 전부"
+                                                }
+                                            ],
+                                            "userIntern": [
+                                                {
+                                                    "activeTitle": "회원이 등록한 인턴관련 게시물 전부"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/findPathThermometer": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "유저의 온도계 카테고리별(공모전, 대외활동, 자격증, 어학, 인턴) 작성 게시물 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "outside"
+                        },
+                        "description": "데이터 조회 outside:대외활동, intern:인턴 , competition:공모전, qnet:자격증, language: 언어시험"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": [
+                                        {
+                                            "path": [
+                                                {
+                                                    "id": "cf7020cd-17da-4fc6-8f08-efd23f0abda5",
+                                                    "category": "competition, outside, qnet, language, intern 중 1",
+                                                    "keyword": "활동별 키워드",
+                                                    "activeTitle": " 활동별 제목",
+                                                    "activeContent": "활동별내용"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/createUser": {
             "post": {
                 "tags": ["Users"],
