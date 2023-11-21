@@ -11,9 +11,48 @@ import { CreateUserDTO } from '../apis/users/dto/create-user.dto';
 import { Path, paths } from './crawiling/interface';
 import { CustomPrismaClient } from '../database/prismaConfig';
 import { UpdateUserDTO } from '../apis/users/dto/update-user.dto';
+import { GetCalenderDTO } from '../apis/users/dto/getCalender.dto';
 
 export type email = {
     email: CreateUserDTO['email'];
+};
+
+export type calanderDateType = {
+    year: string;
+    month: string;
+    path: paths['path'];
+    data: calanderDataType;
+};
+
+export type getYearMonthDateType = {
+    path: paths['path'];
+    data: calanderDataType;
+    year: string;
+    month: string;
+};
+
+export type splitMapType = {
+    date: string;
+    path: paths['path'];
+    year: string;
+    month: string;
+};
+
+export type isYearMonthSameType = {
+    yearMonthDate: Array<{
+        startDate?: { dateYear: string; dateMonth: string; dateDay: string };
+        closeDate?: { dateYear: string; dateMonth: string; dateDay: string };
+        examDate?: { dateYear: string; dateMonth: string; dateDay: string };
+    }>;
+};
+
+export type calanderDataType = {
+    openDate: string;
+    closeDate: string;
+    examDate: string;
+    examSchedules: string[];
+    period: string;
+    participationPeriod: string;
 };
 
 export type providerTokenType = {
@@ -48,6 +87,8 @@ export type phoneType = {
 export type createDTOType = CreateUserDTO;
 
 export type updateDTOType = UpdateUserDTO;
+
+export type getCalenderDTOType = GetCalenderDTO;
 
 export type validateTokenType = {
     token: number;

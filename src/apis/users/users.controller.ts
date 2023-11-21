@@ -130,6 +130,13 @@ class UserController {
             AccessGuard.handle,
             asyncHandler(this.findPathThermometer.bind(this)),
         );
+
+        this.router.get(
+            '/getCalender',
+            Validate.getCalender,
+            AccessGuard.handle,
+            asyncHandler(this.getCalender.bind(this)),
+        );
     }
 
     async findOneUserByEmail(req: Request, res: Response) {
@@ -286,6 +293,19 @@ class UserController {
             data: await this.userService.findPathThermometer({
                 id,
                 path,
+            }),
+        });
+    }
+
+    async getCalender(req: Request, res: Response) {
+        // #swagger.tags = ['User']
+        const { id } = req.user as idType;
+        const { year, month } = req.query as yearMonthType;
+        res.status(200).json({
+            data: await this.userService.getCalender({
+                id,
+                year,
+                month,
             }),
         });
     }
