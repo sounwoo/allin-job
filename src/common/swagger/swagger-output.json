@@ -1574,7 +1574,7 @@
                 }
             }
         },
-        "/user/getUserScrap/": {
+        "/user/getUserScrap": {
             "get": {
                 "tags": ["Users"],
                 "summary": "나의 스크랩 조회하기",
@@ -1843,6 +1843,95 @@
                                             }
                                         }
                                     ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getCalender": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "캘린더 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "year",
+                            "example": "23"
+                        },
+                        "description": "year: 23"
+                    },
+                    {
+                        "name": "month",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "month",
+                            "example": "1"
+                        },
+                        "description": "month: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "6": [
+                                            {
+                                                "id": "255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                "title": "제목",
+                                                "status": "open, close, exam"
+                                            },
+                                            {
+                                                "id": "255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                "title": "제목",
+                                                "status": "open, close, exam"
+                                            }
+                                        ],
+                                        "13": [
+                                            {
+                                                "id": "255617b0-446c-477e-96c9-cb9fe54bc6cc",
+                                                "title": "제목",
+                                                "status": "open, close, exam"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
                                 }
                             }
                         }

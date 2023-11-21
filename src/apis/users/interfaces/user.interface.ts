@@ -50,6 +50,12 @@ export interface IScrapping {
     scrappingDTO: ScrappingDTO;
 }
 
+export interface IGetCalender {
+    id: User['id'];
+    year: string;
+    month: string;
+}
+
 export interface IGetUserScrap {
     id: User['id'];
     getUserScrapDTO: GetUserScrapDTO;

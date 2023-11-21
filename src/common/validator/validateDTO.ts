@@ -15,7 +15,7 @@ import {
     providerTokenType,
     pathIdtype,
     pathPageCountType,
-    updateThermometerType,
+    yearMonthType,
 } from '../types';
 import { ToggleLikeCommunityDTO } from '../../apis/community/dto/create.community.toggleLike';
 import { CreateCommunityCommentDTO } from '../../apis/community/dto/create.comment.input';
@@ -34,7 +34,7 @@ import { CreateThermometerDTO } from '../../apis/users/dto/create-thermometer.dt
 import { ThermometerPath } from '../../apis/users/types/thermometer.type';
 import { FindPathThermometerDTO } from '../../apis/users/dto/findPathThermometer.dto';
 import { LoginDTO } from '../../apis/auth/dto/login.dto';
-
+import { GetCalenderDTO } from '../../apis/users/dto/getCalender.dto';
 
 class Validate {
     constructor() {
@@ -69,6 +69,7 @@ class Validate {
             this.updateThermometer.bind(this),
         );
         this.login = asyncHandler(this.login.bind(this));
+        this.getCalender = asyncHandler(this.getCalender.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -215,6 +216,11 @@ class Validate {
     async findPathThermometer(req: Request, _: Response, next: NextFunction) {
         const { ...data } = req.query as ThermometerPath;
         await this.errors(new FindPathThermometerDTO(data));
+    }
+
+    async getCalender(req: Request, _: Response, next: NextFunction) {
+        const { year, month } = req.query as yearMonthType;
+        await this.errors(new GetCalenderDTO({ year, month }));
 
         next();
     }

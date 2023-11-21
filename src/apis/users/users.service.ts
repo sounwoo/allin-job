@@ -12,6 +12,7 @@ import {
     ISaveInterestKeyword,
     IScrapping,
     IGetUserScrap,
+    IGetCalender,
 } from './interfaces/user.interface';
 import CustomError from '../../common/error/customError';
 import { Service } from 'typedi';
@@ -22,12 +23,14 @@ import { PercentageType } from './types/thermometer.type';
 import { languageTitle } from '../../common/util/languageData';
 import { percentage, ThermometerPaths } from '../../common/util/thermometer';
 import {
-    idType,
     emailProviderType,
     getScrapIdType,
     interestKeywordType,
     userProfileType,
 } from '../../common/types';
+import { paths } from '../../common/crawiling/interface';
+import { calenderData } from '../../common/util/calender_data';
+import { calanderDate } from '../../common/util/getCalenderData';
 
 @Service()
 export class UserService {
@@ -227,7 +230,6 @@ export class UserService {
         });
     }
 
-    //return type 설정 - 추후에 solution 정리되면
     async getLoginUserInfo(id: User['id']) {
         const user = await this.isUserByID(id).then((el) => {
             const { nickname, profileImage, thermometer, top, subMajorId } = el;
@@ -642,5 +644,82 @@ export class UserService {
             default:
                 return {};
         }
+    }
+
+    async getCalender({ id, year, month }: IGetCalender) {
+        await this.isUserByID(id);
+
+        const calender: {
+            [key: string]: [
+                {
+                    id: string;
+                    title: string;
+                    status: string;
+                },
+            ];
+        } = {};
+        await Promise.all(
+            ['competition', 'outside', 'intern', 'language', 'qnet'].map(
+                async (el) => {
+                    const scrapIds = await this.getScrapId({
+                        id,
+                        path: el as paths['path'],
+                    });
+                    await this.elastic
+                        .search({
+                            index: el,
+                            _source_includes: calenderData(el as paths['path'])
+                                .info,
+                            body: {
+                                query: {
+                                    terms: {
+                                        _id: scrapIds,
+                                    },
+                                },
+                            },
+                        })
+                        .then((data) =>
+                            data.body.hits.hits.map(async (info: any) => {
+                                const {
+                                    openDate,
+                                    closeDate,
+                                    examDate,
+                                    examSchedules,
+                                    period,
+                                    participationPeriod,
+                                } = info._source;
+
+                                const result = await calanderDate({
+                                    path: el as paths['path'],
+                                    year,
+                                    month,
+                                    data: {
+                                        openDate,
+                                        closeDate,
+                                        examDate,
+                                        examSchedules,
+                                        period,
+                                        participationPeriod,
+                                    },
+                                });
+
+                                return result.map((final: any) => {
+                                    calender[final.targetDate] =
+                                        calender[final.targetDate] || [];
+                                    return calender[final.targetDate].push({
+                                        id: info._id,
+                                        title:
+                                            el !== 'language'
+                                                ? info._source.title
+                                                : info._source.test,
+                                        status: final.status,
+                                    });
+                                });
+                            }),
+                        );
+                },
+            ),
+        );
+        return calender;
     }
 }
