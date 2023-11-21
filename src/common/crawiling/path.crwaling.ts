@@ -149,9 +149,7 @@ export class PathCrawling {
     }
 
     async QNetData() {
-        const category = await axios.get(
-            'http://openapi.q-net.or.kr/api/service/rest/InquiryListNationalQualifcationSVC/getList?serviceKey=sWAEtBKCgnfT4ANvlYmgqRju8t9TcJHpyQvLY5zz6qu%2BRzrrMv%2FQyMHjzYUbtK%2FTJqePrdyM2nVPzTwEImSGvQ%3D%3D',
-        );
+        const category = await axios.get(process.env.QNET_CATEGORY_URI!);
         const categoryObj: any = {};
 
         await Promise.all(
@@ -170,8 +168,7 @@ export class PathCrawling {
             }),
         );
 
-        const listUrl =
-            'http://openapi.q-net.or.kr/api/service/rest/InquiryQualInfo/getList?serviceKey=sWAEtBKCgnfT4ANvlYmgqRju8t9TcJHpyQvLY5zz6qu%2BRzrrMv%2FQyMHjzYUbtK%2FTJqePrdyM2nVPzTwEImSGvQ%3D%3D&seriesCd=';
+        const listUrl = process.env.QNET_LIST_URL!;
 
         // 국가기술자격
         const dataList = await Promise.all(
