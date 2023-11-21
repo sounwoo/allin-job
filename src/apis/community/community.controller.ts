@@ -72,13 +72,13 @@ class CommunityController {
 
     async fidneMany(req: Request, res: Response) {
         // #swagger.tags = ['Community']
-
+        const { count, ...el } = req.query as FindManyCommunityDTO;
         const data = await this.communityService.findeMany({
-            ...(req.query as FindManyCommunityDTO),
+            ...el,
         });
 
         res.status(200).json({
-            data: data.length ? data : null,
+            data: count ? data.length : data,
         });
     }
 

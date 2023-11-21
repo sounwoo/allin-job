@@ -36,6 +36,7 @@ export class CommunityService {
         title,
         nickName: nickname,
         content,
+        page,
     }: FindManyCommunityDTO): Promise<CommunityFindManyType[]> {
         return this.prisma.community.findMany({
             where: {
@@ -68,7 +69,7 @@ export class CommunityService {
             orderBy: {
                 view: 'desc',
             },
-            take: 12,
+            ...(page && { skip: (+page - 1) * 12, take: +page * 12 }),
         });
     }
 
