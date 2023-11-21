@@ -17,10 +17,6 @@ export class CreateThermometerDTO {
 
     @IsString()
     @IsOptional()
-    keyword: Keyword['keyword'];
-
-    @IsString()
-    @IsOptional()
     activeTitle: UserCompetition['activeTitle'];
 
     @IsString()
@@ -38,7 +34,6 @@ export class CreateThermometerDTO {
     constructor(data: CreateThermometerDTO) {
         this.path = data.path;
         this.category = data.category;
-        this.keyword = data.keyword;
         this.activeTitle = data.activeTitle;
         this.activeContent = data.activeContent;
         this.period = data.period;
