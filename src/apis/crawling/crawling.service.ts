@@ -223,7 +223,8 @@ export class CrawlingService {
         if (id && path !== 'community')
             scrapIds = await this.userService.getScrapId({ id, path });
 
-        if (path === 'community') return this.communityService.findeMany({});
+        if (path === 'community')
+            return this.communityService.findeMany({ page: '1' });
 
         return this.elastic
             .search({

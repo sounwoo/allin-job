@@ -1,27 +1,37 @@
-import { IsString, ValidateIf } from 'class-validator';
+import { IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Community, User } from '@prisma/client';
 
 export class FindManyCommunityDTO {
     @IsString()
-    @ValidateIf((_, value) => value)
+    @IsOptional()
     category?: Community['category'];
 
     @IsString()
-    @ValidateIf((_, value) => value)
+    @IsOptional()
     title?: Community['title'];
 
     @IsString()
-    @ValidateIf((_, value) => value)
+    @IsOptional()
     nickName?: User['nickname'];
 
     @IsString()
-    @ValidateIf((_, value) => value)
+    @IsOptional()
     content?: string;
+
+    @IsString()
+    @IsOptional()
+    page?: string;
+
+    @IsString()
+    @IsOptional()
+    count?: string;
 
     constructor(data: FindManyCommunityDTO) {
         this.category = data.category;
         this.title = data.title;
         this.nickName = data.nickName;
         this.content = data.content;
+        this.page = data.page;
+        this.count = data.count;
     }
 }
