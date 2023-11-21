@@ -11,9 +11,8 @@ import {
     UserOutside,
     UserQnet,
 } from '@prisma/client';
-import { Path } from '../../../common/crawiling/interface';
+import { Path, paths } from '../../../common/crawiling/interface';
 import { idType } from '../../../common/types';
-import { CreateThermometerDTO } from '../dto/create-thermometer.dto';
 import { CreateUserDTO, Interests } from '../dto/create-user.dto';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 import { ScrappingDTO } from '../dto/scrapping.dto';
@@ -81,7 +80,6 @@ export interface IThermometerUpdate {
     path: Path['path'] | 'language';
     createThermometer: {
         category: Community['category'];
-        keyword: Keyword['keyword'];
         activeTitle: UserIntern['activeTitle'];
         activeContent: UserIntern['activeContent'];
         period?: UserIntern['period'];

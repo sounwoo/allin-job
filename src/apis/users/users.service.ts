@@ -477,35 +477,28 @@ export class UserService {
         thermometerId,
     }: IThermometerUpdate): Promise<boolean> {
         await this.isUserByID(id);
+        //todo transaction,,,
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                [ThermometerPaths[path]]: createThermometer
+                    ? { create: { ...createThermometer } }
+                    : { delete: { id: thermometerId } },
+            },
+        });
 
-        try {
-            await this.prisma.$transaction(async (prisma) => {
-                await prisma.user.update({
-                    where: { id },
-                    data: {
-                        [ThermometerPaths[path]]: createThermometer
-                            ? { create: { ...createThermometer } }
-                            : { delete: { id: thermometerId } },
-                    },
-                });
+        const { sum: thermometer } = await this.getCount(id);
 
-                const { sum: thermometer } = await this.getCount(id);
+        await this.prisma.user.update({
+            where: { id },
+            data: {
+                thermometer,
+            },
+        });
 
-                await prisma.user.update({
-                    where: { id },
-                    data: {
-                        thermometer,
-                    },
-                });
-            });
+        await this.topPercent({ id, mainMajorId });
 
-            await this.topPercent({ id, mainMajorId });
-
-            return true;
-        } catch (error) {
-            console.error('트랜잭션 실패:', error);
-            return false;
-        }
+        return true;
     }
 
     async getCount(id: string): Promise<PercentageType> {
@@ -544,7 +537,7 @@ export class UserService {
         return percentage(user as IThermometerUser);
     }
 
-    async topPercent({ id, mainMajorId }: ITopPercentage): Promise<User[]> {
+    async topPercent({ mainMajorId }: ITopPercentage): Promise<User[]> {
         const users = await this.prisma.user.findMany({
             where: {
                 subMajor: {
@@ -613,14 +606,13 @@ export class UserService {
         await this.isUserByID(id);
         const addField = await this.addField(ThermometerPaths[path]);
 
-        return await this.prisma.user.findMany({
+        const users = await this.prisma.user.findMany({
             where: { id },
             select: {
                 [ThermometerPaths[path]]: {
                     select: {
                         id: true,
                         category: true,
-                        keyword: true,
                         activeTitle: true,
                         activeContent: true,
                         ...addField,
@@ -628,6 +620,13 @@ export class UserService {
                 },
             },
         });
+
+        return users[0][ThermometerPaths[path]].map((user) => ({
+            id: user.id,
+            category: user.category,
+            activeTitle: user.activeTitle,
+            activeContent: user.activeContent,
+        }));
     }
 
     async addField(field: string): Promise<Record<string, boolean>> {

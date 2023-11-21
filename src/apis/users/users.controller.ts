@@ -288,12 +288,13 @@ class UserController {
     async findPathThermometer(req: Request, res: Response) {
         const { id } = req.user as idType;
         const { path } = req.query as ThermometerPath;
+        const datas = await this.userService.findPathThermometer({
+            id,
+            path,
+        });
 
         res.status(200).json({
-            data: await this.userService.findPathThermometer({
-                id,
-                path,
-            }),
+            data: datas,
         });
     }
 

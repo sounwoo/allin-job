@@ -8,6 +8,7 @@ const length = (data: number, num: number): number => {
 export const percentage = (user: IThermometerUser): PercentageType => {
     const { userCompetition, userIntern, userLanguage, userOutside, userQnet } =
         user;
+
     const competitionPercentage = length(userCompetition.length, 5);
     const outsidePercentage = length(userOutside.length, 5);
     const qnetPercentage = length(userQnet.length, 4);
